@@ -1,14 +1,23 @@
 // Lancement du navigateur et interception réseau, partagés par les vérificateurs.
 //
-// Règle de sûreté : toute requête vers un hôte tiers est relevée puis interrompue, sauf
-// si l'appelant demande explicitement le contraire (allowNetwork). Les tests ne
-// touchent ainsi jamais le réseau.
+// Règles de sûreté :
+//   - toute requête vers un hôte tiers est relevée puis interrompue, sauf si l'appelant demande
+//     explicitement le contraire (allowNetwork). Les tests ne touchent ainsi jamais le réseau ;
+//   - toute requête qui pourrait modifier des données (méthode autre que GET, HEAD ou OPTIONS :
+//     envoi de formulaire, POST d'un script) est interrompue, même vers le site vérifié et même
+//     avec allowNetwork : un vérificateur ne doit jamais rien envoyer à la place d'un visiteur.
+//
+// Navigateur : variable d'environnement EWC_BROWSER_PATH (exécutable d'un navigateur Chromium),
+// sinon Chromium de Playwright, sinon Edge, sinon Chrome.
 
 import { chromium } from 'playwright';
 
-// Chromium de Playwright d'abord ; à défaut, un navigateur Chromium déjà installé (Edge, Chrome).
+export const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
+
 export async function launchBrowser() {
-  const attempts = [['playwright-chromium', {}], ['msedge', { channel: 'msedge' }], ['chrome', { channel: 'chrome' }]];
+  const custom = process.env.EWC_BROWSER_PATH;
+  const attempts = custom ? [[`EWC_BROWSER_PATH (${custom})`, { executablePath: custom }]]
+    : [['playwright-chromium', {}], ['msedge', { channel: 'msedge' }], ['chrome', { channel: 'chrome' }]];
   const errors = [];
   for (const [name, options] of attempts) {
     try {
@@ -59,17 +68,27 @@ export function requestKind(request, page) {
 
 // Intercepte toutes les requêtes d'un contexte. `onThirdParty(entry)` reçoit
 // { url, host, kind, method } pour chaque requête tierce, qui est ensuite interrompue
-// sauf si allowNetwork est vrai. Les WebSockets tiers sont relevés et fermés.
-export async function routeThirdParty(context, { pageUrl, allowNetwork = false, onThirdParty, getPage }) {
+// sauf si allowNetwork est vrai. Les WebSockets tiers sont relevés et fermés. Une requête
+// d'une autre méthode que GET, HEAD ou OPTIONS est toujours interrompue ; `onBlockedWrite(entry)`
+// la reçoit (une requête tierce passe aussi par onThirdParty).
+export async function routeThirdParty(context, { pageUrl, allowNetwork = false, onThirdParty, onBlockedWrite, getPage }) {
   const isFirstParty = firstPartyPredicate(pageUrl);
   await context.route('**/*', async (route) => {
     const request = route.request();
     const url = request.url();
-    if (!/^https?:/i.test(url) || isFirstParty(url)) {
+    const method = request.method().toUpperCase();
+    const web = /^https?:/i.test(url);
+    const entry = () => ({ url, host: hostOf(url), kind: requestKind(request, getPage ? getPage() : null), method });
+    if (web && !isFirstParty(url)) onThirdParty(entry());
+    if (web && !SAFE_METHODS.has(method)) {
+      if (onBlockedWrite) onBlockedWrite(entry());
+      await route.abort('blockedbyclient').catch(() => {});
+      return;
+    }
+    if (!web || isFirstParty(url)) {
       await route.continue().catch(() => {});
       return;
     }
-    onThirdParty({ url, host: hostOf(url), kind: requestKind(request, getPage ? getPage() : null), method: request.method() });
     if (allowNetwork) await route.continue().catch(() => {});
     else await route.abort('blockedbyclient').catch(() => {});
   });
@@ -86,6 +105,15 @@ export async function routeThirdParty(context, { pageUrl, allowNetwork = false, 
     });
   }
   return isFirstParty;
+}
+
+// Raison pour laquelle une page chargée ne peut pas être analysée (pas de réponse, statut
+// HTTP d'erreur), ou null. Une page d'erreur (403 d'un pare-feu, 404, 500) ne doit jamais
+// donner un résultat « sans constat ».
+export function loadProblem(response) {
+  if (!response) return 'no response';
+  const status = response.status();
+  return status >= 400 ? `HTTP ${status}` : null;
 }
 
 // Nouveau contexte sans état : pas de cookie, pas de stockage, service workers bloqués

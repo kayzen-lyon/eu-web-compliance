@@ -17,26 +17,34 @@
 
   // Questions about the nature of the counterpart, in English and French (illustrations; extend
   // for the languages of the site). Kept broad on purpose: a false positive costs one honest sentence.
+  // Accents optional ("Etes-vous"), straight or typographic apostrophe, familiar "t'es".
   var IDENTITY_PATTERNS = [
     /\b(are|r)\s+(you|u)\s+(a\s+|an\s+)?(real\s+)?(human|person|people|robot|bot|machine|ai|computer)\b/i,
-    /\b(am\s+i|i\s+am|i'm)\s+(talking|speaking|chatting|writing)\s+(to|with)\s+(a\s+|an\s+)?(real\s+)?(human|person|robot|bot|machine|ai|computer)\b/i,
+    /\b(am\s+i|i\s+am|i['’]m)\s+(talking|speaking|chatting|writing)\s+(to|with)\s+(a\s+|an\s+)?(real\s+)?(human|person|robot|bot|machine|ai|computer)\b/i,
     /\bis\s+this\s+(a\s+|an\s+)?(real\s+)?(human|person|robot|bot|ai)\b/i,
-    /(?:^|\s)(êtes|es)[\s-]*(vous|tu)\s+(un|une)?\s*(vrai(e)?\s+)?(humain|personne|robot|ia|machine|intelligence artificielle)\b/i,
-    /\b(vous|tu)\s+(êtes|es)\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|ia|machine|intelligence artificielle)\b/i,
-    /\bje\s+(parle|discute|écris)\s+(à|a|avec)\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|ia|machine)\b/i,
-    /\bc'est\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|ia)\b/i
+    /(?:^|\s)([eêé]tes|es)[\s-]*(vous|tu)\s+(un|une)?\s*(vrai(e)?\s+)?(humain|personne|robot|bot|ia|machine|intelligence artificielle)\b/i,
+    /\b(vous|tu)\s+([eêé]tes|es)\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|bot|ia|machine|intelligence artificielle)\b/i,
+    /(?:^|\s)t['’]\s*es\s+(un|une)?\s*(vrai(e)?\s+)?(humain|personne|robot|bot|ia|machine|intelligence artificielle)\b/i,
+    /\bje\s+(parle|discute|écris|ecris)\s+(à|a|avec)\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|bot|ia|machine)\b/i,
+    /\bc['’]est\s+(un|une)\s+(vrai(e)?\s+)?(humain|personne|robot|bot|ia)\b/i
   ];
+
+  // Used when the page forgets data-identity-answer: the question must never get an empty answer.
+  var DEFAULT_IDENTITY_ANSWER = {
+    en: 'No, I am not a person. I am an AI assistant, a computer program.',
+    fr: 'Non, je ne suis pas une personne. Je suis un assistant IA, un programme informatique.'
+  };
 
   function isIdentityQuestion(text) {
     return IDENTITY_PATTERNS.some(function (re) { return re.test(text); });
   }
 
-  function appendMessage(log, who, text, modifier) {
+  function appendMessage(log, who, text, modifier, suffix) {
     var item = document.createElement('li');
     item.className = 'ai-msg ai-msg--' + modifier;
     var label = document.createElement('span');
     label.className = 'ai-msg__who';
-    label.textContent = who + ':';
+    label.textContent = who + suffix;
     var body = document.createElement('p');
     body.className = 'ai-msg__text';
     body.textContent = text;
@@ -46,9 +54,25 @@
     return item;
   }
 
+  // Status messages are written after a short delay, so that screen readers notice the change.
+  // One pending write per region: a new message, or clearing, cancels the previous one, so a fast
+  // answer never leaves a stale "is writing" announced after it.
   function setStatus(region, message) {
+    window.clearTimeout(region.aiChatTimer);
     region.textContent = '';
-    window.setTimeout(function () { region.textContent = message; }, 100);
+    if (!message) { return; }
+    region.aiChatTimer = window.setTimeout(function () { region.textContent = message; }, 100);
+  }
+
+  // data-writing-message: "{name}" is replaced by the assistant label. A text without "{name}"
+  // follows the label, as in earlier versions ("is writing an answer.").
+  function writingMessage(template, name) {
+    var text = template || '{name} is writing an answer.';
+    return text.indexOf('{name}') === -1 ? name + ' ' + text : text.split('{name}').join(name);
+  }
+
+  function pageLanguage() {
+    return (document.documentElement.lang || 'en').toLowerCase().split('-')[0];
   }
 
   function initChat(panel) {
@@ -58,15 +82,26 @@
     var field = form.querySelector('textarea');
     var status = panel.querySelector('.ai-chat__status');
     var close = panel.querySelector('.ai-chat__close');
+    // Read every setting before the first message is written.
     var assistantName = panel.dataset.assistantLabel || 'AI assistant';
     var userName = panel.dataset.userLabel || 'You';
+    // Text after each speaker label: ':' by default, ' :' in French typography.
+    var suffix = panel.dataset.labelSuffix === undefined ? ':' : panel.dataset.labelSuffix;
+    var writing = writingMessage(panel.dataset.writingMessage, assistantName);
+    var identityAnswer = panel.dataset.identityAnswer;
+    if (!identityAnswer || !identityAnswer.trim()) {
+      identityAnswer = DEFAULT_IDENTITY_ANSWER[pageLanguage()] || DEFAULT_IDENTITY_ANSWER.en;
+      if (window.console && typeof window.console.error === 'function') {
+        window.console.error('ai-chat: data-identity-answer is missing on #' + panel.id + '; a default answer is used. Write it in the language of the page.');
+      }
+    }
     var history = [];
     var greeted = false;
 
     function greet() {
       if (greeted) { return; }
       greeted = true;
-      appendMessage(log, assistantName, panel.dataset.greeting, 'assistant');
+      appendMessage(log, assistantName, panel.dataset.greeting, 'assistant', suffix);
     }
 
     function open() {
@@ -105,17 +140,17 @@
         return;
       }
       field.value = '';
-      appendMessage(log, userName, text, 'user');
+      setStatus(status, '');
+      appendMessage(log, userName, text, 'user', suffix);
       history.push({ role: 'user', content: text });
 
       if (isIdentityQuestion(text)) {
-        var honest = panel.dataset.identityAnswer;
-        appendMessage(log, assistantName, honest, 'assistant');
-        history.push({ role: 'assistant', content: honest });
+        appendMessage(log, assistantName, identityAnswer, 'assistant', suffix);
+        history.push({ role: 'assistant', content: identityAnswer });
         return;
       }
 
-      setStatus(status, assistantName + ' ' + (panel.dataset.writingMessage || 'is writing an answer.'));
+      setStatus(status, writing);
       var respond = typeof window.aiChatRespond === 'function'
         ? window.aiChatRespond
         : function () { return Promise.resolve(panel.dataset.demoAnswer); };
@@ -124,13 +159,13 @@
         .then(function () { return respond(text, history.slice()); })
         .then(function (answer) {
           var reply = String(answer || '').trim() || panel.dataset.errorMessage;
-          appendMessage(log, assistantName, reply, 'assistant');
+          appendMessage(log, assistantName, reply, 'assistant', suffix);
           history.push({ role: 'assistant', content: reply });
-          status.textContent = '';
+          setStatus(status, '');
         })
         .catch(function () {
-          appendMessage(log, assistantName, panel.dataset.errorMessage, 'assistant');
-          status.textContent = '';
+          appendMessage(log, assistantName, panel.dataset.errorMessage, 'assistant', suffix);
+          setStatus(status, '');
         });
     });
   }

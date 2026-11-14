@@ -57,8 +57,11 @@ export function diffReports(previous, findings, checkerStatus) {
   };
 }
 
-function nextActions({ profile, checkers, summary, applicability, documents, manualChecks }) {
+function nextActions({ profile, checkers, summary, applicability, aiAct, documents, manualChecks }) {
   const actions = [];
+  const firstLine = (text) => String(text).split(/\r?\n/)[0];
+  if (applicability && applicability.error) actions.push(`Make the applicability matrix run (${firstLine(applicability.error)}), then run check-all again: without it, nothing says which obligations apply.`);
+  if (aiAct && aiAct.error) actions.push(`Make the AI Act classification run (${firstLine(aiAct.error)}), then run check-all again.`);
   if (!profile.found) {
     actions.push(`Create the project profile ${profile.path} (Qualify mode: answer the scoping questions). Until then every obligation is "to confirm" and handled as if it applied.`);
   }
@@ -89,7 +92,9 @@ export function buildReport(input) {
   const documents = documentsToPublish(input.matrix, input.siteIndex);
 
   const total = count(findings);
-  const failed = runs.some((r) => r.status === 'failed');
+  // Une partie du rapport manque : vérificateur en échec, matrice ou classement AI Act impossibles.
+  const failed = runs.some((r) => r.status === 'failed') || Boolean(input.matrixError)
+    || Boolean(input.aiAct && input.aiAct.error);
   const summary = {
     ...total,
     by_domain: Object.fromEntries(DOMAINS.map((d) => [d, count(findings.filter((f) => f.domain === d))])),
@@ -124,6 +129,6 @@ export function buildReport(input) {
     changes: diffReports(input.previous, findings, checkerStatus),
     next_actions: [],
   };
-  report.next_actions = nextActions({ profile: report.profile, checkers, summary, applicability: report.applicability, documents, manualChecks });
+  report.next_actions = nextActions({ profile: report.profile, checkers, summary, applicability: report.applicability, aiAct: report.ai_act, documents, manualChecks });
   return report;
 }

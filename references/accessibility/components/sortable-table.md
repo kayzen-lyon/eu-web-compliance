@@ -14,11 +14,8 @@ Behaviour follows the [Sortable table example](https://www.w3.org/WAI/ARIA/apg/p
 
 ```html
 <div class="table-scroll" role="region" aria-labelledby="orders-caption" tabindex="0">
-  <table data-sortable data-status="orders-status">
-    <caption id="orders-caption">
-      Orders of the last 30 days
-      <span class="visually-hidden">(column headers that are buttons sort the table)</span>
-    </caption>
+  <table data-sortable data-status="orders-status" aria-describedby="orders-sort-hint">
+    <caption id="orders-caption">Orders of the last 30 days</caption>
     <thead>
       <tr>
         <th scope="col" aria-sort="ascending">
@@ -49,6 +46,7 @@ Behaviour follows the [Sortable table example](https://www.w3.org/WAI/ARIA/apg/p
     </tbody>
   </table>
 </div>
+<p id="orders-sort-hint" class="visually-hidden">Column headers that are buttons sort the table.</p>
 <div id="orders-status" role="status" class="visually-hidden"></div>
 ```
 
@@ -116,7 +114,7 @@ Notes on the choices:
 - The sort control is a `<button>` inside the `<th>`; the header keeps its `scope`, so cells are still announced with their column name.
 - `aria-sort` is on the `<th>`, not on the button, and on one column at a time: the column that currently orders the table. Headers that are not sorted carry no `aria-sort`.
 - The direction is shown by a character that differs in shape (▲, ▼, ↕), not by colour, and is hidden from assistive technology because `aria-sort` already says it.
-- The hint that headers sort the table is written once, in the caption, instead of being repeated in each button name.
+- The hint that headers sort the table is written once, as the description of the table (`aria-describedby`), instead of being repeated in each button name. It is kept out of the caption so that the name of the table and of its scrollable region stays short.
 - The header row is not rebuilt, so the button keeps focus after sorting and can be pressed again.
 - The result is announced through a `role="status"` region: not every screen reader re-reads `aria-sort` when it changes.
 - Displayed values keep their human format ("1,250.50 €"); `data-sort-value` carries the machine value, so sorting does not depend on parsing localised text.

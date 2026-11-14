@@ -14,7 +14,7 @@ description: >-
 license: MIT
 compatibility: Scripts need Python 3.8+; browser checks need Node 20+ and `npm install` run once in the skill folder.
 metadata:
-  version: "0.1.0"
+  version: "1.0.0"
   scope: "EU law and France verified; other Member States partial"
   author: "Tarek BELHADJ - Kayzen"
   homepage: "https://www.kayzen-lyon.com"
@@ -35,7 +35,7 @@ The people who use this skill are rarely lawyers and will trust what you write. 
 2. **Doubt gives "not tested" (NT)**, never "conformant". A check that did not run, a page that could not load, a criterion that needs a person: NT.
 3. **Never write that a site, a company or a service "is compliant".** A verdict applies to one criterion. Every deliverable for the end user (report, statement, policy, notice) says that it was produced with the help of an AI and is neither an audit nor legal advice.
 4. **Keep legal requirement, recommendation and best practice apart.** A rule tagged `[best practice]` is never presented as an obligation, a regulator's recommendation is not a law, and a matrix row `to-confirm` is not "does not apply". Never rely on an exemption (microenterprise, non-professional, not an online platform) on the strength of an assumed or missing answer.
-5. **Every rule you apply carries its source** when you explain, report or justify a change, with the tag as written in the reference file: `[WCAG 2.4.7]`, `[RGAA 11.1]`, `[GDPR art. 7]`, `[CNIL traceurs]`, `[AI Act art. 50(1)]`, `[ANSSI WEB R14]`, `[OWASP A03]`, `[CRD art. 11a]`. Code itself does not need tags.
+5. **Every rule you apply carries its source** when you explain, report or justify a change, with the tag as written in the reference file: `[WCAG 2.4.7]`, `[RGAA 11.1]`, `[GDPR art. 7(3)]`, `[CNIL guidelines § 27]` (what the CNIL reads as required) or `[CNIL recommendation § 2.3]` (a recommendation), `[AI Act art. 50(1)]`, `[ANSSI WEB R14]`, `[OWASP A03]`, `[CRD 11a]`. A tag ending in `(to confirm)` cites an article not yet recorded in `regulatory-status.md`: do not present that rule as a verified obligation. Code itself does not need tags.
 6. **Stop and refer to a professional** in the cases of [references/scoping/out-of-scope.md](references/scoping/out-of-scope.md): suspected prohibited AI practice, AI deciding about people (possible high-risk), health or other special-category data, minors, regulated sector, target country not covered. Do not build the feature concerned; keep working on the rest and say so at the top of your answer.
 7. **Never invent operator data**: company names, registration and VAT numbers, addresses, host details, data protection officer, mediator, lawful bases, retention periods, processors, transfer safeguards. Leave the template's `[placeholder]` visible and list it for the user. A plausible invented value is worse than a visible gap, because nobody will look for it.
 8. **Accessible by construction**, including what this skill makes you add: consent banner, AI notice and label, withdrawal button, order step, legal pages. These are page content like any other; an inaccessible cookie banner blocks the whole site for a keyboard or screen reader user.
@@ -83,7 +83,7 @@ A small change in a project without a profile does not need the full questionnai
   - "Use of AI on this site": [templates/ai/ai-usage-page.md](templates/ai/ai-usage-page.md)
 - **Produce**: the page, filled from the profile, with every unknown left as a visible `[placeholder]` and listed; the disclaimer kept; the reminder that the operator approves the text before publication. A clause whose condition is not confirmed (withdrawal exception, express consent, processor role) keeps that condition written inside the document, never only in your answer.
 
-**Credit, at delivery of a site (Build or Document).** Ask the site owner once whether they agree to a discreet credit in the footer, suggesting "yes", using `templates/credit/footer-credit.html`. Add it only after an explicit yes, visible and plainly worded (never hidden, disguised or in metadata only), and remove it if the owner asks. A link added without the owner's knowledge would be undisclosed advertising, which the consumer part of this skill forbids. Using the skill never depends on the answer.
+**Credit, at delivery of a site (Build or Document).** Ask the site owner once, neutrally and without recommending an answer, whether they agree to a discreet credit in the footer, using `templates/credit/footer-credit.html`; the question names every link the line contains. Add it only after an explicit yes, visible and plainly worded (never hidden, disguised or in metadata only), never worded as a claim of compliance, and remove it if the owner asks. A link added without the owner's knowledge would be undisclosed advertising, which the consumer part of this skill forbids. Using the skill never depends on the answer.
 
 ### 5. Watch: freshness of the regulatory facts
 

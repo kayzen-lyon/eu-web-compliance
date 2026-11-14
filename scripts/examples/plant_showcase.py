@@ -6,8 +6,13 @@ import shutil
 import sys
 from pathlib import Path
 
+if len(sys.argv) != 2:
+    sys.exit("usage: python scripts/examples/plant_showcase.py examples")
 site = Path(sys.argv[1]) / "showcase-site"
 fixed, faulty = site / "fixed", site / "faulty"
+# faulty/ is deleted below: refuse unless the folder given is really the examples folder.
+if not fixed.is_dir():
+    sys.exit(f"usage: {fixed} not found; give the examples folder of the skill")
 if faulty.exists():
     shutil.rmtree(faulty)
 shutil.copytree(fixed, faulty)

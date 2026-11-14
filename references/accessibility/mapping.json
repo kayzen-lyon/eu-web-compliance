@@ -1,6 +1,7 @@
 {
   "meta": {
     "title": "Correspondence between RGAA criteria, WCAG success criteria and EN 301 549 clauses",
+    "copyright": "WCAG success criterion numbers, names and levels: Copyright © 2023 World Wide Web Consortium. https://www.w3.org/copyright/document-license-2023/ . RGAA data: DINUM, Licence Ouverte 2.0.",
     "date": "2026-11-14",
     "generated_parts": "The block `rgaa`, and the fields `rgaa` and `rgaa_note` of each entry of `wcag`, are rewritten by `python scripts/rgaa_official.py --write` from the official RGAA file of the version named in references/accessibility/rgaa/ACTIVE. Everything else is maintained by hand from the sources below.",
     "sources": [

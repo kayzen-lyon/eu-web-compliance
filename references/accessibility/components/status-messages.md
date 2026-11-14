@@ -48,10 +48,10 @@ The visually-hidden class is in [../rules.md](../rules.md), section 1. The regio
 
 ### Visible messages (toasts, banners)
 
-The visible container is the live region. It is in the page from the start; messages are added to it.
+The visible container is not a live region: `role="status"` implies `aria-atomic="true"`, so every new toast would make the screen reader read all the toasts again, and the close button name would repeat the message. The message is announced once through the status region above (`announce()`); the toast is the visual copy.
 
 ```html
-<div id="toasts" class="toasts" role="status"></div>
+<div id="toasts" class="toasts"></div>
 ```
 
 ```css
@@ -82,6 +82,7 @@ function showToast(message) {
   });
   toast.append(text, close);
   document.getElementById('toasts').append(toast);
+  announce(message);   // the one announcement, through the status region
 }
 ```
 

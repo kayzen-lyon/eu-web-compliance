@@ -47,18 +47,16 @@ Code de la consommation (status section 5.2).
 
 - [ ] Order button: "commande avec obligation de paiement" or an equally unambiguous wording; means of payment and delivery restrictions stated at the latest at the start of the ordering process: [../consumer/online-sales.md](../consumer/online-sales.md) [C. conso L. 221-14]
 - [ ] Pre-contractual information: Article L. 221-5 [C. conso L. 221-5]
-- [ ] Withdrawal function labelled "renoncer au contrat ici", confirmation labelled "confirmer la rétractation", acknowledgement within a reasonable time; contracts running before the date of application stay under the previous rules: [../consumer/withdrawal-function.md](../consumer/withdrawal-function.md) [C. conso L. 221-21]
+- [ ] Withdrawal function labelled "renoncer au contrat ici", confirmation labelled "confirmer la rétractation", acknowledgement within a reasonable time; contracts running before the date of application stay under the previous rules: [../consumer/withdrawal-function.md](../consumer/withdrawal-function.md) [C. conso D. 221-5]
 - [ ] The withdrawal function is free of charge for the consumer [C. conso L. 221-21]
-- [ ] The exceptions to the right of withdrawal are listed in Article L. 221-28 (13 cases, read through a summarising tool; confirm before relying on a specific item) [C. conso L. 221-28]
+- [ ] The exceptions to the right of withdrawal are listed in Article L. 221-28 (13 cases, read through a tool that returns short exact quotes, status section 5.2; confirm before relying on a specific item) [C. conso L. 221-28]
 - [ ] Price reductions show the prior price: Article L. 112-1-1; [../consumer/prices.md](../consumer/prices.md) [C. conso L. 112-1-1]
 - [ ] The contact details of the competent consumer mediator are given visibly and legibly on the site, in the general terms or on order forms [C. conso L. 616-1]
 - [ ] Deceptive design and the DSA: EU rules apply as such, see [../consumer/deceptive-design.md](../consumer/deceptive-design.md) and [../consumer/dsa.md](../consumer/dsa.md) [UCPD art. 5]
 
-A rule marked relies on a fact read on Légifrance on 2026-11-14 that is not yet in `regulatory-status.md`.
-
 Whether a missing withdrawal function extends the withdrawal period is not stated by any text read (`OPEN-QUESTIONS.md`, item 9). Do not assert it.
 
-Not covered yet: the French rules on price marking other than reductions, and the template of general terms of sale (F-C7).
+General terms of sale for consumers: rules in [../documents/terms-of-sale.md](../documents/terms-of-sale.md), template in [../../templates/documents/terms-of-sale-fr.md](../../templates/documents/terms-of-sale-fr.md). Not covered: the French rules on price marking other than reductions (`OPEN-QUESTIONS.md`, item 35).
 
 ## 6. Language
 

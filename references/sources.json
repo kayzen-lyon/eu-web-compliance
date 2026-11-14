@@ -200,7 +200,7 @@
       "publisher": "République française (Légifrance)",
       "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069565/LEGISCTA000032221365/",
       "kind": "fr-law",
-      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 212-1, L. 215-1, L. 215-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, L. 221-28, D. 221-5, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1; L. 221-18 read through a summarising tool; L. 212-1, L. 215-1, L. 215-1-1 and L. 221-28 read on 2026-11-14 through a tool returning short exact quotes",
+      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 212-1, L. 215-1, L. 215-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, L. 221-28, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1; L. 221-18 read through a summarising tool; L. 212-1, L. 215-1, L. 215-1-1 and L. 221-28 read on 2026-11-14 through a tool returning short exact quotes; L. 221-21 re-read on 2026-11-14 (version in force since 19 June 2026, ordonnance n° 2026-2): it delegates the presentation of the withdrawal function to a decree and does not carry the labels. D. 221-5 has its own entry, fr-code-consommation-d221-5",
       "consulted": "2026-11-14",
       "licence": "Licence Ouverte 2.0",
       "proof": "P",
@@ -1028,6 +1028,19 @@
       "proof": "P",
       "tag": "C. conso R. 221-3",
       "notes": "Read through a tool returning short exact quotes, not word for word in a browser; reproduce from Légifrance before use."
+    },
+    {
+      "id": "fr-code-consommation-d221-5",
+      "title": "Code de la consommation, article D. 221-5 (présentation et utilisation de la fonctionnalité de rétractation)",
+      "publisher": "République française (Légifrance)",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000053303365",
+      "kind": "fr-law",
+      "version": "In force since 19 June 2026 (created by décret n° 2026-3 du 5 janvier 2026, art. 2)",
+      "consulted": "2026-11-14",
+      "licence": "Licence Ouverte 2.0",
+      "proof": "P",
+      "tag": "C. conso D. 221-5",
+      "notes": "Read on 2026-11-14 through a tool returning short exact quotes. Exact quotes: « renoncer au contrat ici » ou par une formule analogue dénuée d'ambiguïté; « confirmer la rétractation » ou par une formule analogue et dénuée d'ambiguïté. The rest of the article was read as a summary; reproduce from Légifrance before quoting it."
     }
   ]
 }

@@ -30,7 +30,7 @@ The rules that are the same in every Member State, domain by domain, with the fi
 
 ## Options left to the Member States that change a website
 
-- [ ] Age of digital consent: 16 by default, a Member State may set it lower, not below 13; check the country file [GDPR art. 8]
+- [ ] Age of digital consent: a default age that a Member State may lower down to a floor (both ages in [../regulatory-status.md](../regulatory-status.md) section 3.1); check the country file [GDPR art. 8]
 - [ ] Price reductions: a Member State may set different rules for perishable goods, products recently on the market and progressive reductions [PID art. 6a]
 - [ ] Wording of the order button and of the withdrawal function in the national language: set by the transposition; the English wording of the directive is not a translation to reuse [CRD art. 8(2)]
 - [ ] Identification page: national laws can require more than Article 5 of Directive 2000/31/EC (example: [de.md](de.md)) [ECD art. 5]

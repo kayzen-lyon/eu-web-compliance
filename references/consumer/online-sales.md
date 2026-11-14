@@ -64,8 +64,10 @@ A pre-ticked paid option is reimbursable to the consumer when consent was inferr
 
 - [ ] The button that places the order is labelled only with "order with obligation to pay" or a corresponding unambiguous formulation that says that placing the order entails an obligation to pay [CRD art. 8(2)]
 - [ ] In French, the label is "commande avec obligation de paiement" or an equally unambiguous wording [C. conso L. 221-14]
-- [ ] The label is easily legible: real text in the button, at least the size of the body text, with sufficient contrast, not an icon or an image of text [CRD art. 8(2)]
-- [ ] The accessible name of the button is the visible label, word for word; no `aria-label` that says something else ("Next", "Continue") [WCAG 2.5.3; RGAA 6.1]
+- [ ] The label is easily legible [CRD art. 8(2)]
+- [ ] In practice: real text in the button, not an icon or an image of text, at least the size of the body text [best practice]
+- [ ] The label text has sufficient contrast with its background [WCAG 1.4.3; RGAA 3.2]
+- [ ] The accessible name of the button is the visible label, word for word; no `aria-label` that says something else ("Next", "Continue") [WCAG 2.5.3; RGAA 11.9]
 - [ ] It is a real `<button type="submit">` inside the order `<form>`, reachable and operable with the keyboard [WCAG 2.1.1; RGAA 7.3]
 - [ ] Nothing else on the button: no price, no promotional wording, no second action. Put the total next to the button, not inside it [CRD art. 8(2)]
 - [ ] Only this button commits the person; earlier steps use labels that say they do not ("Continue to payment") [best practice]
@@ -88,14 +90,14 @@ Labels to avoid: "Order", "Confirm", "Continue", "Next", "Submit", "Register", "
 - [ ] The trader sends the confirmation of the contract on a durable medium (an email with the details in its body or as a PDF attachment, not only a link to an account page) within a reasonable time, at the latest at delivery or before the service begins [CRD art. 8(7)]
 - [ ] The confirmation includes all the Article 6(1) information not already given on a durable medium, and, for digital content supplied immediately, the record of the consumer's express consent and acknowledgement that the right of withdrawal is lost [CRD art. 8(7)]
 - [ ] The confirmation says where the withdrawal function is and how long it is available (see [withdrawal-function.md](withdrawal-function.md)) [CRD art. 6(1)(h)]
-- [ ] The terms of sale given to the consumer can be stored and reproduced (downloadable or included in the email) [ECD art. 10(3)]
+- [ ] The terms of sale given to the consumer can be stored and reproduced (downloadable or included in the email) [ECD art. 10(3) (to confirm)]
 - [ ] The confirmation page after payment has a heading that states the result and the order number, and focus moves to it when it replaces the form without a page load [WCAG 4.1.3; RGAA 7.5]
 
 ## 6. Terms of sale and when the right of withdrawal is excluded
 
 - [ ] The terms of sale are reachable from every page of the checkout and from the summary, as HTML, and can be downloaded or printed [best practice]
 - [ ] Acceptance of the terms of sale, where the owner wants a record of it, is a separate unchecked checkbox, not merged with consent to marketing or to the processing of data for other purposes [GDPR art. 7(2)]
-- [ ] When the right of withdrawal does not apply to an item, the product page and the summary say so before the order [CRD art. 6(1)(k)]
+- [ ] When the right of withdrawal does not apply to an item, the product page and the summary say so before the order [CRD art. 6(1)(k) (to confirm)]
 - [ ] For services performed or digital content supplied during the withdrawal period, the flow collects the consumer's express request or consent and acknowledgement as a separate, unchecked control, with a label that states the consequence [CRD art. 16]
 
 Whether a given product falls under an exception is a legal judgement: see [withdrawal-function.md](withdrawal-function.md) section 7. The agent does not write "no right of withdrawal" on a product without the owner's written confirmation.

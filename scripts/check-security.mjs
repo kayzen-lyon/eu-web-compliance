@@ -27,9 +27,10 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { launchBrowser, freshContext, routeThirdParty, hostOf } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, hostOf, loadProblem } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
+  prepareOutputs, DATA_NOTICE, notAnalysedMessage,
 } from './lib/cli.mjs';
 import { BUILTIN, loadBaseline, evaluateHeaders, parseCsp } from './lib/security-baseline.mjs';
 
@@ -45,6 +46,8 @@ const LIMITS = [
   'Server-side controls are out of reach: CSRF protection, input validation, output escaping, access control, rate limiting, vulnerable dependencies.',
   'Secret detection uses patterns on the page and the first-party scripts it loads: other formats and other files are not seen.',
   'Inline scripts and event handlers are reported for review: whether a strict CSP is feasible depends on the code.',
+  'Third-party scripts without integrity are reported for review: integrity cannot be used for a script its provider updates, and the risk depends on the trust placed in that provider.',
+  'Requests that could send data (methods other than GET, HEAD and OPTIONS) are always aborted; forms are never submitted.',
 ];
 
 const LOCAL_HOST = /^(localhost|127\.\d+\.\d+\.\d+|\[?::1\]?|.+\.localhost|.+\.test)$/i;
@@ -159,8 +162,10 @@ function pageFindings(data, { pageUrl, https, isFirstParty, cspText }) {
   }
   for (const s of data.scripts) {
     if (!EXECUTABLE_TYPES.has(s.type) || isFirstParty(s.src) || s.integrity || !/^https?:/.test(s.src)) continue;
-    findings.push(finding('third-party-script-without-integrity', 'NC', 'major', BUILTIN.integrity, { selector: s.selector, request: s.src,
-      message: `Script from ${hostOf(s.src)} has no integrity attribute: if that host changes the file, the page runs the new code. Self-host it or add integrity and crossorigin.` }));
+    // À revoir, jamais NC : integrity est impossible pour un script que son fournisseur modifie
+    // (outil d'analyse, widget de paiement) et le risque dépend de la confiance faite à l'hôte.
+    findings.push(finding('third-party-script-without-integrity', 'NT', 'major', BUILTIN.integrity, { selector: s.selector, request: s.src,
+      message: `Script from ${hostOf(s.src)} has no integrity attribute: if that host changes the file, the page runs the new code. For a fixed, versioned file, self-host it or add integrity and crossorigin; for a script its provider updates (analytics, payment widget), integrity cannot be used: check that the provider is trusted and limit it with the CSP.` }));
   }
   for (const l of data.styles) {
     if (isFirstParty(l.href) || l.integrity || !/^https?:/.test(l.href)) continue;
@@ -218,7 +223,12 @@ async function checkPage(browser, p, baseline) {
       }
     });
     const response = await page.goto(p.url, { waitUntil: 'load' });
-    if (!response) throw new Error(`${p.url} : pas de réponse`);
+    const problem = loadProblem(response);
+    if (problem) {
+      return { url: p.url, final_url: response ? response.url() : p.url, status: response ? response.status() : null, https: p.url.startsWith('https://'),
+        headers: {}, set_cookie: [], not_applicable: [], third_party_requests: thirdParty.map((t) => t.url), script_errors: errors, analysed: false,
+        findings: [finding('page-not-analysed', 'NT', 'major', { source: '[best practice]', refs: [] }, { selector: null, message: notAnalysedMessage(problem) })] };
+    }
     await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
     const finalUrl = response.url();
     const https = finalUrl.startsWith('https://');
@@ -232,7 +242,7 @@ async function checkPage(browser, p, baseline) {
     const texts = [{ file: p.page, text: html }, ...(await Promise.all(scripts)).filter(Boolean)];
     const findings = [...evaluation.findings, ...pageFindings(data, { pageUrl: finalUrl, https, isFirstParty, cspText }), ...secretFindings(texts)];
     return { url: p.url, final_url: finalUrl, status: response.status(), https, headers: evaluation.headers, set_cookie: evaluation.set_cookie,
-      not_applicable: evaluation.not_applicable, third_party_requests: thirdParty.map((t) => t.url), findings, script_errors: errors };
+      not_applicable: evaluation.not_applicable, third_party_requests: thirdParty.map((t) => t.url), findings, script_errors: errors, analysed: true };
   } finally {
     await context.close();
   }
@@ -241,6 +251,7 @@ async function checkPage(browser, p, baseline) {
 function toMarkdown(report) {
   const lines = ['# Automated security headers check', '',
     '> Produced by an automated tool. It is not a security audit or a penetration test, and ANSSI recommendations are not normative. Absence of findings does not establish that the site is secure; see "Limits" below.', '',
+    `> ${DATA_NOTICE}`, '',
     `- Target: \`${report.target}\``, `- Date: ${report.date}`, `- Baseline: \`${report.baseline}\``,
     `- Non-conformities: ${report.summary.non_conformities}`, `- To review: ${report.summary.to_review}`, '',
     ...expectedMarkdown(report.expected)];
@@ -264,6 +275,7 @@ function toMarkdown(report) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2), { values: ['--out', '--md', '--expected', '--baseline'], flags: [] });
+  await prepareOutputs(args);
   const baselineFile = args.baseline || DEFAULT_BASELINE;
   const exists = await fs.stat(baselineFile).then(() => true, () => false);
   if (!exists) throw new UsageError(`base d'en-têtes introuvable : ${baselineFile} (indiquer --baseline <fichier.json>)`);

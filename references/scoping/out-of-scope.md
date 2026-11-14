@@ -40,7 +40,7 @@ These rows of the matrix come out as `to-confirm` by design, because the answer 
 The matrix is limited to what [regulatory-status.md](../regulatory-status.md) establishes. The subjects below have no row. Silence of the matrix on them does not mean that nothing applies.
 
 - Products. The European Accessibility Act also covers products, with no microenterprise exemption for them, and the Cyber Resilience Act covers products with digital elements (section 4 of regulatory-status explains why a website as such is not treated as one). The skill deals with websites and the services they provide.
-- Data protection governance: whether a data protection officer must be appointed, whether an impact assessment is required, whether a record of processing must be kept. The articles are listed in section 3.1 of regulatory-status; their conditions are not encoded.
+- Data protection governance beyond the screening of the matrix: the rows `gdpr-records-of-processing`, `gdpr-impact-assessment` and `gdpr-data-protection-officer` apply the conditions read in section 3.1 of regulatory-status (the reading of "occasional" for the records is the skill's own, `OPEN-QUESTIONS.md` item 22), but the skill does not carry out the impact assessment, appoint the officer or write the records.
 - The high-risk regime of the AI Act and the obligations of general-purpose AI model providers.
 - Network and information security legislation, sector security rules, and certification schemes.
 - Exceptions to the consumer's right of withdrawal, guarantees, unfair contract terms, and the content of general terms and conditions beyond the mentions listed in the matrix.

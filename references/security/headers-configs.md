@@ -94,7 +94,7 @@ The faulty version of a test site should miss or weaken headers in ways the chec
 
 ## Verify
 
-1. Run the project's header checker against the built site or URL: `node scripts/check-security.mjs <folder or URL>`. It compares every response with [headers-baseline.json](headers-baseline.json).
+1. Run the project's header checker against the built site or URL: `node <skill>/scripts/check-security.mjs <folder or URL>`, from the root of the website project. It compares every response with [headers-baseline.json](headers-baseline.json).
 2. Look at the real headers yourself: `curl -sI https://example.org/` (or the browser's network panel). Check an HTML page, a CSS or JS file, an image and an error page (404): `add_header` in nginx and `Header` in Apache skip error responses unless told otherwise.
 3. Open each page with the browser console visible: every CSP violation is logged there. Zero violations on every page is the target.
 4. For TLS, use an external TLS test and compare the versions, suites and certificate with [anssi-values.md](anssi-values.md). This cannot be checked from a local folder.

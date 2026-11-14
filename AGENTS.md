@@ -12,13 +12,13 @@ From the root of the website project, one of:
 
 ```bash
 # Submodule: easy to update with `git submodule update --remote`
-git submodule add https://github.com/<owner>/eu-web-compliance.git .vendor/eu-web-compliance
+git submodule add https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
 
 # Or a plain snapshot
-git clone --depth 1 https://github.com/<owner>/eu-web-compliance.git .vendor/eu-web-compliance
+git clone --depth 1 https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
 ```
 
-`<owner>` is a placeholder: the public repository does not exist yet. For the browser checks, run `npm install` once inside `.vendor/eu-web-compliance` (Node 20+); the other scripts need only Python 3.8+.
+For the browser checks, run `npm install` once inside `.vendor/eu-web-compliance` (Node 20+); the other scripts need only Python 3.8+.
 
 ### 2. Paste this block into the project's `AGENTS.md`
 

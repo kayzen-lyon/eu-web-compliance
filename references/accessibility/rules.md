@@ -1,5 +1,7 @@
 # Accessibility rules for generated pages
 
+Some rules are inspired by the golden rules and checklists of the skill `rgaa-dev` by Isabelle Lafont ([Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), Licence Ouverte 2.0, version 1.2.2 of 2026-06-17) and by `a11y.instructions.md` of [github/awesome-copilot](https://github.com/github/awesome-copilot) (MIT, Copyright GitHub, Inc.); text rewritten. See [../../NOTICE.md](../../NOTICE.md).
+
 The rules to apply while writing HTML, CSS and JavaScript for any page. They are framework-neutral: translate them into the component syntax of the stack in use.
 
 ## How to use this file
@@ -35,7 +37,7 @@ Numeric values below (contrast ratios, pixel sizes, durations) are the technical
 | How an RGAA criterion can be judged from code, and what remains for a person | [rgaa/4.1.2/evaluation-modes.json](rgaa/4.1.2/evaluation-modes.json) |
 | Correspondence between RGAA, WCAG and EN 301 549 | [mapping.json](mapping.json) |
 | Requirements of EN 301 549 beyond WCAG | [en-301-549.md](en-301-549.md) |
-| Running the automated check | `node scripts/check-a11y.mjs <folder or URL>` from the skill root; it combines axe-core, a keyboard walk, a 320 px reflow test and the patterns of [anti-patterns.md](anti-patterns.md) |
+| Running the automated check | `node <skill>/scripts/check-a11y.mjs <folder or URL>` from the root of the website project (see `SKILL.md`, "Paths"); it combines axe-core, a keyboard walk, a 320 px reflow test and the patterns of [anti-patterns.md](anti-patterns.md) |
 
 The same rules apply to everything the other parts of this skill make you add to a page: a consent banner, an "AI-generated" label, a withdrawal button or a legal notice are page content like any other.
 

@@ -188,7 +188,8 @@ class ProfilesTest(unittest.TestCase):
             "fr-accessibility-home-mention": "applies", "a11y-baseline-wcag22-aa": "applies",
         })
         baseline = rows(result)["a11y-baseline-wcag22-aa"]
-        self.assertEqual((baseline["level"], baseline["level_basis"]), ("mandatory", "law"))
+        # WCAG 2.2 AA is the skill's target, not a legal text: it applies as a recommendation.
+        self.assertEqual((baseline["level"], baseline["level_basis"]), ("recommended", "skill"))
 
     def test_article_47_turnover_threshold(self):
         at_threshold = matrix({**LARGE_RETAILER, "operator.fr_turnover_3y_average_eur": 250000000})

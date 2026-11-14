@@ -32,7 +32,7 @@ How to review a legal notice, privacy policy, cookie policy, terms of use, terms
 
 - [ ] "No refund whatever the reason" against the right of withdrawal and the legal guarantee of conformity: one finding that links both rules [CRD art. 9(1)]
 - [ ] "The customer waives the right of withdrawal by subscribing" without express consent, acknowledgement and confirmation [C. conso L. 221-28]
-- [ ] "We may change these terms at any time without notice" for consumers; with user content hosted, also against the duty to inform of significant changes [DSA art. 14(2)]
+- [ ] "We may change these terms at any time without notice" for consumers; with user content hosted, also against the duty to inform of significant changes [DSA art. 14(2) (to confirm)]
 - [ ] An exclusive court chosen by the seller in terms accepted by consumers [best practice]
 - [ ] Termination only by registered letter for a subscription concluded online (France) [C. conso L. 215-1-1]
 - [ ] Tacit renewal without the information on non-renewal (France) [C. conso L. 215-1]

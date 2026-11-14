@@ -8,7 +8,7 @@ What to show visitors when a website uses AI, as decision trees an agent can fol
 2. Run each tree that matches a feature: A for a chatbot, voice assistant or agent; B for published AI-generated or AI-modified content; C for emotion recognition or biometric categorisation. The paragraphs apply cumulatively: one feature can trigger several [AI Act Guidelines point 15].
 3. Every notice and label then follows section D (how, when, accessibly) and avoids section E (what does not count).
 4. A tree ends in one of three results: **applies** (build it), **does not apply** (say why in one line, build nothing), **to confirm** (build the protective version and tell the user which fact a person must decide). Write the result and its source in the report.
-5. The Guidelines are non-binding and the Code of Practice is voluntary. Where a rule below rests on them, it is the Commission's reading or the recognised way to demonstrate compliance, not the text of the Regulation. Dates: [../regulatory-status.md](../regulatory-status.md) section 2. The reference components are in [../../templates/ai/](../../templates/ai/README.md).
+5. The Guidelines are non-binding and the Code of Practice is voluntary. Where a rule below rests on them, it is the Commission's reading or a voluntary measure, not the text of the Regulation; adhering to the Code is not conclusive evidence of compliance (section 2.2 of the status file). Never word a rule tagged only `AI CoP` as an obligation. Dates: [../regulatory-status.md](../regulatory-status.md) section 2. The reference components are in [../../templates/ai/](../../templates/ai/README.md).
 
 ## A. Chatbot, voice assistant or AI agent on the site (Article 50(1))
 
@@ -207,7 +207,7 @@ C3  Notice before the camera or microphone starts, saying that an emotion recogn
 
 ### The EU icon (optional)
 
-The Commission publishes free EU icons for AI-generated content in three variants: basic, fully generated, partially modified. Their use is optional and free; alternative text or ARIA labelling is recommended ([../regulatory-status.md](../regulatory-status.md) section 2.2). Do not copy the icon files into the project from memory or from this skill: download them from the official page, <https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content>, and check the version there. A text label containing "AI" is an accepted equivalent [AI CoP section 2, commitment 1].
+The Commission publishes free EU icons for AI-generated content in three variants: basic, fully generated, partially modified. Their use is optional and free; alternative text or ARIA labelling is recommended ([../regulatory-status.md](../regulatory-status.md) section 2.2). Do not copy the icon files into the project from memory or from this skill: download them from the official page, <https://digital-strategy.ec.europa.eu/en/policies/eu-icons-labelling-ai-generated-content>, and check the version there. A text label containing "AI" is an accepted equivalent [AI CoP section 2, measure 1.1].
 
 ## E. What is not enough
 
@@ -224,4 +224,4 @@ Each of these, used alone, does not meet Article 50(1) or 50(5); the reason is i
 
 ## F. What to write in the report
 
-For each AI feature: the paragraph (50(1) to 50(4)), the result (applies, does not apply, to confirm), who owes it (provider or deployer), the fact that decided it, and the component used. `python scripts/ai_act_classify.py <profile>` produces this table from the profile; the agent then checks the facts the script could not know. Every report states that it was produced with the help of an AI and is not legal advice.
+For each AI feature: the paragraph (50(1) to 50(4)), the result (applies, does not apply, to confirm), who owes it (provider or deployer), the fact that decided it, and the component used. `python <skill>/scripts/ai_act_classify.py compliance/profile.json`, run from the root of the website project, produces this table from the profile; the agent then checks the facts the script could not know. Every report states that it was produced with the help of an AI and is not legal advice.

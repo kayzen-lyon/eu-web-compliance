@@ -17,7 +17,7 @@ Scope of the rubric: Transposition of the European Accessibility Act (Directive 
 
 Partly verified.
 
-- Transposition law: Gesetz zur Umsetzung der Richtlinie (EU) 2019/882 über die Barrierefreiheitsanforderungen für Produkte und Dienstleistungen (Barrierefreiheitsstärkungsgesetz, BFSG). Read: § 1 (purpose and scope; paragraph 2 lists products placed on the market after 28 June 2025) and § 37 (administrative offences). Source: https://www.gesetze-im-internet.de/bfsg/__1.html and https://www.gesetze-im-internet.de/bfsg/__37.html
+- Transposition law: Gesetz zur Umsetzung der Richtlinie (EU) 2019/882 über die Barrierefreiheitsanforderungen für Produkte und Dienstleistungen (Barrierefreiheitsstärkungsgesetz, BFSG). Read: § 1 (purpose and scope; paragraph 2 lists the products concerned, placed on the market after the EU date of application given in [../regulatory-status.md](../regulatory-status.md) section 1.3) and § 37 (administrative offences). Source: https://www.gesetze-im-internet.de/bfsg/__1.html and https://www.gesetze-im-internet.de/bfsg/__37.html
 - Not verified: the list of services in scope (rest of § 1), the market surveillance authority, the amounts of fines, the content of the information duty for services, any national technical standard.
 
 ## 2. Cookies and other trackers

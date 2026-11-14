@@ -51,6 +51,12 @@ let files = [];
 
 const formatSize = (bytes) => `${(bytes / 1048576).toFixed(1)} MB`;
 
+// Clear, then write: the same message twice in a row is announced twice.
+const say = (message) => {
+  status.textContent = '';
+  window.setTimeout(() => { status.textContent = message; }, 100);
+};
+
 const syncInput = () => {           // keep the real field in step, so the form submits these files
   const transfer = new DataTransfer();
   files.forEach((file) => transfer.items.add(file));
@@ -85,9 +91,9 @@ const addFiles = (candidates) => {
   render();
   error.textContent = rejected.length > 0 ? `Error: ${rejected.join('. ')}` : '';
   input.setAttribute('aria-invalid', String(rejected.length > 0));
-  status.textContent = rejected.length > 0
+  say(rejected.length > 0
     ? `${rejected.length} file(s) not added. ${error.textContent}`
-    : `${accepted.length} file(s) added, ${files.length} in total`;
+    : `${accepted.length} file(s) added, ${files.length} in total`);
 };
 
 input.addEventListener('change', () => addFiles(Array.from(input.files)));
@@ -100,7 +106,7 @@ list.addEventListener('click', (event) => {
   files = files.filter((_, i) => i !== index);
   syncInput();
   render();
-  status.textContent = `${removed.name} removed, ${files.length} file(s) left`;
+  say(`${removed.name} removed, ${files.length} file(s) left`);
   const next = list.querySelectorAll('button')[Math.min(index, files.length - 1)];
   (next ?? input).focus();          // never leave focus on a removed element
 });

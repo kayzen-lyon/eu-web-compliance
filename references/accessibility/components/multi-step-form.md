@@ -79,7 +79,7 @@ One step of four. Illustration: a delivery address.
 .steps [aria-current="step"] { font-weight: 700; text-decoration: underline; text-decoration-thickness: 3px; }
 .field { margin-block: 1.25rem; }
 .field label { display: block; font-weight: 700; }
-.field input { width: 100%; max-width: 30rem; min-height: 2.75rem; font: inherit; border: 2px solid currentColor; }
+.field input { box-sizing: border-box; width: 100%; max-width: 30rem; min-height: 2.75rem; font: inherit; border: 2px solid currentColor; }
 .field input[aria-invalid="true"] { border-width: 4px; }
 .field-error:not(:empty), .error-summary { border-inline-start: 4px solid currentColor; padding-inline-start: 0.75rem; }
 .field-error:not(:empty) { font-weight: 700; }

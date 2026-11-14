@@ -4,7 +4,7 @@ Use this file to write the "impact" line of a finding in a report. Each row says
 
 The tables are an aid, not a standard: the requirement is in the criterion cited. `WCAG` numbers are WCAG 2.2 success criteria; `RGAA` numbers are RGAA 4.1.2 criteria, and a dash means that RGAA 4.1.2 has no matching criterion. Severity levels (`blocking`, `major`, `minor`) are defined in [anti-patterns.md](anti-patterns.md).
 
-Parts of this file are adapted from `impacts.md` of the skill `rgaa-dev` by Isabelle Lafont ([Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), Licence Ouverte 2.0, version 1.2.2) and from `references/impacts.md` of the skill `rgaa` ([etalab-ia/skills](https://github.com/etalab-ia/skills), MIT, Copyright (c) 2026 Benoit Vinceneux), translated, reorganised by family of defect and extended.
+Parts of this file are adapted from `impacts.md` of the skill `rgaa-dev` by Isabelle Lafont ([Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), Licence Ouverte 2.0, version 1.2.2 of 2026-06-17) and from `references/impacts.md` of the skill `rgaa` ([etalab-ia/skills](https://github.com/etalab-ia/skills), MIT, Copyright (c) 2026 Benoit Vinceneux), translated, reorganised by family of defect and extended.
 
 ## The tools behind the mechanisms
 

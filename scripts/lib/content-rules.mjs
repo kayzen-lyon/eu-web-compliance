@@ -93,13 +93,32 @@ export function isConfirmshaming(name) {
 }
 
 // Option payante ou consentement marketing reconnaissable au libellé d'une case.
-const PAID_EXTRA = /(insurance|assurance|garantie|warranty|gift wrap|emballage cadeau|paquet cadeau|donation|\bdon\b|express|protection|extension|priority|prioritaire|(\+|plus)\s?\d|€|\$|£)/i;
+// Indices forts d'un supplément payant : un prix, ou un service dont la vente est l'objet.
+const PAID_PRICE = /((\+|plus)\s?\d|\d+(?:[.,]\d{1,2})?\s?(€|EUR\b|\$|£)|(€|\$|£)\s?\d)/i;
+const PAID_STRONG = /(insurance|assurance|warranty|garantie|gift wrap|emballage cadeau|paquet cadeau|donation)/i;
+const PAID_WEAK = /(\bdon\b|express|protection|extension|priority|prioritaire|€|\$|£)/i;
 const MARKETING = /(newsletter|lettre d'information|infolettre|offres|offers|marketing|partenaires|partners|promotion|commercial|publicit|advertis|subscribe|s'abonner|abonnez|recevoir nos|receive our|bons plans|deals)/i;
 
-export function classifyPreTicked(label) {
-  if (PAID_EXTRA.test(label || '')) return 'paid';
-  if (MARKETING.test(label || '')) return 'marketing';
+// Case cochée d'avance : { kind: 'paid' | 'marketing', verdict: 'NC' | 'NT' }, ou null.
+// NC seulement quand le libellé propre de la case (label, aria-label, aria-labelledby) montre
+// un prix ou un supplément payant sans ambiguïté. Un libellé deviné depuis le texte voisin
+// (`ownLabel: false`), un indice faible ou un consentement marketing (qui peut être une
+// opposition proposée à un client existant) sont à revoir.
+export function classifyPreTicked(label, { ownLabel = true } = {}) {
+  const text = label || '';
+  const strong = PAID_PRICE.test(text) || PAID_STRONG.test(text);
+  if (strong || PAID_WEAK.test(text)) return { kind: 'paid', verdict: strong && ownLabel ? 'NC' : 'NT' };
+  if (MARKETING.test(text)) return { kind: 'marketing', verdict: 'NT' };
   return null;
+}
+
+// Verdict d'une page sans lien vers la page d'identification. Les libellés reconnus sont anglais,
+// français (et « Impressum ») : sur un site dans une autre langue, ou sans déclaration du site,
+// l'absence n'est qu'un indice.
+export function legalNoticeLinkVerdict(site, pageLang) {
+  if (!site) return 'NT';
+  const lang = String(site.language || pageLang || '').toLowerCase().split(/[-_]/)[0];
+  return lang === 'en' || lang === 'fr' ? 'NC' : 'NT';
 }
 
 // Durée en secondes d'un texte de compte à rebours (09:59, 1:02:03, 2 h 05 min 10 s), ou null.

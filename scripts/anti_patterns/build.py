@@ -99,6 +99,8 @@ INDEX_HEAD = '''# Anti-patterns: what generated code gets wrong
 
 A catalogue of the accessibility defects that coding agents and templates produce most often. Use it in two ways: read the topic file that matches what you are writing, so as not to produce these patterns; or run the detection patterns over existing code to find candidates for review.
 
+The list is partly derived from the anti-patterns of `a11y.instructions.md` in [github/awesome-copilot](https://github.com/github/awesome-copilot) (MIT, Copyright GitHub, Inc.) and from the ARIA anti-patterns of the skill `rgaa-dev` by Isabelle Lafont ([Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), Licence Ouverte 2.0, version 1.2.2 of 2026-06-17); text, examples, severities and detection patterns rewritten. See [../../NOTICE.md](../../NOTICE.md).
+
 This catalogue finds known mistakes. It proves nothing about what it does not find: a page with no match is not conformant, it is unexamined by this catalogue. Automated findings are completed by the checks in [testing-by-hand.md](testing-by-hand.md).
 
 ## Severity

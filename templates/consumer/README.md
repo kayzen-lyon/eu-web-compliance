@@ -80,7 +80,7 @@ Without JavaScript the section shows only the entry button, which does nothing. 
 
 ## 5. Verify
 
-1. **Accessibility.** From the skill root: `node scripts/check-a11y.mjs <folder or URL>`. Expected: zero non-conformity. On 2026-11-14 the three pages of this folder gave 0 non-conformity (browser: Edge, through the checker's fallback).
+1. **Accessibility.** From the root of the website project: `node <skill>/scripts/check-a11y.mjs <folder or URL>`. Expected: zero non-conformity. On 2026-11-14 the three pages of this folder gave 0 non-conformity (browser: Edge, through the checker's fallback).
 2. **Withdrawal flow with the keyboard only.** A Playwright test written for this reference passed 40 assertions on 2026-11-14, in English and in French: the entry button is reached with Tab and has the legal label; Enter moves focus to the statement heading; an empty submission moves focus to the error summary and marks the three fields invalid; each error link moves focus to its field; after filling the fields and pressing Enter on "Confirm withdrawal", focus moves to the acknowledgement heading, which states the result, and the acknowledgement shows a machine-readable date and time, the full content and the email address, while a status region announces the result; axe-core finds no violation in each state; a failing handler shows an error, keeps the data and shows no acknowledgement. Re-run equivalent checks on the real site, including the server's email.
 3. **By hand.** Read the pages with a screen reader; check the email acknowledgement arrives, contains the content and the date and time, and is readable; check the entry link is on every page; check the labels against the country file for a page not in English or French.
 

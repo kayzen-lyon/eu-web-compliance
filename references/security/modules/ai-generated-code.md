@@ -1,6 +1,6 @@
 # Module: AI-generated code
 
-This module applies to every project where an AI assistant writes code, which includes the work you are doing with this skill. It follows section 5.5 of the ANSSI guide on generative AI systems (ANSSI-PA-102 v1.0, 29 April 2024), recommendations R30 to R32.
+This module applies to every project where an AI assistant writes code, which includes the work you are doing with this skill. It follows section 5.5 of the ANSSI guide on generative AI systems (ANSSI-PA-102; version and date in [../../regulatory-status.md](../../regulatory-status.md) section 4), recommendations R30 to R32.
 
 ## How to use this file
 

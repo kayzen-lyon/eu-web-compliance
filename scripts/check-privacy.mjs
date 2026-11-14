@@ -27,9 +27,10 @@
 // Codes de sortie : 0 aucune non-conformité, 1 non-conformité trouvée, 2 erreur d'usage.
 
 import path from 'node:path';
-import { launchBrowser, freshContext, routeThirdParty } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
+  prepareOutputs, DATA_NOTICE, notAnalysedMessage,
 } from './lib/cli.mjs';
 import { loadHints, loadDeclaration, classifyStorage, classifyRequest, DECLARATION_PATH } from './lib/privacy-classify.mjs';
 
@@ -46,6 +47,7 @@ const LIMITS = [
   'It does not see logged-in areas unless those pages are provided, and it does not log in.',
   'It does not see trackers triggered by later interactions (scrolling, clicks other than the consent controls, forms, timers longer than the wait).',
   'By default every third-party request is recorded and aborted: what a blocked script would have loaded or written is not seen. The blocked request itself is reported.',
+  'Requests that could send data (methods other than GET, HEAD and OPTIONS, such as form posts and beacons) are always aborted, even to the site itself and with --allow-network; buttons that submit a form are never clicked. A consent choice the site records on its server is therefore not seen.',
   `A purpose cannot be known from a name. Items declared exempt in ${DECLARATION_PATH} are trusted; a person must check each declaration.`,
   'Browser fingerprinting, storage inside third-party iframes, Cache Storage and service workers are not inspected; IndexedDB is listed by database name only.',
   'Consent controls are found by accessible name in English and French, or by data-consent-action attributes; other wording is not recognised.',
@@ -136,8 +138,13 @@ function detectControls() {
   const ATTRIBUTE = { accept: 'accept', refuse: 'refuse', reject: 'refuse', customise: 'customise', customize: 'customise', manage: 'manage' };
   document.querySelectorAll('[data-ewc-control]').forEach((el) => el.removeAttribute('data-ewc-control'));
   const candidates = { accept: [], refuse: [], customise: [], manage: [] };
-  const selector = 'button, a[href], [role="button"], [role="link"], input[type="button"], input[type="submit"], [data-consent-action], [data-consent], [data-consent-open]';
+  const selector = 'button, a[href], [role="button"], [role="link"], input[type="button"], [data-consent-action], [data-consent], [data-consent-open]';
+  // Jamais un bouton qui envoie un formulaire (sauf method="dialog", qui ne fait que fermer une
+  // fenêtre) : cliquer dessus pourrait transmettre des données à la place d'un visiteur.
+  const submitsForm = (el) => Boolean(el.form) && (el.type || '').toLowerCase() === 'submit'
+    && (el.form.getAttribute('method') || '').toLowerCase() !== 'dialog';
   for (const el of document.querySelectorAll(selector)) {
+    if (submitsForm(el)) continue;
     // data-consent-action (convention des vérificateurs), data-consent et data-consent-open
     // (bandeau de référence templates/consent/), puis le nom accessible.
     let action = ATTRIBUTE[(el.getAttribute('data-consent-action') || el.getAttribute('data-consent') || '').toLowerCase()]
@@ -209,9 +216,9 @@ async function openScenario(browser, url, opts) {
   await context.addInitScript(instrumentWrites);
   page = await context.newPage();
   page.on('pageerror', (error) => errors.push(String(error)));
-  await page.goto(url, { waitUntil: 'load' });
-  await settle(page, opts.wait);
-  return { context, page, requests, errors, isFirstParty };
+  const problem = loadProblem(await page.goto(url, { waitUntil: 'load' }));
+  if (!problem) await settle(page, opts.wait);
+  return { context, page, requests, errors, isFirstParty, problem };
 }
 
 async function readInventory(scenario, sinceRequest = 0) {
@@ -313,10 +320,12 @@ function firstLevelFindings(controls) {
   const refuse = controls.refuse;
   const firstLevel = refuse && refuse.visible && (refuse.in_banner || !controls.banner);
   if (!firstLevel) {
-    findings.push({ detector: 'runtime', rule: 'no-first-level-refuse', verdict: 'NC', severity: 'major', ...CITE.refuse, selector: where,
+    // Aucune commande de refus reconnue : le libellé peut être dans une autre langue ou une
+    // autre formulation que celles du vérificateur. C'est à revoir, pas une non-conformité.
+    findings.push({ detector: 'runtime', rule: 'no-first-level-refuse', verdict: refuse ? 'NC' : 'NT', severity: 'major', ...CITE.refuse, selector: where,
       message: refuse
         ? `The consent banner shows no visible refuse control on its first level; "${refuse.name}" is only reachable after another step.`
-        : 'The consent banner has no control to refuse all trackers (looked for "Refuse all", "Tout refuser" and similar names, or data-consent-action="refuse").' });
+        : 'No control to refuse all trackers was recognised in the consent banner (looked for "Refuse all", "Tout refuser" and similar names, or data-consent-action="refuse"). Check by hand that the banner offers a refusal on its first level, as easy as accepting.' });
     return findings;
   }
   const accept = controls.accept;
@@ -455,6 +464,13 @@ async function acceptWithdrawScenario(browser, url, opts, env, report) {
 async function checkPage(browser, url, opts, env) {
   const report = { steps: [], inventories: {}, banner: null, controls_found: null, script_errors: [] };
   const first = await openScenario(browser, url, opts);
+  if (first.problem) {
+    report.script_errors.push(...first.errors);
+    await first.context.close();
+    return { findings: [{ detector: 'runtime', rule: 'page-not-analysed', verdict: 'NT', severity: 'major', source: '[best practice]', refs: [],
+      selector: null, message: notAnalysedMessage(first.problem) }], inventory: {}, consent_flow: { banner: null, controls_found: null, steps: [] },
+    script_errors: report.script_errors, analysed: false };
+  }
   let findings;
   try {
     const classified = classifyInventory(await readInventory(first), { ...env, isFirstParty: first.isFirstParty });
@@ -472,7 +488,7 @@ async function checkPage(browser, url, opts, env) {
   return {
     findings, inventory: report.inventories,
     consent_flow: { banner: report.banner, controls_found: report.controls_found, steps: report.steps },
-    script_errors: report.script_errors,
+    script_errors: report.script_errors, analysed: true,
   };
 }
 
@@ -489,6 +505,7 @@ function inventoryMarkdown(title, inv) {
 function toMarkdown(report) {
   const lines = ['# Automated tracker check', '',
     '> Produced by an automated tool. It is not an audit and not legal advice. Absence of findings does not establish that consent is valid; see "Limits" below.', '',
+    `> ${DATA_NOTICE}`, '',
     `- Target: \`${report.target}\``, `- Date: ${report.date}`, `- Third-party requests: ${report.network}`,
     `- Tracker declaration: ${report.declaration || 'none'}`,
     `- Non-conformities: ${report.summary.non_conformities}`, `- To review: ${report.summary.to_review}`, '',
@@ -521,6 +538,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2), { values: ['--out', '--md', '--expected', '--trackers', '--wait'], flags: ['--allow-network'] });
   const wait = args.wait === undefined ? 1000 : Number.parseInt(args.wait, 10);
   if (!Number.isInteger(wait) || wait < 0) throw new UsageError('--wait : entier positif ou nul attendu (millisecondes)');
+  await prepareOutputs(args);
   const target = args.targets[0];
   const expectedList = await loadExpected(args.expected);
   const hints = await loadHints();

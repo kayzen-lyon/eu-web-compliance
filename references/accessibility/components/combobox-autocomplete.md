@@ -29,7 +29,7 @@ Behaviour follows the [Combobox pattern](https://www.w3.org/WAI/ARIA/apg/pattern
 
 ```css
 .combobox { position: relative; max-width: 24rem; }
-.combobox input { width: 100%; min-height: 2.75rem; font: inherit; border: 2px solid currentColor; }
+.combobox input { box-sizing: border-box; width: 100%; min-height: 2.75rem; font: inherit; border: 2px solid currentColor; }
 .combobox [role="listbox"] {
   position: absolute;
   z-index: 10;
@@ -112,7 +112,13 @@ function setupCombobox(input, getSuggestions) {
   });
 
   input.addEventListener('keydown', (event) => {
-    if (listbox.hidden) return;
+    if (listbox.hidden) {
+      if (event.key === 'ArrowDown' && input.value.trim().length >= 2) {
+        event.preventDefault();                         // reopen the suggestions
+        input.dispatchEvent(new Event('input'));
+      }
+      return;
+    }
     const last = options.length - 1;
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -159,6 +165,7 @@ Notes on the choices:
 | Typing | Updates the suggestions; focus stays in the field |
 | Down Arrow / Up Arrow | Highlights the next / previous suggestion, wrapping at the ends |
 | Enter | With a suggestion highlighted: puts it in the field and closes the list. Otherwise: submits the form |
+| Down Arrow, list closed | Reopens the suggestions (at least two letters typed) |
 | Escape | Closes the list and keeps the typed text |
 | Tab | Leaves the field and closes the list, keeping the typed text |
 

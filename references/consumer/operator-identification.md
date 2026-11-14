@@ -94,7 +94,8 @@ When generating a site from a brief that names a company, the agent may pre-fill
 
 ## 5. Checklist for a review
 
-- [ ] A link to the identification page is in the footer of every page [ECD art. 5(1)]
+- [ ] The identification details are easily, directly and permanently accessible [ECD art. 5(1)]
+- [ ] In practice, a link to the identification page is in the footer of every page [best practice]
 - [ ] Every item of the applicable lists (sections 1.1 to 1.3) is present, or explicitly marked "not applicable" by the owner [ECD art. 5(1)]
 - [ ] No placeholder, "lorem ipsum" or sample number is left on a published page [best practice]
 - [ ] No item was invented by the agent (section 4) [best practice]

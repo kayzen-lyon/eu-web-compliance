@@ -17,7 +17,9 @@
 // sauf Set-Cookie qui reste une liste.
 //
 // Noms de fichier reconnus, dans cet ordre : `_headers` (nom Netlify), puis `.headers`
-// (même format, nom accepté par `scripts/validate.py`). Ces fichiers ne sont jamais servis.
+// (même format, nom accepté par `scripts/validate.py`). Ces fichiers ne sont jamais servis, pas
+// plus que les fichiers et dossiers cachés (.env, .git/), sauf .well-known/, ni un lien
+// symbolique qui sort du dossier servi.
 
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -52,6 +54,10 @@ export function parseHeadersFile(text) {
     }
     const match = line.trim().match(/^([A-Za-z0-9!#$%&'*+.^_`|~-]+)\s*:\s*(.*)$/);
     if (!current || !match) throw new Error(`fichier d'en-têtes, ligne ${index + 1} : « ${line.trim()} » n'est ni un motif de chemin ni un en-tête « Nom: valeur »`);
+    // Valeur qu'un serveur HTTP peut envoyer : caractères visibles ASCII, espaces et tabulations.
+    if (!/^[\t\x20-\x7e]*$/.test(match[2])) {
+      throw new Error(`fichier d'en-têtes, ligne ${index + 1} : la valeur de ${match[1]} contient un caractère non ASCII ou de contrôle, qu'un en-tête HTTP ne peut pas porter`);
+    }
     current.headers.push([match[1], match[2]]);
   });
   return rules;
@@ -81,20 +87,37 @@ export async function loadHeadersRules(root) {
   return { file: null, rules: [] };
 }
 
+// Un fichier peut être servi s'il est dans la racine (comparaison par path.relative, juste aussi
+// quand la racine est un lecteur ou « / »), s'il n'est pas un fichier d'en-têtes, et si aucun
+// segment du chemin n'est caché (.env, .git/), sauf .well-known (security.txt...).
+function servable(base, file) {
+  const relative = path.relative(base, file);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return false;
+  const segments = relative.split(path.sep).filter(Boolean);
+  if (segments.length && HEADERS_FILE_NAMES.includes(segments[segments.length - 1])) return false;
+  return segments.every((s, i) => !s.startsWith('.') || (i === 0 && s === '.well-known'));
+}
+
 // Démarre le serveur sur 127.0.0.1, port libre. Renvoie { server, origin, headersFile, close }.
 export async function startStaticServer(root, { applyHeaders = true } = {}) {
   const base = path.resolve(root);
   const { file: headersFile, rules } = applyHeaders ? await loadHeadersRules(base) : { file: null, rules: [] };
+  const realBase = await fs.realpath(base);
   const server = http.createServer(async (req, res) => {
     try {
       const urlPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
       let file = path.resolve(base, `.${urlPath}`);
-      if ((file !== base && !file.startsWith(base + path.sep)) || HEADERS_FILE_NAMES.includes(path.basename(file))) {
+      if (!servable(base, file)) {
         res.writeHead(404).end();
         return;
       }
       const stat = await fs.stat(file).catch(() => null);
       if (stat && stat.isDirectory()) file = path.join(file, 'index.html');
+      // Lien symbolique qui mène hors du dossier servi : refusé.
+      if (!servable(realBase, await fs.realpath(file))) {
+        res.writeHead(404).end();
+        return;
+      }
       const body = await fs.readFile(file);
       const headers = { 'content-type': CONTENT_TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream',
         ...headersForPath(rules, urlPath) };

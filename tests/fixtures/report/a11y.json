@@ -4,7 +4,7 @@
   "target": "tests/fixtures/report/site",
   "date": "2026-11-14T09:00:00.000Z",
   "browser": "fixture",
-  "summary": { "non_conformities": 3, "not_tested_items": 1 },
+  "summary": { "non_conformities": 3, "to_review": 1 },
   "pages": [
     {
       "page": "index.html",

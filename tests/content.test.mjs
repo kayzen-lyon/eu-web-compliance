@@ -17,7 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   classifyActionLabel, classifyWithdrawalEntry, classifyPreTicked, isConfirmshaming, parseCountdown, missingNoticeCategories,
-  labelRequirement, normaliseSite, cite, REDUCTION, SCARCITY, AI_TERM,
+  labelRequirement, normaliseSite, cite, legalNoticeLinkVerdict, REDUCTION, SCARCITY, AI_TERM,
 } from '../scripts/lib/content-rules.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -86,10 +86,28 @@ describe('content-rules: libellés imposés par la loi', () => {
 
 describe('content-rules: motifs de texte', () => {
   test('options cochées : payante, marketing, autre', () => {
-    assert.equal(classifyPreTicked('Assurance casse (+2,90 €)'), 'paid');
-    assert.equal(classifyPreTicked('Gift wrap'), 'paid');
-    assert.equal(classifyPreTicked('Recevoir notre newsletter'), 'marketing');
+    assert.deepEqual(classifyPreTicked('Assurance casse (+2,90 €)'), { kind: 'paid', verdict: 'NC' });
+    assert.deepEqual(classifyPreTicked('Gift wrap'), { kind: 'paid', verdict: 'NC' });
+    assert.equal(classifyPreTicked('Recevoir notre newsletter').kind, 'marketing');
     assert.equal(classifyPreTicked('Se souvenir de moi'), null);
+  });
+
+  test('options cochées : NC seulement sur le libellé propre de la case, avec un prix ou un supplément net', () => {
+    // Indice faible (« express », « protection ») : à revoir.
+    assert.deepEqual(classifyPreTicked('Livraison express'), { kind: 'paid', verdict: 'NT' });
+    assert.deepEqual(classifyPreTicked('Protection des données activée'), { kind: 'paid', verdict: 'NT' });
+    // Libellé deviné depuis le texte voisin : à revoir, même avec un prix.
+    assert.deepEqual(classifyPreTicked('Panier : 49,90 € Se souvenir de moi', { ownLabel: false }), { kind: 'paid', verdict: 'NT' });
+    // Consentement marketing coché : à revoir (il peut s'agir d'une opposition offerte à un client).
+    assert.deepEqual(classifyPreTicked('Recevoir les offres de nos partenaires'), { kind: 'marketing', verdict: 'NT' });
+  });
+
+  test('lien vers la page d\'identification absent : NC seulement pour un site déclaré en anglais ou en français', () => {
+    assert.equal(legalNoticeLinkVerdict(null, 'fr'), 'NT');
+    assert.equal(legalNoticeLinkVerdict(normaliseSite({ language: 'fr' }), 'de'), 'NC');
+    assert.equal(legalNoticeLinkVerdict(normaliseSite({}), 'en-GB'), 'NC');
+    assert.equal(legalNoticeLinkVerdict(normaliseSite({ language: 'de' }), 'de'), 'NT');
+    assert.equal(legalNoticeLinkVerdict(normaliseSite({}), null), 'NT');
   });
 
   test('culpabilisation, rareté, réduction, compte à rebours', () => {

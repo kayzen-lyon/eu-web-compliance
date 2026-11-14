@@ -18,17 +18,18 @@ To meet it, the skill applies the recommendations of the French cybersecurity ag
 - a missing ANSSI or OWASP measure is a weakness to fix, not by itself a breach of the law;
 - the Cyber Resilience Act is not treated as applying to a website as such ([../regulatory-status.md](../regulatory-status.md), section 4).
 
-Guides used, all recorded in [../sources.json](../sources.json):
+Guides used, all recorded in [../sources.json](../sources.json). Their versions and dates are in [../regulatory-status.md](../regulatory-status.md) section 4 (section 3.1 for the GDPR).
 
-| Tag | Document | Version |
-|-----|----------|---------|
-| `ANSSI WEB` | ANSSI-PA-009, Recommandations pour la mise en œuvre d'un site web : maîtriser les standards de sécurité côté navigateur | v2.0, 28 April 2021 |
-| `ANSSI TLS` | Recommandations de sécurité relatives à TLS | v1.2, 26 March 2020 |
-| `ANSSI MFA` | ANSSI-PG-078, Recommandations relatives à l'authentification multifacteur et aux mots de passe | v2.0, 8 October 2021 |
-| `ANSSI CRYPTO` | ANSSI-PG-083, Règles et recommandations concernant le choix et le dimensionnement des mécanismes cryptographiques | v3.00, 20 March 2026 |
-| `ANSSI AI` | ANSSI-PA-102, Recommandations de sécurité pour un système d'IA générative, section 5.5 | v1.0, 29 April 2024 |
-| `OWASP` | OWASP Top 10, edition named in [../regulatory-status.md](../regulatory-status.md) | 2025 |
-| `GDPR` | Regulation (EU) 2016/679, Article 32 | In force |
+| Tag | Document |
+|-----|----------|
+| `ANSSI WEB` | ANSSI-PA-009, Recommandations pour la mise en œuvre d'un site web : maîtriser les standards de sécurité côté navigateur |
+| `ANSSI TLS` | Recommandations de sécurité relatives à TLS |
+| `ANSSI MFA` | ANSSI-PG-078, Recommandations relatives à l'authentification multifacteur et aux mots de passe |
+| `ANSSI CRYPTO` | ANSSI-PG-083, Règles et recommandations concernant le choix et le dimensionnement des mécanismes cryptographiques |
+| `ANSSI AI` | ANSSI-PA-102, Recommandations de sécurité pour un système d'IA générative, section 5.5 |
+| `ANSSI CMS` | Les Essentiels : Mise en œuvre sécurisée d'un CMS (used for the outline of [modules/cms.md](modules/cms.md)) |
+| `OWASP` | OWASP Top 10, edition named in the status file |
+| `GDPR` | Regulation (EU) 2016/679, Article 32 |
 
 ## Task → file
 

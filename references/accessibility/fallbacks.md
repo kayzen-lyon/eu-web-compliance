@@ -1,5 +1,7 @@
 # Fallbacks: when the ideal is out of reach
 
+Outline and order of preference adapted from `fallbacks.md` of the skill `rgaa-dev` by Isabelle Lafont ([Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), Licence Ouverte 2.0, version 1.2.2 of 2026-06-17); text rewritten.
+
 Read this file when something you cannot fix stands in the way: a third-party widget, a document, a video without captions, a CAPTCHA, an inherited component.
 
 ## The approach

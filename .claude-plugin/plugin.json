@@ -1,7 +1,7 @@
 {
   "name": "eu-web-compliance",
   "displayName": "EU web compliance",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Make websites for the European market meet EU accessibility (EAA, EN 301 549, WCAG 2.2 AA, RGAA), data protection and cookies (GDPR, ePrivacy, CNIL), AI Act transparency, web security (ANSSI, OWASP) and consumer law (legal notice, online sales, withdrawal button, prices, DSA). Pre-release; not reviewed by a lawyer or an accessibility auditor; never certifies compliance.",
   "author": {
     "name": "Tarek BELHADJ - Kayzen",
@@ -9,7 +9,7 @@
     "url": "https://www.kayzen-lyon.com"
   },
   "homepage": "https://www.kayzen-lyon.com",
-  "repository": "https://github.com/<owner>/eu-web-compliance",
+  "repository": "https://github.com/skyymar69-rgb/eu-web-compliance",
   "license": "MIT",
   "metadata": { "author": "Tarek BELHADJ - Kayzen", "homepage": "https://www.kayzen-lyon.com", "related": "https://nexus.kayzen-lyon.com" },
   "keywords": ["accessibility", "a11y", "eaa", "wcag", "rgaa", "en-301-549", "gdpr", "rgpd", "cookies", "consent", "cnil", "ai-act", "security-headers", "anssi", "owasp", "legal-notice", "consumer-law", "dsa", "eu"]

@@ -1,6 +1,6 @@
 # Notice
 
-This repository is released under the MIT licence (see [LICENSE](LICENSE)). The MIT licence covers the original code and text written for this project. It does not cover the material listed below, which is reused from other projects or quoted from official texts and keeps its own licence.
+This repository is released under the MIT licence (see [LICENSE](LICENSE)). The MIT licence covers the original code and text written for this project. It does not cover the material listed below, which is reused from other projects or quoted from official texts and keeps its own licence. Content adapted from MIT-licensed projects stays under the MIT licence, with the copyright notice of its authors kept below.
 
 Licence terms below were read on the sources recorded in [references/sources.json](references/sources.json) on 2026-11-14.
 
@@ -17,7 +17,7 @@ Each file that reuses content from one of these projects is listed in the table 
 
 | Project | Licence | Attribution required |
 |---------|---------|----------------------|
-| [Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), by Isabelle Lafont | Licence Ouverte 2.0 | Source and date of last update |
+| [Isalafont/claude-skill-rgaa-dev](https://github.com/Isalafont/claude-skill-rgaa-dev), by Isabelle Lafont | Licence Ouverte 2.0 | Source and date of last update (version 1.2.2 of 2026-06-17 was used) |
 | [etalab-ia/skills](https://github.com/etalab-ia/skills), DINUM | MIT, Copyright (c) 2026 Benoit Vinceneux | Copyright and permission notice |
 | [morellid/ai-act-skill](https://github.com/morellid/ai-act-skill) | MIT, Copyright (c) 2026 Davide Morelli | Copyright and permission notice |
 | [github/awesome-copilot](https://github.com/github/awesome-copilot) | MIT, Copyright GitHub, Inc. | Copyright and permission notice |
@@ -31,10 +31,10 @@ Each file that reuses content from one of these projects is listed in the table 
 | `references/accessibility/rgaa/4.1.2/evaluation-modes.json` (English translation of a provisional classification proposed by Isabelle Lafont) | etalab-ia/skills, `skills/rgaa/references/classement/*.md`, commit 0eae080 | MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
 | `references/accessibility/rgaa/4.1.2/sources/*.json` (unmodified) and the generated `criteria-*.md` and `glossary.md` | DISIC/accessibilite.numerique.gouv.fr, folder `RGAA/`, commit 95d5ef33 (last updated 2026-01-07), DINUM | Licence Ouverte 2.0 | 2026-11-14 |
 | `references/accessibility/mapping.json` (success criterion names and levels) | WCAG 2.2, W3C Recommendation | W3C Document License 2023 | 2026-11-14 |
-| `references/accessibility/impacts.md` (adapted, translated, reorganised by defect family; attribution also in the file) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/impacts.md`, v1.2.2, by Isabelle Lafont; etalab-ia/skills, `skills/rgaa/references/impacts.md` | Licence Ouverte 2.0; MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
-| `references/accessibility/fallbacks.md` (outline and order of preference reused, text rewritten, no code reused) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/fallbacks.md`, v1.2.2, by Isabelle Lafont | Licence Ouverte 2.0 | 2026-11-14 |
-| `references/accessibility/rules.md` (selection of rules inspired by the golden rules and checklists, text rewritten) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/SKILL.md` and `checklist.md`, v1.2.2; github/awesome-copilot, `instructions/a11y.instructions.md` | Licence Ouverte 2.0; MIT, Copyright GitHub, Inc. | 2026-11-14 |
-| `references/accessibility/anti-patterns*.md` and their generator `scripts/anti_patterns/` (list partly derived from the S, A, K, F, V and D anti-patterns; text, examples, severities and detection patterns rewritten) | github/awesome-copilot, `instructions/a11y.instructions.md`; Isalafont/claude-skill-rgaa-dev, `SKILL.md` (ARIA anti-patterns) | MIT, Copyright GitHub, Inc.; Licence Ouverte 2.0 | 2026-11-14 |
+| `references/accessibility/impacts.md` (adapted, translated, reorganised by defect family; attribution also in the file) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/impacts.md`, v1.2.2 of 2026-06-17, by Isabelle Lafont; etalab-ia/skills, `skills/rgaa/references/impacts.md` | Licence Ouverte 2.0; MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
+| `references/accessibility/fallbacks.md` (outline and order of preference reused, text rewritten, no code reused) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/fallbacks.md`, v1.2.2 of 2026-06-17, by Isabelle Lafont | Licence Ouverte 2.0 | 2026-11-14 |
+| `references/accessibility/rules.md` (selection of rules inspired by the golden rules and checklists, text rewritten) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/SKILL.md` and `checklist.md`, v1.2.2 of 2026-06-17; github/awesome-copilot, `instructions/a11y.instructions.md` | Licence Ouverte 2.0; MIT, Copyright GitHub, Inc. | 2026-11-14 |
+| `references/accessibility/anti-patterns*.md` and their generator `scripts/anti_patterns/` (list partly derived from the S, A, K, F, V and D anti-patterns; text, examples, severities and detection patterns rewritten) | github/awesome-copilot, `instructions/a11y.instructions.md`; Isalafont/claude-skill-rgaa-dev, `SKILL.md` (ARIA anti-patterns), v1.2.2 of 2026-06-17 | MIT, Copyright GitHub, Inc.; Licence Ouverte 2.0 | 2026-11-14 |
 | `references/accessibility/components/*.md` (keyboard behaviour follows the WAI-ARIA Authoring Practices; original code, no APG code copied) | W3C WAI-ARIA Authoring Practices Guide | Cited by link only | 2026-11-14 |
 | `references/accessibility/wcag-2.2-additions.md` (success criterion numbers and names; requirements described in this project's own words) | WCAG 2.2, W3C Recommendation | W3C Document License 2023 | 2026-11-14 |
 | `references/privacy/forms-and-minimisation.md` (sections 6 to 8: selection of logging, retention and test-data practices; every rule re-checked on the GDPR or marked best practice; text rewritten) | github/awesome-copilot, `skills/gdpr-compliant/SKILL.md` | MIT, Copyright GitHub, Inc. | 2026-11-14 |

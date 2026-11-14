@@ -43,6 +43,22 @@ class AntiPatternsBuildTest(unittest.TestCase):
                     if detector.get("unless"):
                         re.compile(detector["unless"])
 
+    def test_data_files_have_no_control_characters(self):
+        # A literal backspace (0x08) where `\b` was meant silently breaks a regex.
+        for path in sorted((ROOT / "scripts" / "anti_patterns").glob("*.py")):
+            with self.subTest(file=path.name):
+                bad = [hex(b) for b in path.read_bytes() if b < 0x20 and b not in (0x0A, 0x0D)]
+                self.assertEqual(bad, [], f"{path.name} contains control characters")
+
+    def test_clipping_detector_ignores_visually_hidden_rules(self):
+        text = (REFS / "anti-patterns.md").read_text(encoding="utf-8")
+        entries = json.loads(re.search(r"```json\n(.*?)\n```", text, re.S).group(1))
+        entry = next(e for e in entries if e["id"] == "AP-VIS-05")
+        detector = next(d for d in entry["detect"] if d["type"] == "regex")
+        rx = re.compile(detector["value"], re.I)
+        self.assertTrue(rx.search(".card-title { height: 48px; overflow: hidden; }"))
+        self.assertIsNone(rx.search(".sr-only { position: absolute; height: 2px; overflow: hidden; clip: rect(0 0 0 0); }"))
+
     def test_link_underline_detector_ignores_navigation_links(self):
         text = (REFS / "anti-patterns.md").read_text(encoding="utf-8")
         entries = json.loads(re.search(r"```json\n(.*?)\n```", text, re.S).group(1))

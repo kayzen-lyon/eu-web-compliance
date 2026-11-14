@@ -18,8 +18,8 @@ Why this matters: the rule is about the visitor's device, not about personal dat
 | Adding analytics, a pixel, a chat, a video, a map, a font or any third-party script | Sections 1 to 4 |
 | Checking a site before release | Section 2, then section 5 |
 | Measuring audience without a banner | Section 3.3 |
-| Session replay or heatmap tools | Section 3.4 and [consent.md](consent.md) section 7 |
-| Tracking pixels in emails sent by the site | [consent.md](consent.md) section 8 |
+| Session replay or heatmap tools | Section 3.4 and [consent.md](consent.md) section 8 |
+| Tracking pixels in emails sent by the site | [consent.md](consent.md) section 9 |
 
 ## 1. What counts as a tracker
 
@@ -113,13 +113,13 @@ The CNIL notes that the law does not require informing visitors about exempt tra
 
 ### 3.3 Audience measurement without consent (France)
 
-An analytics tool may run without consent only if **every** condition below holds. If one fails, it is a tracker that waits for consent like any other.
+An analytics tool may run without consent only if **every** condition of the CNIL guidelines below holds (the first four rules). If one fails, it is a tracker that waits for consent like any other. The rules after them are CNIL recommendations: follow them, but a recommended duration is not a condition of the exemption ([../regulatory-status.md](../regulatory-status.md) section 3.3).
 
 - [ ] Its purpose is strictly limited to measuring the audience of this site or app (performance, navigation problems, technical optimisation, server sizing, content consulted), for the exclusive account of the publisher [CNIL guidelines § 50-51]
 - [ ] It does not allow tracking the person's navigation across other sites or apps [CNIL guidelines § 51]
 - [ ] It only produces anonymous statistics [CNIL guidelines § 51]
 - [ ] The personal data it collects are not cross-referenced with other processing and are not transmitted to third parties; a vendor that reuses the data for its own purposes breaks this condition [CNIL guidelines § 51]
-- [ ] The tracker's lifetime and the data retention follow the durations the CNIL recommends, listed in [../regulatory-status.md](../regulatory-status.md) section 3.3, and the lifetime is not extended automatically on each new visit [CNIL recommendation § 5]
+- [ ] Recommended, not a condition of the exemption: the tracker's lifetime and the data retention follow the durations the CNIL recommends, listed in [../regulatory-status.md](../regulatory-status.md) section 3.3, and the lifetime is not extended automatically on each new visit [CNIL recommendation § 5]
 - [ ] Visitors are informed of the measurement, for example in the privacy policy, and can object to it where the processing rests on legitimate interest [CNIL recommendation § 5; CNIL FAQ objection]
 - [ ] Do not describe any tool as "exempt", "CNIL-approved" or "CNIL-compliant": the CNIL publishes no list of exempt tools (vendors only self-assess), and the outcome depends on the configuration [CNIL FAQ exempt tools]
 
@@ -130,7 +130,7 @@ What this means in code: whatever the product, the agent checks its configuratio
 Tools that record mouse movements, clicks, scrolls and page content to replay or aggregate sessions are not exempt.
 
 - [ ] Session replay starts only after consent for that specific purpose [CNIL session replay]
-- [ ] The rest of the CNIL recommendation (information, masking by default, exclusion of passwords and bank data, no advertising retargeting) is in [consent.md](consent.md) section 7 [CNIL session replay]
+- [ ] The rest of the CNIL recommendation (information, masking by default, exclusion of passwords and bank data, no advertising retargeting) is in [consent.md](consent.md) section 8 [CNIL session replay]
 
 ## 4. What may run before consent, and what must wait
 
@@ -168,4 +168,4 @@ Run in a fresh browser context, without accepting anything. Expected result on a
 
 The reference banner's README describes such a test with Playwright: [../../templates/consent/README.md](../../templates/consent/README.md).
 
-The skill automates these checks with `node scripts/check-privacy.mjs <folder or URL>`, run from the skill root. It cannot read a tracker's purpose from its name, so the site declares its exempt trackers in `compliance/trackers.json`; anything set before consent that is not declared there is reported as a non-conformity, and a name that only suggests an exempt purpose is reported "to review". Start from [../../templates/trackers.example.json](../../templates/trackers.example.json), which already declares the `eu-consent` cookie of the reference banner. Declaring a tracker as exempt is a claim the owner must be able to justify against section 3; the file does not make it true.
+The skill automates these checks, from the root of the website project: `node <skill>/scripts/check-privacy.mjs <folder or URL> --trackers compliance/trackers.json` (or `check-all.mjs`, which passes the project's `compliance/trackers.json` itself; see `SKILL.md`, "Paths"). It cannot read a tracker's purpose from its name, so the site declares its exempt trackers in `compliance/trackers.json`; anything set before consent that is not declared there is reported as a non-conformity, and a name that only suggests an exempt purpose is reported "to review". Start from [../../templates/trackers.example.json](../../templates/trackers.example.json), which already declares the `eu-consent` cookie of the reference banner. Declaring a tracker as exempt is a claim the owner must be able to justify against section 3; the file does not make it true.

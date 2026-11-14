@@ -51,32 +51,33 @@
 
       <!-- SUMMARY: shown directly before the order button, never collapsed by default. -->
       <div class="c-summary">
-        <section class="c-summary-group" aria-labelledby="sum-items">
-          <h2 id="sum-items">Items</h2>
+        <!-- Plain <div> groups with a heading: five labelled <section> elements would be five region landmarks. -->
+        <div class="c-summary-group">
+          <h2>Items</h2>
           <ul>
             <li>[Product name]: [main characteristics, for example "wool jumper, navy blue, size M"], quantity [1], [€59.00]</li>
             <li>[Subscription name]: [main characteristics], [€9.90] per month, duration [12 months], renewed [automatically / not renewed]; you can terminate it [conditions of termination]; minimum duration [3 months]</li>
           </ul>
           <p><a href="[/checkout/basket]">Change the items</a></p>
-        </section>
+        </div>
 
-        <section class="c-summary-group" aria-labelledby="sum-delivery">
-          <h2 id="sum-delivery">Delivery</h2>
+        <div class="c-summary-group">
+          <h2>Delivery</h2>
           <dl>
             <dt>Address</dt><dd>[Name], [street], [postcode] [city], [country]</dd>
             <dt>Method and date</dt><dd>[Standard delivery], expected by [date]</dd>
           </dl>
           <p><a href="[/checkout/delivery]">Change the delivery address</a></p>
-        </section>
+        </div>
 
-        <section class="c-summary-group" aria-labelledby="sum-payment">
-          <h2 id="sum-payment">Payment</h2>
+        <div class="c-summary-group">
+          <h2>Payment</h2>
           <p>[Card ending in 1234]</p>
           <p><a href="[/checkout/payment]">Change the payment method</a></p>
-        </section>
+        </div>
 
-        <section class="c-summary-group" aria-labelledby="sum-total">
-          <h2 id="sum-total">Price</h2>
+        <div class="c-summary-group">
+          <h2>Price</h2>
           <dl>
             <dt>Items</dt><dd>[€59.00]</dd>
             <dt>Subscription, first month</dt><dd>[€9.90], then [€9.90] per month</dd>
@@ -84,13 +85,13 @@
             <dt>Included VAT</dt><dd>[€12.30]</dd>
           </dl>
           <p class="c-total">Total to pay, all taxes included: [€73.80]</p>
-        </section>
+        </div>
 
-        <section class="c-summary-group" aria-labelledby="sum-rights">
-          <h2 id="sum-rights">Your right of withdrawal</h2>
+        <div class="c-summary-group">
+          <h2>Your right of withdrawal</h2>
           <p>You have a right of withdrawal. To use it, select the link "Withdraw from contract here" at the bottom of every page or in your account. <a href="[/terms-of-sale#withdrawal]">Conditions, time limit and procedure of the right of withdrawal</a>.</p>
           <!-- When an item has no right of withdrawal, say so here, item by item, with the owner's confirmed wording. -->
-        </section>
+        </div>
       </div>
 
       <form method="post" action="[/checkout/place-order]">

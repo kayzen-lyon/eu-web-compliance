@@ -11,8 +11,10 @@
        which only simulates a server and must be replaced.
 
   Labels: English below. For a French page, set lang="fr" on the html element (or "locale": "fr" in the
-  configuration): the script switches every text marked data-text to the French wording
-  ("Renoncer au contrat ici", "Confirmer la rétractation"). Other languages: pass "texts" in the
+  configuration): the script switches every text marked data-text, in the section and in the h1, to the
+  French wording ("Renoncer au contrat ici", "Confirmer la rétractation"). It does NOT translate the
+  <title>, the skip link, the site header and the footer, nor the footer link: write those in French
+  by hand, or the page will carry English text under lang="fr". Other languages: pass "texts" in the
   configuration with the wording of the national transposition, never a free translation.
 
   Everything in [square brackets] is a placeholder.
@@ -33,7 +35,7 @@
     </header>
 
     <main id="main" tabindex="-1">
-      <h1>Withdraw from a contract</h1>
+      <h1 data-text="title">Withdraw from a contract</h1>
 
       <!-- SECTION: keep the data-* attributes and the ids; texts marked data-text are replaced by the script. -->
       <section class="withdrawal" data-withdrawal aria-labelledby="wd-title">
@@ -53,7 +55,7 @@
           <h3 id="wd-statement-title" tabindex="-1" data-wd-statement-title data-text="statementTitle">Your withdrawal statement</h3>
           <p id="wd-statement-intro" data-text="statementIntro">Fill in or check the three fields below, then select "Confirm withdrawal". You do not need to give a reason. All fields are required.</p>
 
-          <div class="c-error-summary" data-wd-errors tabindex="-1" aria-labelledby="wd-errors-title" hidden>
+          <div class="c-error-summary" data-wd-errors tabindex="-1" role="group" aria-labelledby="wd-errors-title" hidden>
             <h4 id="wd-errors-title" data-wd-errors-title></h4>
             <ul></ul>
           </div>

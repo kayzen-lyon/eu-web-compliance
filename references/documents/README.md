@@ -32,7 +32,7 @@ Read the matrix rows (`compliance/applicability-matrix.md`) and the profile fiel
 - [ ] Terms of use and terms of sale may be one document ("conditions générales d'utilisation et de vente") as long as the sale clauses are clearly separated [best practice]
 - [ ] The privacy policy and the cookie policy may be one document if the operator prefers; the content of both is then kept [best practice]
 
-No rule read by this skill requires a document called "terms of sale". What the law requires is the information it carries: the pre-contractual information [CRD art. 6(1)], terms the customer can store and reproduce [ECD art. 10(3)], the mediator's details in France [C. conso L. 616-1]. A terms of sale page is the usual place for them.
+No rule read by this skill requires a document called "terms of sale". What the law requires is the information it carries: the pre-contractual information [CRD art. 6(1)], terms the customer can store and reproduce [ECD art. 10(3) (to confirm)], the mediator's details in France [C. conso L. 616-1]. A terms of sale page is the usual place for them.
 
 ## 2. The two traps
 

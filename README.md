@@ -4,7 +4,7 @@
 
 A skill for AI coding agents: make the code of a website meet the European obligations that apply to it, from the first line written.
 
-> **Project status: usable, pre-release (0.1.0).** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
+> **Project status: version 1.0.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
 
 ## What the skill covers
 
@@ -16,7 +16,7 @@ A skill for AI coding agents: make the code of a website meet the European oblig
 | Security | ANSSI guides, completed by OWASP |
 | Consumer and information law | Legal notice, online sales, withdrawal function, prices, DSA |
 
-Scope: EU law and the 27 Member States. France is covered first; each other country has a file that states plainly what has and has not been verified.
+Scope: EU law and French law are verified. Each of the other 26 Member States has a file that states plainly what has and has not been verified: Germany is partly verified, the others not yet, and the EU baseline applies until they are.
 
 The skill does three things: it works out which obligations apply to the project, has the agent write compliant code from the start, then checks the result while separating what is proven from what a person still has to verify.
 
@@ -26,33 +26,52 @@ It does not guarantee that a website is legally compliant, and it replaces neith
 
 The skill is reviewed by an AI agent using specialised tools. No legal professional or accessibility auditor has reviewed it yet; independent review is welcome.
 
+## What this skill adds
+
+It was built from four open skills, credited in [NOTICE.md](NOTICE.md): each is good at its own subject, and none of them was copied as is (0.7 % of shared text, measured). What this skill adds:
+
+| | Before: the four source skills, each on its own | This skill |
+|---|---|---|
+| Scope | One subject each: RGAA accessibility, French public-sector practices, AI Act, Copilot instructions | Five domains in one place: accessibility, data protection, AI Act, security, consumer law, with legal documents |
+| Which rules apply | Left to the reader | An applicability matrix of 62 obligations, computed from a project profile; each one marked mandatory or recommended |
+| Sources | Partly cited | Every rule ends with its official source; every date and version sits in one file, each with a source read and dated in `references/sources.json`; unconfirmed facts go to `OPEN-QUESTIONS.md`, not into the rules |
+| Checking the result | Mostly checklists, one subject at a time | Four scripts that load the pages in a real browser: accessibility (axe-core and checks of its own), trackers set before consent, security headers, content (legal pages, AI disclosures, withdrawal function), merged into one report with verdicts C / NC / NA / NT |
+| Proof that the checks work | No measured test sites | Six example sites, each in a fixed and a faulty version: zero non-conformity on every fixed version, every defect detectable from code reported on the faulty ones, as a non-conformity or as a point to review ([results](docs/evaluation/results.md)) |
+| Ready-made parts | Code examples | Accessible components ready to paste: consent banner and loader, AI chat and AI content notices, order step, withdrawal function, price reduction display |
+| Countries | France | EU law and French law verified; one file per Member State saying what is and is not verified |
+| Agents | One tool each | Claude Code (skill or plugin), Codex and any agent that reads `AGENTS.md`, GitHub Copilot, Cursor |
+
+Where a source skill goes further, use it alongside: Rails and DSFR examples (`Isalafont/claude-skill-rgaa-dev`), obligations of AI providers for general-purpose and high-risk systems (`morellid/ai-act-skill`).
+
+In an end-to-end test, fresh agents built the same small websites with and without the skill. Without it, an online tea shop had 122 non-conformities found by the checkers and no withdrawal function; with it, the three sites built had none left after the checkers' own false positive was fixed. The briefs are in [docs/evaluation/](docs/evaluation/README.md).
+
 ## Installation
 
-`<owner>` below is a placeholder: the public repository does not exist yet. Whatever the method, the skill's folder must be named `eu-web-compliance`, the `name` of its `SKILL.md`.
+The repository is <https://github.com/skyymar69-rgb/eu-web-compliance>. Whatever the method, the skill's folder must be named `eu-web-compliance`, the `name` of its `SKILL.md`.
 
 **Claude Code, as a plugin.** In a session:
 
 ```text
-/plugin marketplace add <owner>/eu-web-compliance
+/plugin marketplace add skyymar69-rgb/eu-web-compliance
 /plugin install eu-web-compliance@eu-web-compliance
 ```
 
 **Claude Code, as a personal skill.** Clone into your skills folder (or into `.claude/skills/` of one project):
 
 ```bash
-git clone https://github.com/<owner>/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
+git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
 ```
 
 **Codex.** Clone into the user skills folder (or into `.agents/skills/` of one project):
 
 ```bash
-git clone https://github.com/<owner>/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
+git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
 ```
 
 **The `skills` CLI.** It finds the `SKILL.md` at the root of the repository and installs it for the agent you name (`claude-code`, `codex`, `cursor`, `github-copilot`, among others); `-g` installs it for all your projects:
 
 ```bash
-npx skills add <owner>/eu-web-compliance -a codex
+npx skills add skyymar69-rgb/eu-web-compliance -a codex
 ```
 
 **GitHub Copilot, Cursor and other agents that read `AGENTS.md`.** Vendor the skill in the project (for example in `.vendor/eu-web-compliance/`) and copy the matching pointer file: see [adapters/README.md](adapters/README.md) and part A of [AGENTS.md](AGENTS.md).
@@ -91,8 +110,8 @@ The report is written to `compliance/reports/compliance-report-YYYY-MM-DD.md`, w
 | [SKILL.md](SKILL.md) | Entry point read by the agent: rules, modes, task-to-file table |
 | [AGENTS.md](AGENTS.md) | Instructions for agents that read `AGENTS.md`, and for contributors |
 | [adapters/](adapters/README.md) | Pointer files for GitHub Copilot and Cursor |
-| [references/](references/) | Rules by domain: accessibility, privacy, ai-act, security, consumer, countries, scoping |
-| [templates/](templates/) | Reference components and documents: consent banner, AI notices, withdrawal function, legal notices, policies, credit line |
+| [references/](references/) | Rules by domain: accessibility, privacy, ai-act, security, consumer, documents, countries, scoping |
+| [templates/](templates/) | Reference components and documents: consent banner, AI notices, order step, withdrawal function, price reduction, legal notices, accessibility statement and EAA information, privacy and cookie policies, terms of use, terms of sale, data processing agreement, credit line |
 | [examples/](examples/README.md) | Test sites, each in a faulty and a fixed version, that measure the checkers |
 | [docs/evaluation/](docs/evaluation/README.md) | Briefs for the end-to-end evaluation by a fresh agent |
 | [docs/PRD.md](docs/PRD.md) | Product requirements, architecture, roadmap (in French) |
@@ -122,6 +141,23 @@ python scripts/validate.py
 ```
 
 The script only needs Python 3.8 or later. With `--strict`, a source consulted more than 90 days ago makes the check fail.
+
+The browser checks need Node 20 or later and a Chromium-based browser (Playwright's, or an installed Edge or Chrome):
+
+```bash
+npm install
+```
+
+```bash
+node --test tests/
+```
+
+```bash
+node scripts/check-examples.mjs
+```
+
+The last command runs the four checkers on the six example sites and fails if a fixed version has a non-conformity, or if a checker reports less than 90 % of the defects planted in code in the faulty versions.
+
 
 ## Author
 

@@ -4,7 +4,7 @@ Load this module when the site runs on a content management system, or when you 
 
 ## How to use this file
 
-1. The outline follows the ANSSI sheet "Les Essentiels : Mise en œuvre sécurisée d'un CMS" (V1.1, December 2023), read on 2026-11-14. That sheet has ten unnumbered good practices, most of which point to other ANSSI guides. Each rule below is tagged with the guide the sheet points to when that guide is part of this skill; the others are tagged `[best practice]`. The sheet itself is not yet in this skill's source registry, so it is not used as a tag.
+1. The outline follows the ANSSI sheet "Les Essentiels : Mise en œuvre sécurisée d'un CMS" (source `anssi-cms`; version and date in [../../regulatory-status.md](../../regulatory-status.md) section 4). That sheet has ten unnumbered good practices, most of which point to other ANSSI guides. Each rule below is tagged with the guide the sheet points to when that guide is part of this skill; the others are tagged `[best practice]`. Because the sheet's practices are unnumbered, a rule is not tagged with the sheet itself.
 2. Most CMS risk comes from extensions and themes, default accounts and delayed updates, not from the core.
 3. Header and TLS settings for the server in front of the CMS are in [../headers-configs.md](../headers-configs.md). A plugin can set headers when the server cannot be configured; the ANSSI web guide cites this option for WordPress and Drupal (section 5.3.2) without endorsing any plugin.
 
@@ -37,7 +37,7 @@ Renaming or hiding the admin URL is not in the ANSSI sheet. It reduces noise fro
 
 ## 4. Browser-side protections
 
-- [ ] HSTS, Content Security Policy and secure session cookies are in place, as the web guide prescribes [ANSSI WEB R2, R14, R30]
+- [ ] HSTS, Content Security Policy and secure session cookies are in place, as the web guide recommends [ANSSI WEB R2, R14, R30]
 - [ ] The CMS's session cookies carry `Secure`, `HttpOnly` and `SameSite` (check them with the header checker after sign-in) [ANSSI WEB R31, R30, R33]
 - [ ] The CSP is tested with the theme and every extension in Report-Only mode first: CMS themes and page builders often rely on inline scripts and styles [ANSSI WEB R15]
 

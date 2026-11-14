@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : utilisable, en préversion (0.1.0).** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.0.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -18,7 +18,7 @@ Skill pour agents IA de développement : faire respecter, dès l'écriture du co
 
 Il fait trois choses : déterminer quelles obligations s'appliquent au projet, faire produire un code conforme dès l'écriture, puis vérifier le résultat en séparant ce qui est prouvé de ce qui reste à contrôler par une personne.
 
-Périmètre : le droit de l'UE et les 27 États membres. La France est couverte en premier ; chaque autre pays dispose d'un fichier qui dit clairement ce qui a été vérifié ou non.
+Périmètre : le droit de l'UE et le droit français sont vérifiés. Chacun des 26 autres États membres dispose d'un fichier qui dit clairement ce qui a été vérifié ou non : l'Allemagne est vérifiée en partie, les autres pas encore, et le socle européen s'applique en attendant.
 
 ## Ce que le skill ne fait pas
 
@@ -26,33 +26,52 @@ Le skill est relu par un agent IA équipé d'outils spécialisés. Aucun profess
 
 Il ne garantit pas la conformité juridique d'un site et ne remplace ni un audit d'accessibilité, ni un délégué à la protection des données, ni un avocat. Une partie des critères d'accessibilité exige un jugement humain, et la qualification juridique d'un service relève d'un professionnel du droit. Les rapports produits le rappellent et listent les points à faire vérifier.
 
+## Ce que ce skill apporte
+
+Il a été construit à partir de quatre skills ouverts, cités dans [NOTICE.md](NOTICE.md) : chacun est bon dans son sujet, et aucun n'a été recopié tel quel (0,7 % de texte commun, mesuré). Ce que ce skill ajoute :
+
+| | Avant : les quatre skills d'origine, chacun seul | Ce skill |
+|---|---|---|
+| Périmètre | Un sujet chacun : accessibilité RGAA, pratiques du secteur public français, AI Act, consignes Copilot | Cinq domaines au même endroit : accessibilité, protection des données, AI Act, sécurité, droit de la consommation, avec les documents juridiques |
+| Quelles règles s'appliquent | Laissé au lecteur | Une matrice de 62 obligations, calculée à partir du profil du projet ; chacune marquée obligatoire ou recommandée |
+| Sources | Citées en partie | Chaque règle se termine par sa source officielle ; chaque date et version se trouve dans un seul fichier, avec une source lue et datée dans `references/sources.json` ; les faits non confirmés vont dans `OPEN-QUESTIONS.md`, pas dans les règles |
+| Vérifier le résultat | Surtout des listes de contrôle, un sujet à la fois | Quatre scripts qui chargent les pages dans un vrai navigateur : accessibilité (axe-core et contrôles propres), traceurs déposés avant consentement, en-têtes de sécurité, contenu (pages légales, mentions IA, fonction de rétractation), réunis dans un rapport unique aux verdicts C / NC / NA / NT |
+| Preuve que les contrôles marchent | Pas de sites de test mesurés | Six sites d'exemple, chacun en version corrigée et en version fautive : zéro non-conformité sur chaque version corrigée, chaque défaut détectable dans le code signalé sur les versions fautives, comme non-conformité ou comme point à vérifier ([résultats](docs/evaluation/results.md)) |
+| Pièces prêtes à l'emploi | Des exemples de code | Composants accessibles à coller : bandeau et chargeur de consentement, mentions de chat IA et de contenu généré, étape de commande, fonction de rétractation, affichage des réductions de prix |
+| Pays | France | Droit de l'UE et droit français vérifiés ; un fichier par État membre qui dit ce qui est vérifié et ce qui ne l'est pas |
+| Agents | Un outil chacun | Claude Code (skill ou plugin), Codex et tout agent qui lit `AGENTS.md`, GitHub Copilot, Cursor |
+
+Là où un skill d'origine va plus loin, utilisez-le en complément : exemples Rails et DSFR (`Isalafont/claude-skill-rgaa-dev`), obligations des fournisseurs d'IA à usage général et à haut risque (`morellid/ai-act-skill`).
+
+Lors d'un test de bout en bout, des agents neufs ont construit les mêmes petits sites avec et sans le skill. Sans lui, une boutique de thé en ligne présentait 122 non-conformités relevées par les scripts et aucune fonction de rétractation ; avec lui, les trois sites construits n'en avaient plus aucune, une fois corrigé le faux positif propre aux scripts. Les consignes sont dans [docs/evaluation/](docs/evaluation/README.md).
+
 ## Installation
 
-`<owner>` ci-dessous est un emplacement réservé : le dépôt public n'existe pas encore. Quelle que soit la méthode, le dossier du skill doit s'appeler `eu-web-compliance`, comme le champ `name` de son `SKILL.md`.
+Le dépôt est <https://github.com/skyymar69-rgb/eu-web-compliance>. Quelle que soit la méthode, le dossier du skill doit s'appeler `eu-web-compliance`, comme le champ `name` de son `SKILL.md`.
 
 **Claude Code, comme plugin.** Dans une session :
 
 ```text
-/plugin marketplace add <owner>/eu-web-compliance
+/plugin marketplace add skyymar69-rgb/eu-web-compliance
 /plugin install eu-web-compliance@eu-web-compliance
 ```
 
 **Claude Code, comme skill personnel.** Cloner dans le dossier des skills (ou dans `.claude/skills/` d'un seul projet) :
 
 ```bash
-git clone https://github.com/<owner>/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
+git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
 ```
 
 **Codex.** Cloner dans le dossier des skills de l'utilisateur (ou dans `.agents/skills/` d'un seul projet) :
 
 ```bash
-git clone https://github.com/<owner>/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
+git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
 ```
 
 **L'outil `skills` en ligne de commande.** Il trouve le `SKILL.md` à la racine du dépôt et l'installe pour l'agent indiqué (`claude-code`, `codex`, `cursor`, `github-copilot`, entre autres) ; `-g` l'installe pour tous vos projets :
 
 ```bash
-npx skills add <owner>/eu-web-compliance -a codex
+npx skills add skyymar69-rgb/eu-web-compliance -a codex
 ```
 
 **GitHub Copilot, Cursor et les autres agents qui lisent `AGENTS.md`.** Placer le skill dans le projet (par exemple dans `.vendor/eu-web-compliance/`) et copier le fichier de renvoi adapté : voir [adapters/README.md](adapters/README.md) et la partie A d'[AGENTS.md](AGENTS.md).
@@ -91,8 +110,8 @@ Le rapport est écrit dans `compliance/reports/compliance-report-AAAA-MM-JJ.md`,
 | [SKILL.md](SKILL.md) | Point d'entrée lu par l'agent : règles, modes, table tâche → fichiers |
 | [AGENTS.md](AGENTS.md) | Consignes pour les agents qui lisent `AGENTS.md`, et pour les contributeurs |
 | [adapters/](adapters/README.md) | Fichiers de renvoi pour GitHub Copilot et Cursor |
-| [references/](references/) | Règles par domaine : accessibilité, données, IA, sécurité, consommation, pays, qualification |
-| [templates/](templates/) | Composants et documents de référence : bandeau de consentement, mentions IA, rétractation, mentions légales, politiques, ligne de crédit |
+| [references/](references/) | Règles par domaine : accessibilité, données, IA, sécurité, consommation, documents juridiques, pays, qualification |
+| [templates/](templates/) | Composants et documents de référence : bandeau de consentement, mentions IA, étape de commande, rétractation, réduction de prix, mentions légales, déclaration d'accessibilité et information EAA, politiques de confidentialité et de cookies, CGU, CGV, accord de sous-traitance, ligne de crédit |
 | [examples/](examples/README.md) | Sites de test, chacun en version fautive et corrigée, qui mesurent les vérificateurs |
 | [docs/evaluation/](docs/evaluation/README.md) | Cahiers des charges de l'évaluation par un agent neuf |
 | [docs/PRD.md](docs/PRD.md) | Exigences produit, architecture, feuille de route |
@@ -122,6 +141,23 @@ python scripts/validate.py
 ```
 
 Le script ne demande que Python 3.8 ou plus récent. Avec `--strict`, une source consultée il y a plus de 90 jours fait échouer le contrôle.
+
+Les contrôles dans le navigateur demandent Node 20 ou plus récent et un navigateur Chromium (celui de Playwright, ou Edge ou Chrome installé) :
+
+```bash
+npm install
+```
+
+```bash
+node --test tests/
+```
+
+```bash
+node scripts/check-examples.mjs
+```
+
+La dernière commande lance les quatre vérificateurs sur les six sites d'exemple et échoue si une version corrigée a une non-conformité, ou si un vérificateur signale moins de 90 % des défauts de code placés dans les versions fautives.
+
 
 ## Auteur
 

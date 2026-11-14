@@ -163,7 +163,7 @@ Le client peut résilier son abonnement en ligne, gratuitement, à l'aide de la 
 
 ### 9.1 Garanties légales
 
-Le client bénéficie de la garantie légale de conformité [et, pour les biens, de la garantie des vices cachés : mention à valider par le conseil du vendeur], que les présentes conditions ne peuvent ni exclure ni limiter.
+Le client bénéficie de la garantie légale de conformité [et, pour les biens, de la garantie des vices cachés : mention à valider par le conseil du vendeur]. [À CONFIRMER par le conseil du vendeur : phrase rappelant que les présentes conditions ne peuvent ni exclure ni limiter ces garanties ; les articles correspondants n'ont pas été lus par l'outil qui a préparé ce modèle.]
 
 ### 9.2 Biens
 
@@ -193,7 +193,7 @@ Le traitement des données personnelles liées aux commandes est décrit dans la
 
 Pour toute réclamation, le client peut contacter le vendeur à [adresse ou formulaire].
 
-En cas de litige, le client peut recourir gratuitement au médiateur de la consommation dont relève le vendeur : [nom du médiateur], [adresse du site du médiateur], [adresse postale du médiateur].
+En cas de litige, le client peut recourir [À CONFIRMER par le conseil du vendeur : gratuitement] au médiateur de la consommation dont relève le vendeur : [nom du médiateur], [adresse du site du médiateur], [adresse postale du médiateur].
 
 ## 14. Droit applicable
 

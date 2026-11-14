@@ -1,6 +1,6 @@
 {
   "name": "eu-web-compliance",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Outils de vérification du skill eu-web-compliance (navigateur piloté et axe-core).",
   "license": "MIT",

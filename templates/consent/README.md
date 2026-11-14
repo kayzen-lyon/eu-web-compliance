@@ -108,8 +108,8 @@ Other API: `euConsent.get()` (current choices or `null`), `euConsent.has(purpose
 
 Run all three before reporting the banner as done.
 
-1. **Accessibility.** On a page that includes the banner: `node scripts/check-a11y.mjs <folder or URL>` from the skill root. Expected: zero non-conformity. Then check by hand what the script cannot: the dialog with a screen reader, 200 % zoom, the texts.
-2. **No tracker before consent.** Run `node scripts/check-privacy.mjs <folder or URL>` from the skill root, after copying `templates/trackers.example.json` to `compliance/trackers.json` in the project and completing it (it declares the `eu-consent` cookie, which stores the visitor's choice and is exempt). The script performs the steps below; to check by hand, use a fresh browser context or a private window with the developer tools open:
+1. **Accessibility.** On a page that includes the banner: `node <skill>/scripts/check-a11y.mjs <folder or URL>` from the root of the website project. Expected: zero non-conformity. Then check by hand what the script cannot: the dialog with a screen reader, 200 % zoom, the texts.
+2. **No tracker before consent.** Run `node <skill>/scripts/check-privacy.mjs <folder or URL> --trackers compliance/trackers.json` from the root of the website project, after copying `templates/trackers.example.json` to `compliance/trackers.json` in the project and completing it (it declares the `eu-consent` cookie, which stores the visitor's choice and is exempt). The script performs the steps below; to check by hand, use a fresh browser context or a private window with the developer tools open:
    - before any click: no cookie or storage entry except exempt ones, no request to a third-party host that sets or reads trackers, no iframe from such a host;
    - after "Refuse all": the same, plus the `eu-consent` entry with every purpose `false`; reload: no banner, still nothing;
    - after "Accept all": the declared scripts run and the embeds load;

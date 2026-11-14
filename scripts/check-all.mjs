@@ -12,6 +12,7 @@
 //     --expected-dir <dossier>  défauts attendus (sites de test) : expected-<vérificateur>.json,
 //                               ou expected-defects.json pour l'accessibilité
 //     --lang en|fr              langue des libellés du rapport Markdown (défaut : en)
+//     --timeout <minutes>       durée maximale de chaque vérificateur (défaut 30)
 //     --no-fail                 code de sortie 0 même en cas de non-conformité
 //
 // Sorties dans --out : compliance-report-AAAA-MM-JJ.md et .json (suffixe -2, -3... si le fichier
@@ -19,12 +20,13 @@
 //
 // Les scripts et références du skill sont cherchés à côté de ce fichier, jamais dans le dossier
 // courant : le skill peut être installé ailleurs que dans le projet vérifié. Les vérificateurs
-// interrompent toute requête vers un hôte tiers quand ils servent un dossier local.
+// interrompent toute requête vers un hôte tiers, et toute requête qui pourrait envoyer des
+// données (méthode autre que GET, HEAD ou OPTIONS). Chaque vérificateur est arrêté s'il dépasse
+// --timeout minutes (défaut 30) : il compte alors comme « failed ».
 //
-// Codes de sortie : 0 aucune non-conformité, 1 au moins une, 2 erreur d'usage ou vérificateur
-// qui n'a pas pu tourner.
+// Codes de sortie : 0 aucune non-conformité, 1 au moins une, 2 erreur d'usage, vérificateur
+// qui n'a pas pu tourner, ou matrice d'applicabilité ou classement AI Act impossible à calculer.
 
-import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
@@ -36,6 +38,7 @@ import { indexPage } from './lib/report-matrix.mjs';
 import { buildReport } from './lib/report-build.mjs';
 import { toMarkdown } from './lib/report-markdown.mjs';
 import { validateReport } from './lib/report-validate.mjs';
+import { exec, python } from './lib/process.mjs';
 
 const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_ROOT = path.join(SCRIPTS, '..');
@@ -44,29 +47,6 @@ const EXPECTED_FILES = {
   a11y: ['expected-a11y.json', 'expected-defects.json'], privacy: ['expected-privacy.json'],
   security: ['expected-security.json'], content: ['expected-content.json'],
 };
-
-function exec(command, args, options = {}) {
-  return new Promise((resolve) => {
-    const child = spawn(command, args, { cwd: options.cwd || process.cwd(), windowsHide: true });
-    let stdout = '';
-    let stderr = '';
-    child.stdout.on('data', (d) => { stdout += d; });
-    child.stderr.on('data', (d) => { stderr += d; });
-    child.on('error', (error) => resolve({ code: null, stdout, stderr: String(error.message), spawnError: error.code }));
-    child.on('close', (code) => resolve({ code, stdout, stderr }));
-  });
-}
-
-// Python : variable PYTHON, sinon python puis python3 (ou l'inverse hors Windows).
-async function python(args) {
-  const candidates = process.env.PYTHON ? [process.env.PYTHON] : (process.platform === 'win32' ? ['python', 'python3', 'py'] : ['python3', 'python']);
-  let last = null;
-  for (const cmd of candidates) {
-    last = await exec(cmd, args);
-    if (last.spawnError !== 'ENOENT') return last;
-  }
-  return last;
-}
 
 async function runPythonJson(script, args, label) {
   const result = await python([path.join(SCRIPTS, script), ...args]);
@@ -131,7 +111,7 @@ async function runChecker(name, target, tmp, options) {
   if (name === 'privacy' && fromProject('trackers.json')) args.push('--trackers', fromProject('trackers.json'));
   if (name === 'content' && fromProject('site.json')) args.push('--site', fromProject('site.json'));
   process.stdout.write(`check-${name} ...\n`);
-  const result = await exec(process.execPath, args);
+  const result = await exec(process.execPath, args, { timeoutMs: options.timeoutMs });
   if ((result.code === 0 || result.code === 1) && existsSync(out)) {
     try {
       return { name, status: 'ran', exit_code: result.code, raw: JSON.parse(await fs.readFile(out, 'utf8')), rawFile: out };
@@ -143,16 +123,18 @@ async function runChecker(name, target, tmp, options) {
 }
 
 function parseOptions(argv) {
-  const args = parseArgs(argv, { values: ['--project', '--profile', '--out', '--only', '--expected-dir', '--lang'], flags: [] });
+  const args = parseArgs(argv, { values: ['--project', '--profile', '--out', '--only', '--expected-dir', '--lang', '--timeout'], flags: [] });
   const project = path.resolve(args.project || process.cwd());
   const only = args.only ? args.only.split(',').map((s) => s.trim()).filter(Boolean) : CHECKERS;
   const unknown = only.filter((c) => !CHECKERS.includes(c));
   if (unknown.length || !only.length) throw new UsageError(`--only : valeurs possibles ${CHECKERS.join(', ')} (reçu : ${args.only})`);
   const lang = args.lang || 'en';
   if (!['en', 'fr'].includes(lang)) throw new UsageError('--lang : en ou fr');
+  const minutes = args.timeout === undefined ? 30 : Number(args.timeout);
+  if (!Number.isFinite(minutes) || minutes <= 0) throw new UsageError('--timeout : nombre de minutes positif attendu');
   if (args.expectedDir && !existsSync(args.expectedDir)) throw new UsageError(`--expected-dir : introuvable : ${args.expectedDir}`);
   return {
-    target: args.targets[0], project, only, lang, fail: args.fail, expectedDir: args.expectedDir || null,
+    target: args.targets[0], project, only, lang, fail: args.fail, timeoutMs: Math.round(minutes * 60000), expectedDir: args.expectedDir || null,
     profile: path.resolve(args.profile || path.join(project, 'compliance', 'profile.json')),
     out: path.resolve(args.out || path.join(project, 'compliance', 'reports')),
   };

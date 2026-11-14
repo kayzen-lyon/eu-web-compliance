@@ -12,8 +12,8 @@ The terms of use (conditions générales d'utilisation) govern the use of the se
 
 - [ ] Outside the cases below, no rule read by this skill requires terms of use; recommend them when the site has accounts or an online service, as the contract that sets the rules of use, and say it is a recommendation [best practice]
 - [ ] A service that stores content supplied by its users states in its terms any restriction on that content, including the moderation policies, procedures, measures and tools (automated and human) and the internal complaint rules, in clear and plain language, publicly available and machine-readable [DSA art. 14]
-- [ ] Users are informed of any significant change to those terms [DSA art. 14(2)]
-- [ ] A service mainly used by or aimed at minors explains its conditions and restrictions in a way minors understand [DSA art. 14(3)]
+- [ ] Users are informed of any significant change to those terms [DSA art. 14(2) (to confirm)]
+- [ ] A service mainly used by or aimed at minors explains its conditions and restrictions in a way minors understand [DSA art. 14(3) (to confirm)]
 - [ ] A service in scope of the European Accessibility Act gives, in its general terms or an equivalent document, the information on how it meets the accessibility requirements ([accessibility-information-eaa.md](../../templates/accessibility-information-eaa.md)) [EAA]
 
 ## 2. What to collect

@@ -60,7 +60,7 @@ The browser provides the button role, the expanded or collapsed state, the keybo
 ```
 
 ```css
-[data-accordion] button {
+[data-accordion] > :is(h2, h3, h4, h5, h6) > button {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,7 +75,7 @@ The browser provides the button role, the expanded or collapsed state, the keybo
   text-align: start;
 }
 /* Chevron drawn with borders and driven by the attribute, so it cannot drift from the real state. */
-[data-accordion] button::after {
+[data-accordion] > :is(h2, h3, h4, h5, h6) > button::after {
   content: "";
   flex: none;
   width: 0.6rem;
@@ -85,13 +85,13 @@ The browser provides the button role, the expanded or collapsed state, the keybo
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
 }
-[data-accordion] button[aria-expanded="true"]::after { transform: rotate(-135deg); }
-[data-accordion] button:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+[data-accordion] > :is(h2, h3, h4, h5, h6) > button[aria-expanded="true"]::after { transform: rotate(-135deg); }
+[data-accordion] > :is(h2, h3, h4, h5, h6) > button:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
 ```
 
 ```js
 document.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-accordion] button[aria-controls]');
+  const button = event.target.closest('[data-accordion] > :is(h2, h3, h4, h5, h6) > button[aria-controls]');
   if (!button) return;
   const expanded = button.getAttribute('aria-expanded') === 'true';
   button.setAttribute('aria-expanded', String(!expanded));
@@ -102,6 +102,7 @@ document.addEventListener('click', (event) => {
 Notes on the choices:
 
 - The heading level (`<h3>` here) follows the outline of the page. The button is the only content of the heading.
+- The CSS and the script target the buttons that are direct children of the headings of `data-accordion`, so a button placed inside a panel (a form, a "Return" action) is not styled or toggled as a title.
 - The chevron is drawn with borders, with empty generated content, so screen readers have nothing to read aloud; the state itself is carried by `aria-expanded`. A "+" or "−" character written in CSS `content` would be spoken by some screen readers after each title.
 - `role="region"` on the panel lets screen reader users jump to it. With more than about six panels that can be open together, drop the role: too many landmarks become noise.
 - Focus stays on the button after activation. The panel comes right after its button in the DOM, so the next Tab or the next reading command enters it.

@@ -402,8 +402,8 @@
           }
         ]
       },
-      "level": "mandatory",
-      "nature": "legal-text",
+      "level": "recommended",
+      "nature": "skill-practice",
       "baseline": true,
       "sources": [
         "wcag-22",
@@ -413,7 +413,7 @@
       ],
       "status_section": "1.1",
       "rules_file": "references/accessibility/rules.md",
-      "note": "When a legal duty exists, what the law requires is stated in the rows eaa-service-accessibility and fr-rgaa-conformity; see regulatory-status sections 1.2 to 1.5 for the standard each text refers to."
+      "note": "WCAG 2.2 level AA is the skill's target, not a legal requirement: it is listed as recommended. When a legal duty exists, what the law requires is stated in the rows eaa-service-accessibility and fr-rgaa-conformity; see regulatory-status sections 1.2 to 1.5 for the standard each text refers to."
     },
     {
       "id": "eaa-service-accessibility",
@@ -1276,8 +1276,8 @@
       "applies_when": {
         "def": "personal-data"
       },
-      "level": "mandatory",
-      "nature": "legal-text",
+      "level": "recommended",
+      "nature": "official-recommendation",
       "baseline": true,
       "sources": [
         "gdpr",
@@ -1286,7 +1286,7 @@
       ],
       "status_section": "4",
       "rules_file": "references/security/web-baseline.md",
-      "note": "The legal text is Article 32 GDPR, which requires appropriate security without naming measures. The ANSSI guides are not normative: they are the skill's way of meeting it."
+      "note": "The legal duty is Article 32 GDPR (row sec-security-of-processing), which requires appropriate security without naming measures. The ANSSI guides are not normative: these measures are the skill's way of meeting it, hence recommended."
     },
     {
       "id": "sec-security-of-processing",
@@ -1523,7 +1523,8 @@
       "level": "mandatory",
       "nature": "legal-text",
       "sources": [
-        "fr-code-consommation"
+        "fr-code-consommation",
+        "fr-code-consommation-d221-5"
       ],
       "status_section": "5.2",
       "rules_file": "references/countries/fr.md"
@@ -1799,7 +1800,7 @@
       "domain": "consumer",
       "jurisdiction": "EU",
       "title": "Terms of sale carrying the pre-contractual information",
-      "requires": "The information of Article 6(1) of Directive 2011/83/EU is given, the terms can be stored and reproduced (Article 10(3) of Directive 2000/31/EC), and withdrawal exceptions are stated with their conditions.",
+      "requires": "The information of Article 6(1) of Directive 2011/83/EU is given, the terms are made available in a way that allows them to be stored and reproduced (Article 10(3) of Directive 2000/31/EC, to confirm on the official text), and withdrawal exceptions are stated with their conditions.",
       "applies_when": {
         "def": "distance-selling-to-consumers"
       },

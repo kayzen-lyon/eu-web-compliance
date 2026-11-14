@@ -21,11 +21,12 @@ In scope: every contract concluded on the site (or in the app) where the consume
 ## 2. Label and placement of the entry point
 
 - [ ] The function is labelled "withdraw from contract here" or an unambiguous corresponding formulation, in an easily legible way [CRD 11a]
-- [ ] French label: "renoncer au contrat ici", or an equally unambiguous wording [C. conso L. 221-21]
+- [ ] French label: "renoncer au contrat ici", or an analogous formula free of ambiguity [C. conso D. 221-5]
 - [ ] It is continuously available throughout the withdrawal period: not only in the order confirmation email, not only on one day, not dependent on stock or on support opening hours [CRD 11a]
-- [ ] It is prominently displayed on the online interface and easily accessible: a link or button in the footer of every page, and on each order in the customer account, with the label above [CRD 11a]
+- [ ] It is prominently displayed on the online interface and easily accessible [CRD 11a; C. conso D. 221-5]
+- [ ] In practice: a link or button with the label above in the footer of every page, and on each order in the customer account [best practice]
 - [ ] It is reachable without logging in, because the consumer may have no account, have lost access, or have ordered as a guest; the statement form identifies the contract instead (section 3) [best practice]
-- [ ] It is a real link (`<a href>`) to a dedicated page, or a `<button>` that opens the form on the same page; its accessible name is the visible label [WCAG 2.5.3; RGAA 6.1]
+- [ ] It is a real link (`<a href>`) to a dedicated page, or a `<button>` that opens the form on the same page; its accessible name is the visible label [WCAG 2.5.3; RGAA 6.1, 11.9]
 - [ ] The entry point is visible without opening a menu, scrolling a carousel or hovering [best practice]
 - [ ] The pre-contractual information and the order confirmation say that the function exists and where it is [CRD art. 6(1)(h)]
 
@@ -50,8 +51,8 @@ Data protection: the statement collects personal data (name, email, order number
 
 - [ ] Once the statement is completed, the consumer submits it by means of a confirmation function [CRD 11a]
 - [ ] The confirmation function is labelled in an easily legible manner and only with "confirm withdrawal" or an unambiguous corresponding formulation [CRD 11a]
-- [ ] French label: "confirmer la rétractation", or an equally unambiguous wording [C. conso L. 221-21]
-- [ ] It is a real `<button type="submit">`, its accessible name is exactly the visible label, and nothing else is written on it [WCAG 2.5.3; RGAA 6.1]
+- [ ] French label: "confirmer la rétractation", or an analogous and unambiguous formula [C. conso D. 221-5]
+- [ ] It is a real `<button type="submit">`, its accessible name is exactly the visible label, and nothing else is written on it [WCAG 2.5.3; RGAA 11.9]
 - [ ] Before the button, the screen shows what will be sent (name, contract, email address), so that the person can check it [WCAG 3.3.4; RGAA 11.12]
 - [ ] No message that tries to change the person's mind sits between the statement and the confirmation (offer of a voucher, "Are you sure? You will lose...", a countdown) [UCPD art. 9(d)]
 
@@ -60,7 +61,7 @@ The two-step design (statement, then a button labelled "confirm withdrawal") fol
 ## 5. Acknowledgement of receipt
 
 - [ ] Once the confirmation function is activated, the trader sends an acknowledgement of receipt of the withdrawal on a durable medium, without undue delay [CRD 11a]
-- [ ] France: the acknowledgement is sent within a reasonable time [C. conso L. 221-21]
+- [ ] France: the acknowledgement is sent within a reasonable time, on paper or another durable medium [C. conso D. 221-5]
 - [ ] The acknowledgement contains the content of the statement and the date and time of its submission [CRD 11a]
 - [ ] The durable medium is in practice an email with the content in its body (or a PDF attachment) sent to the address given in the statement; a message shown only in the account is not enough [CRD 11a]
 - [ ] The date and time of submission are recorded by the server when the confirmation is received, with the time zone, not taken from the browser clock [best practice]
@@ -85,7 +86,7 @@ The component has no backend: the site provides a callback that sends the statem
 
 ## 7. When the right of withdrawal does not apply
 
-The function is only required where a right of withdrawal exists. Directive 2011/83/EU lists the exceptions in Article 16; France lists them in Article L. 221-28 of the code de la consommation (13 cases, read on Légifrance through a summarising tool). They cover, among others (paraphrase, not the legal text):
+The function is only required where a right of withdrawal exists. Directive 2011/83/EU lists the exceptions in Article 16; France lists them in Article L. 221-28 of the code de la consommation (13 cases, read on Légifrance through a tool that returns short exact quotes; see [../regulatory-status.md](../regulatory-status.md) section 5.2). They cover, among others (paraphrase, not the legal text):
 
 - services fully performed, when performance began with the consumer's prior express consent and acknowledgement;
 - goods or services whose price depends on financial market fluctuations;
@@ -100,7 +101,7 @@ The function is only required where a right of withdrawal exists. Directive 2011
 - digital content not supplied on a tangible medium, once performance has begun with the consumer's prior express consent and acknowledgement, and the trader's confirmation.
 
 - [ ] The agent does not decide that an exception applies. The owner confirms in writing which products are excluded, and the profile records it (`market.withdrawal_right_applies`); otherwise the function is built [best practice]
-- [ ] When an exception applies, the consumer is told before the order that there is no right of withdrawal, or the circumstances in which it is lost [CRD art. 6(1)(k)]
+- [ ] When an exception applies, the consumer is told before the order that there is no right of withdrawal, or the circumstances in which it is lost [CRD art. 6(1)(k) (to confirm)]
 - [ ] For digital content or services that start at once, the express consent and the acknowledgement of losing the right are collected before the order by an unchecked control, and recorded in the confirmation [CRD art. 16]
 - [ ] A site that sells both excluded and non-excluded items keeps the function for the contracts that carry a right of withdrawal [CRD 11a]
 
@@ -108,9 +109,11 @@ The list above is a reading aid. Whether a product actually falls under an excep
 
 ## 8. Review checklist
 
-- [ ] An entry point labelled "withdraw from contract here" (or the national wording) is visible on every page and on each order, throughout the withdrawal period [CRD 11a]
+- [ ] An entry point labelled "withdraw from contract here" (or the national wording, or an equally unambiguous formula) is prominently displayed and easily accessible throughout the withdrawal period [CRD 11a]
+- [ ] That entry point is in the footer of every page and on each order [best practice]
 - [ ] The statement asks only for name, contract identification and the email for the confirmation, with pre-fill when known [CRD 11a]
-- [ ] The submit button reads exactly "confirm withdrawal" (or the national wording) [CRD 11a]
-- [ ] An acknowledgement with the content and the date and time of submission is sent by email at once [CRD 11a]
+- [ ] The submit button reads "confirm withdrawal" (or the national wording, or an equally unambiguous formula) and nothing else [CRD 11a]
+- [ ] An acknowledgement with the content and the date and time of submission is sent on a durable medium without undue delay [CRD 11a]
+- [ ] The acknowledgement email is sent automatically as soon as the statement is recorded [best practice]
 - [ ] Focus moves to the on-screen acknowledgement, which is announced [WCAG 4.1.3; RGAA 7.5]
 - [ ] The automated test of the flow passes with the keyboard only ([../../templates/consumer/README.md](../../templates/consumer/README.md)) [best practice]

@@ -14,7 +14,7 @@ The bodies covered by Article 47 of loi n° 2005-102: see section 1.5 of `refere
 
 ## Where it goes
 
-Read on the official page "Déclaration d'accessibilité" (DINUM, consulted 2026-11-14, source `rgaa-mandatory-pages`):
+Read on the official page "Déclaration d'accessibilité" (DINUM, consulted 2026-11-14, source `rgaa-statement`; the home page mention comes from `rgaa-mandatory-pages`):
 
 - The statement is published on the site it covers, in an accessible format, on an accessibility page reachable directly from the home page and from every page of the site. In practice: a footer link present on all pages.
 - The home page also carries the conformity mention (row `fr-accessibility-home-mention`). The mention and the statement always say the same thing.

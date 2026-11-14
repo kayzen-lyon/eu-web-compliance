@@ -32,21 +32,24 @@
        data-greeting         first assistant turn; it repeats the disclosure
        data-identity-answer  fixed answer when the visitor asks whether they talk to a human
        data-demo-answer      placeholder answer until window.aiChatRespond is wired
-       data-error-message    shown when the assistant fails; points to the human route if there is one -->
+       data-error-message    shown when the assistant fails; points to the human route if there is one
+       data-label-suffix     text after each speaker label: ":" by default; " :" in French typography
+       data-writing-message  status while the answer is written; {name} is replaced by data-assistant-label -->
 <section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="ai-chat-title" hidden
   data-assistant-label="AI assistant"
   data-user-label="You"
+  data-label-suffix=":"
   data-greeting="Hello, I am the AI assistant of [site name]. I am a computer program, not a person. I can help with [orders, delivery and returns]. My answers can be wrong: check important information on [the order page or the help pages]."
   data-identity-answer="No, I am not a person. I am an AI assistant, a computer program. [If you prefer to talk to a person, use the link Contact our team at the top of this chat.]"
   data-demo-answer="[Demo answer: connect the assistant by defining window.aiChatRespond.]"
   data-error-message="Sorry, the AI assistant cannot answer right now. [You can contact our team instead with the link Contact our team at the top of this chat.]"
-  data-writing-message="is writing an answer."
+  data-writing-message="{name} is writing an answer."
   data-empty-message="Type a message first.">
 
   <div class="ai-chat__header">
     <h2 class="ai-chat__title" id="ai-chat-title">[Lumen], AI assistant</h2>
     <!-- Persistent indicator: visible for the whole conversation. -->
-    <span class="ai-badge"><span class="ai-badge__mark" aria-hidden="true">AI</span> Not a person</span>
+    <span class="ai-badge"><span class="ai-badge__mark">AI</span> Not a person</span>
   </div>
 
   <!-- First-level notice: close to the conversation and the input field, before any message. -->

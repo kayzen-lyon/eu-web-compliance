@@ -16,7 +16,7 @@ The publishable text below is in French, for a service provided to consumers in 
 
 ## What the texts require
 
-Article 13(2) and Annex V of Directive (EU) 2019/882 are summarised in section 1.3 of regulatory-status. In France they are Article D. 412-57, 2° of the code de la consommation and its annex, read on Légifrance on 2026-11-14 (source `fr-code-consommation`; versions in force on that date, created by décret n° 2023-931). Exact extracts:
+Article 13(2) and Annex V of Directive (EU) 2019/882 are summarised in section 1.3 of regulatory-status. In France they are Article D. 412-57, 2° of the code de la consommation and its annex, read on Légifrance on 2026-11-14 (sources `fr-code-consommation` for the article and `fr-code-consommation-d412-57-annexe` for its annex; versions in force on that date, created by décret n° 2023-931). Exact extracts:
 
 Article D. 412-57, 2°:
 
@@ -51,7 +51,7 @@ On the verification date no harmonised standard is cited in the Official Journal
 
 - Describe only what was built and verified. Section 3 lists requirement by requirement how the service meets it, from the skill's verification report and from any audit the user provides. A requirement that was not tested is written as not yet evaluated, never as met.
 - Do not write that the service "est conforme" as a whole. The skill does not issue that verdict.
-- Known shortcomings are stated, with the alternative offered and the planned correction. If the evaluation shows that the service does not meet a requirement, Article D. 412-57, 4° gives the provider duties towards the authorities (corrective measures, information). Tell the user plainly; this is a point for a lawyer, described in `references/scoping/out-of-scope.md`.
+- Known shortcomings are stated, with the alternative offered and the planned correction. If the evaluation shows that the service does not meet a requirement, Article D. 412-57 also gives the provider duties towards the authorities (corrective measures, information); their exact wording is not recorded in `references/regulatory-status.md` and is to be confirmed. Tell the user plainly; this is a point for a lawyer, described in `references/scoping/out-of-scope.md`.
 - If the provider intends to rely on disproportionate burden or fundamental alteration, the assessment and its documentation are the provider's (row `eaa-disproportionate-burden`). Do not write such a claim on your own initiative.
 - For an online shop, section 3 also covers identification, security and payment functions, and the accessibility information about the products sold when the operator responsible for them provides it (row `eaa-ecommerce-functions`).
 
@@ -89,7 +89,7 @@ Le service a été évalué le [JJ mois AAAA] par [nom de la personne ou de l’
 
 ### Limites connues
 
-[Lister les contenus ou fonctions qui ne remplissent pas encore une exigence, l’alternative proposée et la date de correction prévue. S’il n’y en a pas à la date de l’évaluation, l’écrire en rappelant la date et le périmètre de l’évaluation.]
+[Lister les contenus ou fonctions qui ne remplissent pas encore une exigence, l’alternative proposée et la date de correction prévue. N’écrire qu’aucune limite n’est connue que si un audit réalisé par une personne et fourni par le prestataire le montre, en rappelant sa date et son périmètre ; à défaut, laisser cette section en attente et le signaler.]
 
 ## 4. Normes et spécifications techniques appliquées
 

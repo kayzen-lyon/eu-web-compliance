@@ -25,7 +25,7 @@ The terms are one of the places where the pre-contractual information lives ([..
 - [ ] When the price was personalised by automated decision-making, that fact [CRD art. 6(1)(ea)]
 - [ ] Payment, delivery and performance arrangements, delivery date, complaint handling; values from the owner and from the billing tool, never invented (trial length, notice, refund period) [CRD art. 6(1)(g)]
 - [ ] The steps to conclude the contract, whether it is archived and accessible, how to correct input errors, the languages offered [ECD art. 10(1)]
-- [ ] The terms can be stored and reproduced by the customer (HTML page, download, copy in the confirmation email) [ECD art. 10(3)]
+- [ ] The terms can be stored and reproduced by the customer (HTML page, download, copy in the confirmation email) [ECD art. 10(3) (to confirm)]
 - [ ] Duration of the contract, conditions for terminating it, minimum duration, for contracts with a duration [CRD art. 6(1)(o)]
 - [ ] A reminder of the existence of the legal guarantee of conformity [CRD art. 6(1)(l)]
 - [ ] France: the contact details of the competent consumer mediator, chosen by the owner [C. conso L. 616-1]
@@ -47,7 +47,7 @@ The terms are one of the places where the pre-contractual information lives ([..
 - [ ] Digital content without a tangible medium: the right is lost only when performance began with the consumer's prior express consent, the consumer acknowledged losing the right, and the trader confirmed that agreement; until the owner confirms that the order flow collects and confirms all three, the clause is written as conditional [C. conso L. 221-28]
 - [ ] Services: the exception applies only to services fully performed before the end of the period, with the prior express agreement and acknowledgement; a running subscription is not "fully performed" by being started [C. conso L. 221-28]
 - [ ] The conditional wording sits inside the published clause, for example: `[À CONFIRMER : applicable uniquement si votre parcours de commande recueille, par une case distincte non cochée par défaut, l'accord exprès du client pour l'exécution immédiate et sa reconnaissance de la perte du droit de rétractation, et si l'e-mail de confirmation reprend cet accord]` [best practice]
-- [ ] When an exception applies, the product page and the order summary say so before the order, not only the terms [CRD art. 6(1)(k)]
+- [ ] When an exception applies, the product page and the order summary say so before the order, not only the terms [CRD art. 6(1)(k) (to confirm)]
 - [ ] Express consent to early performance is collected by a separate unchecked control whose label states the consequence ([../consumer/online-sales.md](../consumer/online-sales.md) section 6) [CRD art. 16]
 
 ## 4. Order, price and payment clauses

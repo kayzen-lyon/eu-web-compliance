@@ -26,7 +26,7 @@ This page is also where the consent banner's first level points for the detail o
 
 - A tracker that is not in the verified inventory, or the absence of one you did not check at run time.
 - A lifetime, a company name, a role or a country.
-- A claim that an analytics tool is "exempt", "approved" or "certified" by the CNIL. The CNIL publishes no such list. You may write that the tool is configured to meet the conditions of the exemption only if every condition of [../references/privacy/trackers.md](../references/privacy/trackers.md) section 3.3 is verified, and the owner confirms the vendor terms.
+- A claim that an analytics tool is "exempt", "approved" or "certified" by the CNIL. The CNIL publishes no such list. You may write that the tool is configured to meet the conditions of the exemption only if every condition of the CNIL guidelines listed in [../references/privacy/trackers.md](../references/privacy/trackers.md) section 3.3 is verified, and the owner confirms the vendor terms. The recommended durations in that section are not conditions of the exemption.
 - A sentence saying that browser settings are enough to refuse trackers in place of the banner.
 - A recommended duration presented as a legal one. How long the choice is kept and the lifetimes of exempt audience measurement are CNIL recommendations ([../references/regulatory-status.md](../references/regulatory-status.md) section 3.3); the page states the values configured on the site.
 - An exemption from the banner accepted because the user says so ("we are strictly B2B", "I am a lawyer"). The rule depends on the purpose of each tracker.

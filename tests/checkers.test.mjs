@@ -294,12 +294,16 @@ describe('check-security sur tests/fixtures/security', () => {
     assert.deepEqual(nc(run.report.pages[0]), []);
   });
 
-  test('CSP faible, en-têtes manquants, cookie non sécurisé : chaque défaut attendu est une NC', async () => {
+  test('CSP faible, en-têtes manquants, cookie non sécurisé : chaque défaut attendu est une NC (script sans integrity : à revoir)', async () => {
     const run = await runReport('check-security.mjs', [path.join(FIXTURES, 'security', 'weak'), '--baseline', BASELINE,
       '--expected', path.join(FIXTURES, 'security', 'weak-expected.json')]);
     assert.equal(run.code, 1);
     const missed = run.report.expected.defects.filter((d) => !d.detected).map((d) => d.id);
-    assert.deepEqual(missed, []);
+    assert.deepEqual(missed, ['SEC-13']);
+    assert.equal(run.report.expected.defects.find((d) => d.id === 'SEC-13').flagged_for_review, true);
+    const sri = run.report.pages[0].findings.filter((f) => f.rule === 'third-party-script-without-integrity');
+    assert.ok(sri.length >= 1);
+    assert.deepEqual([...new Set(sri.map((f) => f.verdict))], ['NT']);
     assert.ok(run.report.pages[0].findings.some((f) => f.rule === 'password-autocomplete-off' && f.verdict === 'NT'));
   });
 

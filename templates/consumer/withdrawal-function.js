@@ -58,7 +58,7 @@
       intro: 'Vous pouvez vous rétracter d\'un contrat conclu sur ce site pendant le délai de rétractation, sans avoir à donner de motif.',
       openLabel: 'Renoncer au contrat ici',
       statementTitle: 'Votre déclaration de rétractation',
-      statementIntro: 'Remplissez ou vérifiez les trois champs ci-dessous, puis choisissez « Confirmer la rétractation ». Vous n\'avez pas à donner de motif. Tous les champs sont obligatoires.',
+      statementIntro: 'Remplissez ou vérifiez les trois champs ci-dessous, puis choisissez « Confirmer la rétractation ». Vous n\'avez pas à donner de motif. Tous les champs sont obligatoires.',
       nameLabel: 'Votre nom',
       contractLabel: 'Numéro de commande',
       contractHint: 'Il figure dans le courriel de confirmation de commande, par exemple 2026-001234.',
@@ -66,16 +66,16 @@
       emailHint: 'Nous envoyons l\'accusé de réception de votre rétractation à cette adresse.',
       confirmLabel: 'Confirmer la rétractation',
       statementText: 'Je me rétracte du contrat identifié ci-dessous.',
-      errorName: 'Votre nom : saisissez votre nom, par exemple Alex Martin',
-      errorContract: 'Numéro de commande : saisissez le numéro de votre confirmation de commande, par exemple 2026-001234',
-      errorEmail: 'Adresse électronique : saisissez une adresse au format nom@exemple.fr',
+      errorName: 'Votre nom : saisissez votre nom, par exemple Alex Martin',
+      errorContract: 'Numéro de commande : saisissez le numéro indiqué dans votre confirmation de commande, par exemple 2026-001234',
+      errorEmail: 'Adresse électronique : saisissez une adresse au format nom@exemple.fr',
       errorsOne: 'La déclaration contient 1 erreur',
       errorsMany: 'La déclaration contient {n} erreurs',
       sending: 'Envoi de votre déclaration de rétractation.',
-      sendError: 'Votre déclaration de rétractation n\'a pas pu être envoyée. Rien n\'est perdu : vérifiez votre connexion et choisissez de nouveau « Confirmer la rétractation », ou écrivez-nous.',
+      sendError: 'Votre déclaration de rétractation n\'a pas pu être envoyée. Rien n\'est perdu : vérifiez votre connexion et choisissez de nouveau « Confirmer la rétractation », ou écrivez-nous.',
       ackTitle: 'Votre rétractation a été envoyée',
       ackTime: 'Nous l\'avons reçue le {date}.',
-      ackReference: 'Référence : {ref}',
+      ackReference: 'Référence : {ref}',
       ackEmail: 'Un accusé de réception reprenant ce contenu, cette date et cette heure est envoyé à {email}. Conservez-le.',
       ackContentTitle: 'Contenu de votre déclaration',
       ackStatus: 'Rétractation envoyée.',
@@ -110,8 +110,8 @@
     return declared.toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
   }
 
-  function applyTexts(root, texts) {
-    root.querySelectorAll('[data-text]').forEach(function (node) {
+  function applyTexts(scope, texts) {
+    scope.querySelectorAll('[data-text]').forEach(function (node) {
       var value = texts[node.getAttribute('data-text')];
       if (typeof value === 'string') node.textContent = value;
     });
@@ -147,7 +147,7 @@
     };
     var sending = false;
 
-    applyTexts(root, texts);
+    applyTexts(document, texts);   // the whole page, so that a data-text heading outside the section is switched too
     var prefill = config.prefill || {};
     Object.keys(fields).forEach(function (key) {
       if (typeof prefill[key] === 'string' && !fields[key].input.value) fields[key].input.value = prefill[key];
@@ -254,7 +254,7 @@
         statement.hidden = true;
         openButton.setAttribute('aria-expanded', 'false');
         ack.hidden = false;
-        status.textContent = texts.ackStatus;
+        status.textContent = '';   // focus goes to the acknowledgement title: announcing it too would say it twice
         ack.querySelector('[data-wd-ack-title]').focus();
       }).catch(function () {
         status.textContent = '';

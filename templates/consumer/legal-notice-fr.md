@@ -41,7 +41,7 @@ Dernière mise à jour : [date]
 
 ## Éditeur du site
 
-<!-- Block A: personne morale (société, association). -->
+<!-- Block A: personne morale à capital social (société). An association uses block C. -->
 Le site [adresse du site] est édité par [dénomination sociale], [forme juridique] au capital de [montant du capital social] €, dont le siège social est situé [adresse du siège social].
 
 - Immatriculation : [RCS de ville + numéro, ou autre registre et numéro]

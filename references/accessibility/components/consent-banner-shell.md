@@ -51,7 +51,7 @@ The banner is the first thing after the skip link in `<body>`, in the normal pag
     </form>
   </dialog>
 
-  <div id="status-region" role="status" class="visually-hidden"></div>
+  <div id="consent-status" role="status" class="visually-hidden"></div>
 </body>
 ```
 
@@ -80,7 +80,7 @@ The banner is the first thing after the skip link in `<body>`, in the normal pag
 ```js
 const banner = document.getElementById('consent-banner');
 const settings = document.getElementById('consent-settings');
-const statusRegion = document.getElementById('status-region');
+const statusRegion = document.getElementById('consent-status');
 
 const closeBanner = (message) => {
   const focusWasInside = banner.contains(document.activeElement);

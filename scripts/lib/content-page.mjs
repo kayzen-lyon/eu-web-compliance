@@ -117,6 +117,9 @@ export function probe(arg) {
     return clean(parts.join(' '));
   };
   const CHAT_SCOPE = '[data-ai-chat], .ai-chat, [data-chat-widget]';
+  // Bouton qui envoie un formulaire (hors method="dialog") : jamais cliqué par le vérificateur.
+  const submitsForm = (el) => Boolean(el.form) && (el.type || '').toLowerCase() === 'submit'
+    && (el.form.getAttribute('method') || '').toLowerCase() !== 'dialog';
 
   if (arg.task === 'page') {
     const links = [];
@@ -136,8 +139,14 @@ export function probe(arg) {
       submits.push({ selector: cssPath(el), name: accName(el), dom_name: domName(el), visible_text: visibleText(el), visible: visible(el),
         form: cssPath(form), in_main: Boolean(el.closest('main')) });
     }
+    // Libellé propre de la case, sinon le texte de son parent immédiat (own_label: false) : jamais
+    // le texte d'un bloc plus large, qui peut contenir un prix sans rapport avec la case.
     const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter((el) => !el.closest('dialog'))
-      .map((el) => ({ selector: cssPath(el), checked: el.checked, label: labelOf(el) || clean((el.closest('div, p, li') || el.parentElement).textContent), visible: visible(el) }));
+      .map((el) => {
+        const own = labelOf(el);
+        return { selector: cssPath(el), checked: el.checked, label: own || clean(el.parentElement ? el.parentElement.textContent : ''),
+          own_label: Boolean(own), visible: visible(el) };
+      });
 
     // Réductions de prix : prix barré (del, s, strike, ou line-through calculé), badge en pourcentage,
     // « au lieu de ». Le groupe est le plus petit ancêtre qui contient les prix concernés.
@@ -239,8 +248,10 @@ export function probe(arg) {
       ...weak.filter((el) => !weak.some((o) => o !== el && o.contains(el)))];
     return { missing, chats: outer.map((el) => {
       let launcher = el.id ? document.querySelector(`[aria-controls~="${CSS.escape(el.id)}"]`) : null;
+      if (launcher && submitsForm(launcher)) launcher = null;
       if (!launcher) {
-        launcher = Array.from(document.querySelectorAll('button, [role="button"]')).find((b) => !el.contains(b) && /chat|assistant|tchat|discuter|question/i.test(accName(b)));
+        launcher = Array.from(document.querySelectorAll('button, [role="button"]'))
+          .find((b) => !el.contains(b) && !submitsForm(b) && /chat|assistant|tchat|discuter|question/i.test(accName(b)));
       }
       return { selector: cssPath(el), declared: found.get(el) === true, hidden: !visible(el), launcher: launcher ? cssPath(launcher) : null,
         launcher_name: launcher ? accName(launcher) : null };
@@ -328,8 +339,8 @@ export function probe(arg) {
   if (arg.task === 'withdrawal-entry') {
     const root = document.querySelector('[data-withdrawal]') || document.querySelector('main') || document.body;
     const entry = root.querySelector('[data-wd-open]') || Array.from(root.querySelectorAll('button, [role="button"]'))
-      .find((b) => /withdraw|rétract|retract|renonc/i.test(accName(b)));
-    return entry && visible(entry) ? cssPath(entry) : null;
+      .find((b) => !submitsForm(b) && /withdraw|rétract|retract|renonc/i.test(accName(b)));
+    return entry && visible(entry) && !submitsForm(entry) ? cssPath(entry) : null;
   }
 
   if (arg.task === 'withdrawal-form') {

@@ -76,11 +76,21 @@ Use a toggle button instead of hover: a "Help" button with `aria-expanded` that 
 ```html
 <label for="iban">IBAN</label>
 <input id="iban" name="iban" type="text" aria-describedby="iban-help">
-<button type="button" aria-expanded="false" aria-controls="iban-help">Help<span class="visually-hidden"> about the IBAN</span></button>
+<button type="button" data-toggle="iban-help" aria-expanded="false" aria-controls="iban-help">Help<span class="visually-hidden"> about the IBAN</span></button>
 <p id="iban-help" hidden>The IBAN is printed on your bank details. It starts with two letters, for example FR76.</p>
 ```
 
-The script is the one-line toggle shown in [accordion.md](accordion.md), implementation B.
+```js
+document.addEventListener('click', (event) => {
+  const button = event.target.closest('button[data-toggle]');
+  if (!button) return;
+  const open = button.getAttribute('aria-expanded') === 'true';
+  button.setAttribute('aria-expanded', String(!open));
+  document.getElementById(button.dataset.toggle).hidden = open;
+});
+```
+
+This is the same toggle as [accordion.md](accordion.md), implementation B, keyed on `data-toggle` so that it works outside an accordion wrapper.
 
 ## Expected keyboard behaviour
 

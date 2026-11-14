@@ -74,7 +74,7 @@ After a client-side route change there is no page load, so focus stays where it 
 ## Checklist
 
 - [ ] A link to the main content is present at the start of the page, before the repeated blocks; make it the first focusable element [WCAG 2.4.1; RGAA 12.7]
-- [ ] The link is visible at least while it has focus [WCAG 2.4.7; RGAA 12.7]
+- [ ] The link is visible at least while it has focus [WCAG 2.4.7; RGAA 10.7]
 - [ ] Activating it moves keyboard focus to the main content, which is not covered by a sticky header [WCAG 2.4.3; RGAA 12.7]
 - [ ] It sits at the same place and in the same order on every page [WCAG 3.2.3; RGAA 12.7]
 - [ ] Its text has a contrast ratio of at least 4.5:1 with its background when visible [WCAG 1.4.3; RGAA 3.2]

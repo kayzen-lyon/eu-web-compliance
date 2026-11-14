@@ -341,7 +341,13 @@
   }
 
   function focusMain() {
-    var target = document.querySelector(config.focusTarget);
+    var target = null;
+    try {
+      target = document.querySelector(config.focusTarget);
+    } catch (error) {
+      // An invalid selector must not stop the choice, already stored, from being announced.
+      reportError('eu-consent: focusTarget is not a valid CSS selector; focus stays where it is.', error);
+    }
     if (!target) return;
     if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
     target.focus();

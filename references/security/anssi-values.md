@@ -6,18 +6,18 @@ TLS versions and cipher suites, key sizes, hash functions, password storage, ran
 
 1. Copy values from here, never from memory, from a tutorial or from another skill. A wrong cipher suite or hashing parameter copied into many sites is a real risk.
 2. If you need a value that is not in this file, do not invent one: use the library's documented default, say in the report that no ANSSI value exists, and list it as "to confirm".
-3. Guides and versions used (read on 2026-11-14 from the texts recorded in [../sources.json](../sources.json)):
+3. Guides used (texts recorded in [../sources.json](../sources.json); versions and dates in [../regulatory-status.md](../regulatory-status.md) section 4):
 
-| Tag | Guide | Version |
-|-----|-------|---------|
-| `ANSSI WEB` | ANSSI-PA-009, website security, browser side | v2.0, 28 April 2021 |
-| `ANSSI TLS` | Recommandations de sécurité relatives à TLS (SDE-NT-35) | v1.2, 26 March 2020 |
-| `ANSSI MFA` | ANSSI-PG-078, multi-factor authentication and passwords | v2.0, 8 October 2021 |
-| `ANSSI CRYPTO` | ANSSI-PG-083, choice and sizing of cryptographic mechanisms | v3.00, 20 March 2026 |
+| Tag | Guide |
+|-----|-------|
+| `ANSSI WEB` | ANSSI-PA-009, website security, browser side |
+| `ANSSI TLS` | Recommandations de sécurité relatives à TLS (SDE-NT-35) |
+| `ANSSI MFA` | ANSSI-PG-078, multi-factor authentication and passwords |
+| `ANSSI CRYPTO` | ANSSI-PG-083, choice and sizing of cryptographic mechanisms |
 
 `ANSSI CRYPTO` identifiers are names, not numbers (for example `RègleHachage`); a number after a dot is an item of that rule (`RègleFactorisation.2`). Rules (`Règle…`) are minimums; recommendations (`Reco…`) are the preferred level.
 
-Precedence: on key sizes, PG-083 v3.00 (2026) is more recent than the TLS guide (2020) and wins where they differ.
+Precedence: on key sizes, PG-083 is more recent than the TLS guide (dates in the status file, section 4) and wins where they differ.
 
 ## 1. TLS
 
@@ -90,7 +90,7 @@ The guide's own Apache example (annex B, extract B.2) orders ECDHE before DHE, A
 - [ ] Revocation information present in the certificate (CRL distribution point or AIA), OCSP stapling preferred when the certificate authority offers OCSP [ANSSI TLS R33, R35]
 - [ ] Full, ordered certificate chain sent by the server [ANSSI TLS R34]
 
-Certificate lifetimes are usually set by the certificate authority; the 825-day maximum of the 2020 guide is a ceiling, not a target.
+Certificate lifetimes are usually set by the certificate authority; the 825-day maximum of the TLS guide is a ceiling, not a target.
 
 ### HSTS
 

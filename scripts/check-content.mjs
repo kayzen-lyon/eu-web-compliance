@@ -30,12 +30,16 @@
 //   withdrawal-confirm-not-reachable  NT  bouton de confirmation masqué à l'ouverture, libellé vide ou illisible
 //   (un bouton de commande ou de confirmation masqué au chargement est lu dans le DOM ; il ne donne jamais de NC)
 //   price-reduction-prior-price       NT  réduction annoncée sans prix antérieur indiqué
-//   pre-ticked-option                 NC  option payante ou consentement marketing coché d'avance
+//   pre-ticked-option                 NC/NT option payante cochée d'avance, avec un prix ou un supplément net dans le
+//                                         libellé propre de la case (NC) ; autre indice ou consentement marketing (NT)
 //   countdown-resets                  NC  compte à rebours qui repart au rechargement
 //   scarcity-claim                    NT  message de rareté (« plus que 2 en stock »)
 //   confirmshaming                    NT  refus formulé pour culpabiliser
-//   legal-notice-link-missing         NC  pas de lien vers la page d'identification (NT sans compliance/site.json)
-//   legal-notice-unreachable          NC  la page d'identification liée n'existe pas
+//   legal-notice-link-missing         NC  pas de lien vers la page d'identification (NT sans compliance/site.json,
+//                                         ou pour un site dans une autre langue que l'anglais et le français)
+//   legal-notice-unreachable          NC/NT la page d'identification liée n'existe pas (404, 410 : NC) ou refuse
+//                                         l'accès au vérificateur (401, 403, 429, autre erreur, réseau : NT)
+//   page-not-analysed                 NT  page en erreur HTTP (403, 404, 500...) : rien n'y est vérifié
 //   legal-notice-content              NT  catégorie d'information absente de la page d'identification
 //   legal-notice-placeholder          NT  texte entre crochets laissé sur la page d'identification
 //   odr-platform-link                 NT  lien vers l'ancienne plateforme européenne de règlement en ligne des litiges
@@ -71,24 +75,26 @@
 //     --wait <ms>                attente après chargement (défaut 500)
 //     --no-fail                  code de sortie 0 même en cas de non-conformité
 //
-// Toute requête vers un hôte tiers est interrompue. Le vérificateur ouvre les fenêtres de
-// discussion et la déclaration de rétractation, mais n'envoie ni message, ni formulaire, ni commande.
+// Toute requête vers un hôte tiers est interrompue, ainsi que toute requête autre que GET, HEAD
+// ou OPTIONS. Le vérificateur ouvre les fenêtres de discussion et la déclaration de rétractation,
+// mais n'envoie ni message, ni formulaire, ni commande, et ne clique jamais un bouton d'envoi.
 //
 // Codes de sortie : 0 aucune non-conformité, 1 non-conformité trouvée, 2 erreur d'usage.
 
 import path from 'node:path';
-import { launchBrowser, freshContext, routeThirdParty } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
+  prepareOutputs, DATA_NOTICE, notAnalysedMessage,
 } from './lib/cli.mjs';
 import {
   SITE_PATH, AI_TERM, LEGAL_NOTICE_LINK, loadSite, classifyActionLabel, classifyWithdrawalEntry, classifyPreTicked, isConfirmshaming,
-  parseCountdown, missingNoticeCategories, labelRequirement, cite,
+  parseCountdown, missingNoticeCategories, labelRequirement, cite, legalNoticeLinkVerdict,
 } from './lib/content-rules.mjs';
 import { probe, PATTERNS } from './lib/content-page.mjs';
 
 const LIMITS = [
-  'The checker loads each page given in one fresh browser session; it does not crawl the site. It opens chat panels and the withdrawal statement, but never sends a chat message, a form or an order.',
+  'The checker loads each page given in one fresh browser session; it does not crawl the site. It opens chat panels and the withdrawal statement, but never sends a chat message, a form or an order: it never clicks a button that submits a form, and every request other than GET, HEAD or OPTIONS is aborted.',
   'Server-side behaviour is not seen: whether the order or the withdrawal statement is recorded, the time stamp, the order confirmation and the acknowledgement of withdrawal on a durable medium (emails), or whether the withdrawal function stays available for the whole withdrawal period.',
   'Prices over time are not known: the checker cannot tell whether the prior price shown is the lowest price of the last 30 days, or whether a deadline is real. It only reports a reduction without any prior price, and a countdown that starts again when the page is reloaded.',
   'Stock and demand are not known: scarcity messages are reported for review, never as true or false.',
@@ -125,9 +131,9 @@ async function openPage(browser, url, wait) {
   await routeThirdParty(context, { pageUrl: url, getPage: () => page, onThirdParty: () => {} });
   page = await context.newPage();
   page.on('pageerror', (error) => errors.push(String(error)));
-  await page.goto(url, { waitUntil: 'load' });
-  await settle(page, wait);
-  return { context, page, errors };
+  const problem = loadProblem(await page.goto(url, { waitUntil: 'load' }));
+  if (!problem) await settle(page, wait);
+  return { context, page, errors, problem };
 }
 
 const ask = (page, task, extra = {}) => page.evaluate(probe, { task, patterns: PATTERNS, ...extra });
@@ -135,8 +141,9 @@ const ask = (page, task, extra = {}) => page.evaluate(probe, { task, patterns: P
 // ---- Relevé d'une page ---------------------------------------------------------------------
 
 async function collect(browser, p, ctx) {
-  const { context, page, errors } = await openPage(browser, p.url, ctx.wait);
+  const { context, page, errors, problem } = await openPage(browser, p.url, ctx.wait);
   try {
+    if (problem) return { problem, data: null, chats: [], missing_chats: [], content: [], items: [], timers: [], errors };
     const site = ctx.site;
     const data = await ask(page, 'page', { orderButton: site && site.pages.order_final === p.page ? site.order_button : null });
     const scan = await ask(page, 'chats', { declared: site ? site.ai.chat_widgets : [] });
@@ -331,11 +338,18 @@ function legalLinkFindings(r, p, ctx) {
   if (ctx.legalPage && p.page === ctx.legalPage) return [];
   const found = r.data.links.some((l) => l.tag === 'a' && ((ctx.legalPage && pagePathOf(l.href, ctx) === ctx.legalPage) || LEGAL_NOTICE_LINK.test(l.name)));
   if (found) return [];
-  return [finding('legal-notice-link-missing', ctx.site ? 'NC' : 'NT', 'legal-notice', ctx.site, { selector: 'body',
-    message: `No link to the legal notice / imprint from this page${ctx.site ? '' : ' (without compliance/site.json the checker cannot tell whether the site is a business, so this is for review)'}. Identification must be easily, directly and permanently accessible: put a "Legal notice" / "Mentions légales" link in the footer of every page.` })];
+  const verdict = legalNoticeLinkVerdict(ctx.site, r.data.lang);
+  const why = !ctx.site ? ' (without compliance/site.json the checker cannot tell whether the site is a business, so this is for review)'
+    : verdict === 'NT' ? ' (the checker only recognises English and French link names, and this site is in another language or declares none, so this is for review)' : '';
+  return [finding('legal-notice-link-missing', verdict, 'legal-notice', ctx.site, { selector: 'body',
+    message: `No link to the legal notice / imprint was recognised on this page${why}. Identification must be easily, directly and permanently accessible: put a "Legal notice" / "Mentions légales" link in the footer of every page.` })];
 }
 
 function pageFindings(p, r, ctx) {
+  if (r.problem) {
+    return [{ detector: 'content', rule: 'page-not-analysed', verdict: 'NT', severity: 'major', source: '[best practice]', refs: [], selector: null,
+      message: notAnalysedMessage(r.problem) }];
+  }
   const site = ctx.site;
   const { data } = r;
   const out = [];
@@ -356,12 +370,14 @@ function pageFindings(p, r, ctx) {
       message: `A price reduction is announced ("${red.text.slice(0, 100)}") without a prior price. Any announcement of a reduction indicates the prior price, the lowest price applied during at least the 30 days before; the checker cannot know that price, check it against the price history.` }));
   }
   for (const box of data.checkboxes.filter((b) => b.checked)) {
-    const kind = classifyPreTicked(box.label);
-    if (!kind) continue;
-    out.push(finding('pre-ticked-option', 'NC', kind === 'paid' ? 'pre-ticked-paid' : 'pre-ticked-marketing', site, { selector: box.selector, detail: box.label.slice(0, 80),
-      message: kind === 'paid'
-        ? `A paid option is ticked by default ("${box.label.slice(0, 100)}"). Extra payments need the consumer's express consent; consent inferred from a default option gives a right to reimbursement.`
-        : `A marketing or newsletter consent is ticked by default ("${box.label.slice(0, 100)}"). Consent cannot be inferred from a pre-ticked box; leave it unticked.` }));
+    const hit = classifyPreTicked(box.label, { ownLabel: box.own_label !== false });
+    if (!hit) continue;
+    const quoted = `"${box.label.slice(0, 100)}"${box.own_label === false ? ', text next to the box' : ''}`;
+    const review = hit.verdict === 'NT' ? ' The checker only has a clue here: check what the box does and whether it costs anything.' : '';
+    out.push(finding('pre-ticked-option', hit.verdict, hit.kind === 'paid' ? 'pre-ticked-paid' : 'pre-ticked-marketing', site, { selector: box.selector, detail: box.label.slice(0, 80),
+      message: hit.kind === 'paid'
+        ? `A paid option seems to be ticked by default (${quoted}). Extra payments need the consumer's express consent; consent inferred from a default option gives a right to reimbursement.${review}`
+        : `A marketing or newsletter option is ticked by default (${quoted}). Consent cannot be inferred from a pre-ticked box; leave it unticked. Check whether the box records consent, or offers an existing customer a way to object.` }));
   }
   for (const t of r.timers.filter((x) => x.resets)) {
     out.push(finding('countdown-resets', 'NC', 'urgency', site, { selector: t.selector, detail: t.before,
@@ -396,15 +412,20 @@ async function withdrawalFlow(browser, ctx, results) {
   }
   if (!targetUrl) {
     for (const r of results) {
-      const link = r.raw.data.links.find((l) => l.href && classifyWithdrawalEntry(l.name) === 'legal');
+      const link = r.raw.data && r.raw.data.links.find((l) => l.href && classifyWithdrawalEntry(l.name) === 'legal');
       if (link) { targetUrl = link.href; break; }
     }
   }
   if (!targetUrl) return { page: null, findings: [] };
   const targetPage = pagePathOf(targetUrl, ctx);
-  const { context, page } = await openPage(browser, targetUrl, ctx.wait);
+  const { context, page, problem } = await openPage(browser, targetUrl, ctx.wait);
   const out = [];
   try {
+    if (problem) {
+      out.push(finding('withdrawal-statement-missing', 'NT', 'withdrawal', site, { selector: null, detail: problem,
+        message: `The page of the withdrawal function (${targetPage || targetUrl}) could not be loaded by the checker (${problem}): check by hand that it leads to the online withdrawal statement.` }));
+      return { page: targetPage, findings: out };
+    }
     let forms = await ask(page, 'withdrawal-form');
     if (!forms.length) {
       const entry = await ask(page, 'withdrawal-entry');
@@ -465,6 +486,20 @@ async function withdrawalFlow(browser, ctx, results) {
   }
 }
 
+// Statut HTTP d'une adresse, demandé par le contexte du navigateur (mêmes en-têtes qu'une visite),
+// avec un délai ; 0 en cas d'erreur réseau ou de délai dépassé.
+async function statusOf(browser, url) {
+  const context = await freshContext(browser);
+  try {
+    const response = await context.request.get(url, { timeout: 15000, maxRedirects: 5, failOnStatusCode: false });
+    return response.status();
+  } catch {
+    return 0;
+  } finally {
+    await context.close();
+  }
+}
+
 async function siteFindings(browser, ctx, results) {
   const site = ctx.site;
   const first = (results.find((r) => r.page === 'index.html') || results[0]).page;
@@ -480,7 +515,8 @@ async function siteFindings(browser, ctx, results) {
         message: `pages.${key} in ${SITE_PATH} names ${page}, which is not among the pages checked: the rules for that page were not evaluated.` });
     }
     const allChats = results.flatMap((r) => r.raw.missing_chats);
-    for (const selector of site.ai.chat_widgets.filter((s) => allChats.filter((x) => x === s).length === results.length)) {
+    const analysed = results.filter((r) => !r.raw.problem);
+    for (const selector of site.ai.chat_widgets.filter((s) => analysed.length && allChats.filter((x) => x === s).length === analysed.length)) {
       push(first, finding('ai-chat-not-found', 'NT', 'chat', site, { selector, detail: selector, message: `Chat widget ${selector} declared in ${SITE_PATH} was found on no page checked.` }));
     }
     for (const item of site.ai.content.filter((i) => !results.some((r) => r.page === i.page))) {
@@ -490,7 +526,7 @@ async function siteFindings(browser, ctx, results) {
     if (site.ai.content.some((i) => i.kind === 'text' && i.editorial_review && i.public_interest !== false)) {
       const page = site.ai.editorial_responsibility_page;
       const r = page && results.find((x) => x.page === page);
-      const text = r ? r.raw.data.main_text : '';
+      const text = r && r.raw.data ? r.raw.data.main_text : '';
       if (!r || !EDITORIAL.test(text) || !EMAIL.test(text)) {
         push(page || first, finding('ai-editorial-responsibility', 'NT', 'editorial', site, { selector: r ? 'main' : null, detail: page || 'not declared',
           message: !page ? `Texts rely on the editorial exception, but ${SITE_PATH} names no page that publishes who holds editorial responsibility (ai.editorial_responsibility_page).`
@@ -504,7 +540,7 @@ async function siteFindings(browser, ctx, results) {
     }
   }
   if (ctx.legalPage) {
-    const r = results.find((x) => x.page === ctx.legalPage);
+    const r = results.find((x) => x.page === ctx.legalPage && !x.raw.problem);
     if (r) {
       for (const c of missingNoticeCategories(r.raw.data.main_text, site)) {
         push(r.page, finding('legal-notice-content', 'NT', 'legal-notice-content', site, { selector: 'main', detail: c.key,
@@ -515,13 +551,17 @@ async function siteFindings(browser, ctx, results) {
         push(r.page, finding('legal-notice-placeholder', 'NT', 'legal-notice-content', site, { selector: 'main', detail: placeholder[0],
           message: `The legal notice still contains a placeholder ("${placeholder[0]}"): the value must come from the operator.` }));
       }
-    } else if (ctx.origin) {
-      const status = await fetch(`${ctx.origin}/${ctx.legalPage.split('/').map(encodeURIComponent).join('/')}`).then((res) => res.status, () => 0);
+    } else if (ctx.origin && !results.some((x) => x.page === ctx.legalPage)) {
+      const status = await statusOf(browser, `${ctx.origin}/${ctx.legalPage.split('/').map(encodeURIComponent).join('/')}`);
+      // 404 et 410 disent que la page n'existe pas ; un refus (401, 403, 429), une erreur serveur
+      // ou réseau peut viser le vérificateur seul (pare-feu, limitation de débit) : à revoir.
+      const missing = status === 404 || status === 410;
       push(first, status >= 200 && status < 400
         ? { detector: 'content', rule: 'site-declaration-page-missing', verdict: 'NT', severity: 'minor', source: '[best practice]', refs: [], selector: null, detail: ctx.legalPage,
           message: `The legal notice (${ctx.legalPage}) exists but was not among the pages checked: its content was not reviewed.` }
-        : finding('legal-notice-unreachable', 'NC', 'legal-notice', site, { selector: null, detail: ctx.legalPage,
-          message: `The legal notice linked from the pages (${ctx.legalPage}) could not be loaded (HTTP ${status || 'error'}).` }));
+        : finding('legal-notice-unreachable', missing ? 'NC' : 'NT', 'legal-notice', site, { selector: null, detail: ctx.legalPage,
+          message: missing ? `The legal notice linked from the pages (${ctx.legalPage}) does not exist (HTTP ${status}).`
+            : `The legal notice linked from the pages (${ctx.legalPage}) could not be loaded by the checker (${status ? `HTTP ${status}` : 'network error or time-out'}): a firewall or rate limit may block automated visits. Open it in a browser and check it.` }));
     }
   }
   for (const { page, finding: f } of add) results.find((r) => r.page === page).findings.push(f);
@@ -532,6 +572,7 @@ async function siteFindings(browser, ctx, results) {
 function toMarkdown(report) {
   const lines = ['# Automated content check: AI transparency and consumer law', '',
     '> Produced by an automated tool with the help of an AI. It is not an audit and not legal advice. Absence of findings does not establish compliance; see "Limits" below.', '',
+    `> ${DATA_NOTICE}`, '',
     `- Target: \`${report.target}\``, `- Date: ${report.date}`, `- Site declaration: ${report.site_declaration || 'none'}`,
     `- Non-conformities: ${report.summary.non_conformities}`, `- To review: ${report.summary.to_review}`, '',
     ...expectedMarkdown(report.expected)];
@@ -556,6 +597,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2), { values: ['--out', '--md', '--expected', '--site', '--wait'], flags: [] });
   const wait = args.wait === undefined ? 500 : Number.parseInt(args.wait, 10);
   if (!Number.isInteger(wait) || wait < 0) throw new UsageError('--wait : entier positif ou nul attendu (millisecondes)');
+  await prepareOutputs(args);
   const target = args.targets[0];
   const expectedList = await loadExpected(args.expected);
   const { pages, root, server } = await resolvePages(target);
@@ -572,9 +614,9 @@ async function main() {
     browserName = launched.browserName;
     try {
       for (const p of pages) results.push({ page: p.page, url: p.url, raw: await collect(launched.browser, p, ctx) });
-      for (const r of results) ctx.aiMention.set(r.page, AI_TERM.test(r.raw.data.body_text));
+      for (const r of results.filter((x) => !x.raw.problem)) ctx.aiMention.set(r.page, AI_TERM.test(r.raw.data.body_text));
       const counts = new Map();
-      for (const r of results) {
+      for (const r of results.filter((x) => !x.raw.problem)) {
         for (const l of r.raw.data.links.filter((x) => x.tag === 'a' && LEGAL_NOTICE_LINK.test(x.name))) {
           const target = pagePathOf(l.href, ctx);
           if (target) counts.set(target, (counts.get(target) || 0) + 1);
@@ -589,7 +631,7 @@ async function main() {
   } finally {
     if (server) await server.close();
   }
-  const pagesOut = results.map((r) => ({ page: r.page, url: r.url, lang: r.raw.data.lang, findings: r.findings,
+  const pagesOut = results.map((r) => ({ page: r.page, url: r.url, lang: r.raw.data ? r.raw.data.lang : null, analysed: !r.raw.problem, findings: r.findings,
     chats: r.raw.chats.map((c) => ({ selector: c.selector, declared: c.declared, opened: c.opened, ai_visible: c.ai_visible, messages: c.messages })),
     ai_content: r.raw.content, timers: r.raw.timers, script_errors: r.raw.errors }));
   const allFindings = pagesOut.flatMap((r) => r.findings);

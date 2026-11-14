@@ -7,7 +7,8 @@ Interfaces that deceive, pressure or manipulate consumers ("dark patterns"): whi
 1. Section 1 says which text applies. For almost every website it is the Unfair Commercial Practices Directive (UCPD). The DSA rule (Article 25) adds to it only for online platforms.
 2. Before building any nudge (a timer, a stock counter, an upsell, a "Are you sure?" dialog, a retention offer), check section 3. If the feature matches a pattern, build the honest version given there instead, and tell the owner why.
 3. When auditing, report each pattern found with its source. A pattern tied to an Annex I point is unfair in all circumstances; one tied to Articles 5 to 9 is unfair when it is likely to change the average consumer's decision, which is a judgement: report it as "likely non-conformity, to be confirmed by a professional".
-4. The examples of the Commission's 2021 guidance (section 4.2.7, Commission Notice 2021/C 526/01) were read on that date; the guidance is not binding, the directive is.
+4. The examples of the Commission's 2021 guidance (section 4.2.7, Commission Notice 2021/C 526/01) were read on the date given at the top of [../regulatory-status.md](../regulatory-status.md) (section 5.3); the guidance is not binding, the directive is. A rule that rests only on the guidance is worded as the Commission's reading, not as an obligation.
+5. A tag ending in `(to confirm)` cites a provision not yet recorded in [../regulatory-status.md](../regulatory-status.md): report such a pattern as "to be confirmed by a professional", not as a verified breach.
 
 ## 1. Which rule applies
 
@@ -16,7 +17,7 @@ Interfaces that deceive, pressure or manipulate consumers ("dark patterns"): whi
 - [ ] ... misleading omissions (hiding material information or giving it in an unclear, ambiguous or untimely way, or not identifying commercial intent) [UCPD art. 7]
 - [ ] ... aggressive practices (harassment, coercion or undue influence that significantly impairs freedom of choice) [UCPD art. 8]
 - [ ] ... including onerous or disproportionate non-contractual barriers to exercising contractual rights, such as terminating a contract or switching [UCPD art. 9(d)]
-- [ ] The practices listed in Annex I are unfair in all circumstances, without any case-by-case test [UCPD art. 5(5)]
+- [ ] The practices listed in Annex I are unfair in all circumstances, without any case-by-case test [UCPD art. 5(5) (to confirm)]
 - [ ] Online platforms (that are not micro or small enterprises): the interface must not deceive or manipulate users or otherwise materially distort or impair their ability to make free and informed decisions [DSA art. 25]
 - [ ] Article 25 does not apply to practices already covered by Directive 2005/29/EC or by the GDPR: for a shop's checkout, the UCPD rules above remain the reference [DSA art. 25(2)]
 
@@ -50,14 +51,14 @@ A timer that resets on reload, a "sale ends in 10:00" that is not true, "only to
 
 - [ ] Stock or demand messages come from real data, computed at render time; the guidance names false limited-stock claims as an example [UCPD Annex I no. 7]
 - [ ] Never pass on materially inaccurate information on market conditions or the possibility of finding the product to make the person buy on less favourable terms [UCPD Annex I no. 18]
-- [ ] Never offer a product at an advertised price when the trader expects not to be able to supply it, or refuse to sell or show it in order to push another (bait and switch) [UCPD Annex I no. 5]
+- [ ] Never offer a product at an advertised price when the trader expects not to be able to supply it, or refuse to sell or show it in order to push another (bait and switch) [UCPD Annex I no. 5 (to confirm)]
 
 ### 3.3 Hidden costs revealed late (drip pricing)
 
 Service fees, "handling", compulsory insurance or delivery costs that appear only on the payment step.
 
-- [ ] The price shown in an invitation to purchase includes taxes, and delivery and other charges or how they are calculated, unless already apparent from the context [UCPD art. 7(4)(c)]
-- [ ] Material information is not given in an untimely manner: costs appear as soon as they can be calculated, not on the last step [UCPD art. 7(2)]
+- [ ] The price shown in an invitation to purchase includes taxes, and delivery and other charges or how they are calculated, unless already apparent from the context [UCPD art. 7(4)(c) (to confirm)]
+- [ ] Material information is not given in an untimely manner: costs appear as soon as they can be calculated, not on the last step [UCPD art. 7(2) (to confirm)]
 - [ ] The total price is part of the pre-contractual information and of the summary before the order [CRD art. 6(1)(e)]
 
 ### 3.4 Pre-ticked add-ons and sneaking into the basket
@@ -72,7 +73,7 @@ Insurance, donation, extended warranty or newsletter pre-selected; an item added
 
 "No, I don't like saving money", "We're sorry to see you go, are you sure you want to lose everything?"
 
-- [ ] The option to decline is worded neutrally ("No thanks", "Cancel my subscription"). The guidance says that using emotion to steer users away from a choice could be an aggressive practice through undue influence [UCPD art. 8]
+- [ ] The option to decline is worded neutrally ("No thanks", "Cancel my subscription"); the guidance says that using emotion to steer users away from a choice could be an aggressive practice through undue influence, so report confirmshaming as a likely non-conformity to be confirmed [UCPD art. 8]
 - [ ] Both choices have the same element type, size and visual weight; one is not a large button while the other is a faint link [best practice]
 
 ### 3.6 Trick questions and visual interference
@@ -87,8 +88,8 @@ Double negatives ("Uncheck to not receive..."), "Yes" and "No" swapped halfway t
 Subscribing in one click, cancelling only by phone, by letter, after several "retention" screens, or through a link hidden in the account settings.
 
 - [ ] Cancelling a subscription or exercising a contractual right is not made harder by non-contractual barriers (extra steps, mandatory call, survey, repeated retention offers) [UCPD art. 9(d)]
-- [ ] Unsubscribing is as easy as subscribing, through the same channel; this is the Commission guidance's principle, given with a cancellation example that combines confirmshaming and visual interference [UCPD art. 7]
-- [ ] Online platforms: the Commission may issue guidelines on making termination harder than subscribing; none were read by this skill [DSA art. 25(3)(c)]
+- [ ] Unsubscribing is as easy as subscribing, through the same channel: the non-binding Commission guidance says it "should" be, with a cancellation example that combines confirmshaming and visual interference; report a gap as a possible misleading practice to be confirmed, not as a breach [UCPD Guidance]
+- [ ] Online platforms: the Commission may issue guidelines on making termination harder than subscribing; none were read by this skill [DSA art. 25(3)(c) (to confirm)]
 - [ ] The withdrawal function of a purchase follows its own rules: [withdrawal-function.md](withdrawal-function.md) [CRD 11a]
 
 The honest version: a "Cancel subscription" link in the account and in the footer, one confirmation screen that states the end date, a single button "Cancel my subscription", an email confirmation. One optional retention offer, if the owner wants one, is shown on that screen without blocking the button.
@@ -98,7 +99,7 @@ The honest version: a "Cancel subscription" link in the account and in the foote
 A pop-up asking again on every page for something the person already refused (notifications, app install, newsletter, rating).
 
 - [ ] Do not ask again for a choice already made; the guidance says repeated intrusions to get the consumer to accept something could amount to persistent and unwanted solicitation [UCPD Annex I no. 26]
-- [ ] Online platforms: repeatedly requesting a choice already made, notably with pop-ups, is one of the practices the Commission may address in DSA guidelines [DSA art. 25(3)(b)]
+- [ ] Online platforms: repeatedly requesting a choice already made, notably with pop-ups, is one of the practices the Commission may address in DSA guidelines [DSA art. 25(3)(b) (to confirm)]
 - [ ] A refusal is remembered (for the session at least, and for a period the owner sets) [best practice]
 
 ### 3.9 Disguised advertising and fake reviews
@@ -107,9 +108,9 @@ Sponsored content styled as editorial, paid results presented as organic, invent
 
 - [ ] Paid editorial content says it is advertising, in the content or by clearly identifiable images or sounds (advertorial) [UCPD Annex I no. 11]
 - [ ] Search results do not hide paid placement or payment for higher ranking [UCPD Annex I no. 11a]
-- [ ] Commercial communications are clearly identifiable as such, with the person on whose behalf they are made [ECD art. 6]
+- [ ] Commercial communications are clearly identifiable as such, with the person on whose behalf they are made [ECD art. 6 (to confirm)]
 - [ ] Never write, generate or commission fake consumer reviews or endorsements, and never misrepresent reviews (for example by showing only positive ones as if they were all) [UCPD Annex I no. 23c]
-- [ ] Do not claim that reviews come from real buyers or users unless reasonable and proportionate checks are in place; where the site shows reviews, it says whether and how it checks them [UCPD art. 7(6)]
+- [ ] Do not claim that reviews come from real buyers or users unless reasonable and proportionate checks are in place; where the site shows reviews, it says whether and how it checks them [UCPD art. 7(6) (to confirm)]
 - [ ] Online platforms: each advertisement shows, in real time, that it is an advertisement, on whose behalf it is presented, who paid, and the main targeting parameters [DSA art. 26]
 
 The agent never generates sample reviews, ratings or testimonials on a live site, even as placeholders. Placeholder reviews that are published become fake reviews.
@@ -117,10 +118,10 @@ The agent never generates sample reviews, ratings or testimonials on a live site
 ### 3.10 Other Annex I points that appear in web interfaces
 
 - [ ] "Free", "gratis" or "without charge" only when nothing is due beyond the unavoidable costs of responding and delivery [UCPD Annex I no. 20]
-- [ ] No false impression that the person has won a prize, or that claiming it is free when it costs money [UCPD Annex I no. 31]
-- [ ] No trust mark, quality label or code-of-conduct badge without authorisation or membership [UCPD Annex I no. 2]
-- [ ] Rights the consumer has by law (withdrawal, legal guarantee) are not presented as a special feature of the offer [UCPD Annex I no. 10]
-- [ ] No direct exhortation to children to buy, or to ask adults to buy for them [UCPD Annex I no. 28]
+- [ ] No false impression that the person has won a prize, or that claiming it is free when it costs money [UCPD Annex I no. 31 (to confirm)]
+- [ ] No trust mark, quality label or code-of-conduct badge without authorisation or membership [UCPD Annex I no. 2 (to confirm)]
+- [ ] Rights the consumer has by law (withdrawal, legal guarantee) are not presented as a special feature of the offer [UCPD Annex I no. 10 (to confirm)]
+- [ ] No direct exhortation to children to buy, or to ask adults to buy for them [UCPD Annex I no. 28 (to confirm)]
 
 ## 4. Patterns without a primary source
 
@@ -133,14 +134,16 @@ The following are commonly listed as dark patterns but this skill has found no s
 
 ## 5. Accessibility makes some patterns worse
 
-People using screen readers, magnification or cognitive aids are more exposed to these designs: a visually de-emphasised "No thanks" link may be unreachable at 400 % zoom; a timer read aloud every second is unusable; a hidden cost in a tooltip is missed by keyboard users. The UCPD assesses practices that target a vulnerable group from the point of view of an average member of that group [UCPD art. 5(3)]. Building the honest version above also removes these barriers.
+People using screen readers, magnification or cognitive aids are more exposed to these designs: a visually de-emphasised "No thanks" link may be unreachable at 400 % zoom; a timer read aloud every second is unusable; a hidden cost in a tooltip is missed by keyboard users. The UCPD assesses practices that target a vulnerable group from the point of view of an average member of that group [UCPD art. 5(3) (to confirm)]. Building the honest version above also removes these barriers.
 
 ## 6. Review checklist
 
 - [ ] No countdown or stock claim that is not true [UCPD Annex I no. 7]
-- [ ] All costs visible before the last step [UCPD art. 7(4)(c)]
+- [ ] All costs visible before the last step [UCPD art. 7(4)(c) (to confirm)]
 - [ ] No pre-selected paid option [CRD art. 22]
-- [ ] Decline options worded neutrally and given equal visual weight [UCPD art. 8]
-- [ ] Cancellation as easy as subscription [UCPD art. 9(d)]
+- [ ] Decline options worded neutrally (likely non-conformity if not, to be confirmed) [UCPD art. 8]
+- [ ] Decline and accept options given equal visual weight [best practice]
+- [ ] No non-contractual barrier to cancelling (extra steps, mandatory call, repeated retention offers) [UCPD art. 9(d)]
+- [ ] Cancellation as easy as subscription, as the Commission guidance recommends [UCPD Guidance]
 - [ ] No repeated prompts for a choice already made [UCPD Annex I no. 26]
 - [ ] Advertising and paid ranking identified; no fake reviews [UCPD Annex I no. 23c]

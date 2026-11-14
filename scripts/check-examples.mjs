@@ -68,6 +68,10 @@ async function main() {
   const only = option('--site');
   const sites = (await fs.readdir(path.join(ROOT, 'examples'), { withFileTypes: true }))
     .filter((d) => d.isDirectory() && (!only || d.name === only)).map((d) => d.name).sort();
+  if (!sites.length) {
+    process.stderr.write(`usage : aucun site d'exemple${only ? ` nommé ${only}` : ''} dans examples/\n`);
+    return 2;
+  }
 
   let ok = true;
   const lines = ['| Site | Checker | fixed: non-conformities | faulty: code defects found | of which as non-conformity |',

@@ -5,7 +5,7 @@ Annex III of the AI Act lists areas where an AI system is presumed high-risk and
 ## How to use this file
 
 1. Read section 1 whenever a feature scores, ranks, filters, selects, prices or decides about individual people, or uses biometric data. The profile field `ai.decisions_about_people` set to `true` means you must read it.
-2. If a row matches, follow section 2. Do not decide yourself whether the system is actually high-risk: Article 6 sets the conditions under which a system in these areas is high-risk, and applying them is a legal assessment, and the Commission's guidance on classification is outside this skill.
+2. If a row matches, follow section 2. Do not decide yourself whether the system is actually high-risk: the classification conditions of Article 6, including its derogation in paragraphs 3 and 4, have not been read by this skill (`OPEN-QUESTIONS.md`, item 31), applying them is a legal assessment, and the Commission's guidance on classification is outside this skill.
 3. The dates on which the high-risk regime applies are in [../regulatory-status.md](../regulatory-status.md) section 2. A later date is not a reason to build now: a system put into service before it will have to comply on that date, and redesigning it then costs more.
 4. Prohibitions come first: some uses in these areas are not high-risk but prohibited ([prohibited-practices.md](prohibited-practices.md)).
 
@@ -24,7 +24,7 @@ The area names follow Annex III as summarised in [../regulatory-status.md](../re
 | 7. Migration, asylum and border control | Uses by public authorities | Visa or residence application assistants of a public body that assess applicants |
 | 8. Justice and democratic processes | Assisting judicial authorities (8a); influencing elections, referendums or voting behaviour (8b), except tools for campaign logistics nobody is exposed to | Political micro-targeting or AI persuasion content aimed at voters; AI used by a court or arbitrator |
 
-- [ ] When a feature takes or prepares a decision about a person in one of the Annex III areas, treat it as possibly high-risk and stop before building it [AI Act art. 6; AI Act Annex III]
+- [ ] When a feature takes or prepares a decision about a person in one of the Annex III areas, treat it as possibly high-risk and stop before building it [AI Act Annex III]
 - [ ] A chatbot, translation or content tool on a site in one of these sectors is not high-risk by that fact alone: the test is what the AI decides or prepares about people, not the sector of the site [best practice]
 - [ ] Credit scoring is listed, but AI used to detect financial fraud is excluded from point 5(b); whether a given fraud model stays outside is still for a lawyer to confirm [AI Act Annex III]
 - [ ] Emotion recognition is an Annex III use where it is not prohibited; the Guidelines note that it is therefore also high-risk, in addition to Article 50(3) [AI Act Guidelines point 102]
@@ -46,7 +46,8 @@ Illustration of the message to the user (adapt; do not copy as is):
 
 When the operator buys an HR, credit or education tool and only embeds it:
 
-- [ ] The operator is the deployer: it has its own duties under the high-risk regime even though the vendor built the system; the details are for a lawyer [AI Act art. 3(4)]
+- [ ] The operator is the deployer, as defined in Article 3(4), even though the vendor built the system [AI Act art. 3(4)]
+- [ ] A deployer of a high-risk system has duties of its own under the high-risk regime; this skill has not read them, so the details are for a lawyer [AI Act art. 26 (to confirm)]
 - [ ] People subject to decisions of a high-risk system have to be informed of its use under the deployer rules; this information is distinct from the Article 50 notices but may be combined with them [AI Act Guidelines point 25, footnote 14]
 - [ ] Ask the vendor in writing how its system is classified and what documentation and instructions it provides, and keep the answer with the project [best practice]
 
