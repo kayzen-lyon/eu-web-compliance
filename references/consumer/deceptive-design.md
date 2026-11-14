@@ -7,7 +7,7 @@ Interfaces that deceive, pressure or manipulate consumers ("dark patterns"): whi
 1. Section 1 says which text applies. For almost every website it is the Unfair Commercial Practices Directive (UCPD). The DSA rule (Article 25) adds to it only for online platforms.
 2. Before building any nudge (a timer, a stock counter, an upsell, a "Are you sure?" dialog, a retention offer), check section 3. If the feature matches a pattern, build the honest version given there instead, and tell the owner why.
 3. When auditing, report each pattern found with its source. A pattern tied to an Annex I point is unfair in all circumstances; one tied to Articles 5 to 9 is unfair when it is likely to change the average consumer's decision, which is a judgement: report it as "likely non-conformity, to be confirmed by a professional".
-4. A rule followed by relies on a fact read on the primary source on 2026-11-14 and not yet in `regulatory-status.md` (see [README.md](README.md), point 5). The examples of the Commission's 2021 guidance (section 4.2.7, Commission Notice 2021/C 526/01) were read on that date; the guidance is not binding, the directive is.
+4. The examples of the Commission's 2021 guidance (section 4.2.7, Commission Notice 2021/C 526/01) were read on that date; the guidance is not binding, the directive is.
 
 ## 1. Which rule applies
 

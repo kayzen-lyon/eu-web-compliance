@@ -6,7 +6,7 @@ The "withdraw from contract here" function that a trader must offer when a dista
 
 1. Check that the function is required: section 1. It is required for contracts concluded on the site when the consumer has a right of withdrawal; whether the right exists for a given product is the owner's call (section 7).
 2. Build it from the reference component; the rules below say what must not be changed when adapting it.
-3. Dates of application and the French administrative fine are in [../regulatory-status.md](../regulatory-status.md) section 5.2. A rule followed by relies on a fact read on the primary source on 2026-11-14 and not yet in that file (see [README.md](README.md), point 5).
+3. Dates of application and the French administrative fine are in [../regulatory-status.md](../regulatory-status.md) section 5.2.
 4. Do not tell the owner what happens to the withdrawal period if the function is missing. No text read by this skill says it expressly (`OPEN-QUESTIONS.md`, item 9). Say that the function is mandatory and that the consequences of its absence are to be assessed by a professional.
 
 ## 1. When it is required

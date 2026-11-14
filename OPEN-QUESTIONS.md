@@ -49,6 +49,14 @@ Ce fichier liste ce qui n'a pas pu être confirmé sur une source officielle, et
 | 36 | Autorités allemandes compétentes (accessibilité, traceurs) | Non vérifiées | Fiche pays `de.md` marquée « partial » |
 
 
+| 37 | CGV entre professionnels (article L. 441-1 du code de commerce) | Non lu | Le module « documents » renvoie à un conseil |
+| 38 | Compétence et loi applicable aux contrats avec des consommateurs (règlement Bruxelles I bis, articles 17 à 19 ; règlement Rome I, article 6) | Non lus | Renvoi à un professionnel |
+| 39 | Sanction des clauses abusives (article L. 241-1), garanties légales de conformité (articles L. 217-3 et suivants, L. 224-25-12 et suivants), garantie des vices cachés | Non lus | Le modèle de CGV ne les détaille pas |
+| 40 | Libellé de la fonction de résiliation en ligne (article D. 215-1) | Lu seulement dans une source secondaire | Non repris |
+| 41 | Amende de l'article 1-2 de la LCEN pour une personne morale | Montant annoncé par le skill repris, non vérifié | Non repris |
+
+Point 24 levé partiellement le 14/11/2026 : l'article L. 221-28 a été lu sur Légifrance (état réglementaire, section 5.2), à travers un outil qui restitue des citations exactes courtes.
+
 ## 2. Écarts relevés entre les textes
 
 Ces points ne sont pas des erreurs du skill : ce sont des incohérences entre sources officielles, que le skill devra expliquer à l'utilisateur.

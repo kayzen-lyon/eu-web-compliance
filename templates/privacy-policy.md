@@ -10,12 +10,14 @@ Whenever the site processes personal data (profile field `data.collects_personal
 
 The content is what Articles 13 (and 14, for data not collected from the person) of the GDPR require, listed in [../references/privacy/forms-and-minimisation.md](../references/privacy/forms-and-minimisation.md) section 2. Rights are described in [../references/privacy/data-subject-rights.md](../references/privacy/data-subject-rights.md). Trackers get their own document: [cookie-policy.md](cookie-policy.md); this policy links to it.
 
+Read the drafting rules first: [../references/documents/privacy-policy.md](../references/documents/privacy-policy.md), and the two traps of [../references/documents/README.md](../references/documents/README.md) section 2. A privacy policy describes processing that really happens: start from the code and the owner's answers, never from a generic list.
+
 ## What comes from where
 
 | Content | Source | If missing |
 |---------|--------|-----------|
 | Controller identity and contact details | The owner (legal name, address, email). Not in the profile | Leave the placeholder visible and report it |
-| Data protection officer | Profile `referents.dpo`, and the owner for the contact details | If `false` or unknown, delete that sentence rather than inventing a contact |
+| Data protection officer | Profile `referents.dpo`, and the owner for the contact details | If `false` or unknown, delete that sentence rather than inventing a contact; never conclude in your answer that none is required because the business is small (say that nothing identified so far triggers the duty) |
 | Processing activities: what data, why, on which lawful basis | The forms, accounts, orders and logs found in the code, confirmed by the owner | Write the data and purpose you found; write the basis as "[to be confirmed by the controller]" |
 | Legitimate interests pursued | The owner | Placeholder |
 | Recipients and processors | The list of [../references/privacy/third-parties-and-transfers.md](../references/privacy/third-parties-and-transfers.md) section 4, and profile `data.third_party_tools` | List categories found in the code; mark the rest to be confirmed |
@@ -31,7 +33,17 @@ The content is what Articles 13 (and 14, for data not collected from the person)
 - A retention period, a legal retention obligation, or a "we keep your data for as long as necessary" sentence presented as a period.
 - A processor, its role, its contract status, its location or its transfer mechanism.
 - A data protection officer or a security certification.
+- A technical measure the owner did not confirm: "passwords are stored hashed", "card data never reach our servers", "data are encrypted". Without confirmation, use the neutral wordings of the publishable text.
+- The legal entity, address, role, data received or location of a vendor deduced from its brand; and the activation of a vendor module (analytics, crash reporting) deduced from another one (authentication), even when the user names them.
+- Health or other special-category data deduced from the theme of the product, or their absence. Ask; if confirmed, it is a stop-and-refer case ([../references/scoping/out-of-scope.md](../references/scoping/out-of-scope.md)).
+- One lawful basis for every processing, or a system permission (notifications, location on a phone) presented as consent.
 - A statement that the site is "GDPR compliant".
+
+Three more rules from the drafting method:
+
+- Production notes ("information to complete before publication", explanations, analysis) never go into the published text. They go in your answer, with the list of points to confirm.
+- The controller's identity, the host and the vendors are the same in this policy, the legal notice and the terms. Copy them; do not retype them.
+- A business-to-business service is controller for its own processing (its customers' accounts, billing, security, its own statistics) and processor for its clients' data; this policy covers the first, the data processing agreement the second ([../references/documents/data-processing-agreement.md](../references/documents/data-processing-agreement.md)).
 
 Placeholders stay in square brackets until the owner fills them. A published policy with a visible placeholder is better than a wrong statement; still, list every remaining placeholder in your report so the owner completes them before release.
 
@@ -74,14 +86,14 @@ The controller is [legal name, legal form], [postal address], [registration numb
 
 ### Your account
 
-- Data: [email address, password (stored hashed), name, preferences].
+- Data: [email address, password, name, preferences]. [Only if the owner confirmed it: "Your password is stored in a hashed form that we cannot read."]
 - Purpose: creating and managing your account.
 - Lawful basis: [to be confirmed by the controller; usually performance of the contract].
 - Retention: [to be confirmed by the controller].
 
 ### Orders and invoices
 
-- Data: [name, delivery address, email, order details; payment is handled by [payment provider], we do not store your card number].
+- Data: [name, delivery address, email, order details]. Payment is handled by [payment provider] under the terms of the payment flow used. [Only if the owner confirmed the integration: "Your card details are entered on [payment provider]'s form and are not stored by us."]
 - Purpose: processing and delivering your order, invoicing, after-sales service.
 - Lawful basis: [to be confirmed by the controller; usually performance of the contract, and legal obligations for invoices].
 - Retention: [to be confirmed by the controller, including the legal retention period for invoices that applies to the controller].
@@ -145,9 +157,11 @@ You have the right to:
 - withdraw your consent at any time, for processing based on consent, without affecting what was done before;
 - [only if applicable: not be subject to a decision based solely on automated processing, and obtain human review].
 
+Some of these rights depend on the lawful basis of the processing concerned: for example, portability applies to processing based on your consent or on a contract, and objection to processing based on our legitimate interests.
+
 [Only if the site has accounts:] You can download, correct or delete your data directly from [your account settings].
 
-To exercise your rights, write to [contact]. We answer within the time limit set by Article 12 of the General Data Protection Regulation. We may ask for information to confirm your identity if we have a reasonable doubt about it.
+To exercise your rights, write to [contact]. We answer within the time limit set by Article 12 of the General Data Protection Regulation [the agent may write the period read in references/regulatory-status.md section 3.1, including its possible extension, instead of this reference]. We may ask for information to confirm your identity if we have a reasonable doubt about it.
 
 You also have the right to lodge a complaint with a data protection supervisory authority, in particular in the Member State where you live or work. [For France: the Commission nationale de l'informatique et des libertés (CNIL), www.cnil.fr.]
 

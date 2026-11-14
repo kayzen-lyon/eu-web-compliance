@@ -7,7 +7,7 @@ The ordering process of a distance contract between a business and a consumer: w
 1. This file applies when the site lets consumers conclude a contract and pay online (`distance-selling-to-consumers` in [../scoping/obligations.json](../scoping/obligations.json)). A site that only takes quote requests or bookings without payment: check section 4 with the owner, the button rule still applies whenever the click creates an obligation to pay.
 2. Follow the order of the sections: they follow the order of the checkout.
 3. The wording and placement rules (sections 3 to 5) are what the agent writes in code. The content of the information (characteristics, delivery times, guarantees, terms of sale) comes from the owner: the agent leaves visible placeholders and lists them as "to be completed by the owner".
-4. Dates of application are in [../regulatory-status.md](../regulatory-status.md) section 5.2. A rule followed by relies on a fact read on the primary source on 2026-11-14 and not yet in that file (see [README.md](README.md), point 5).
+4. Dates of application are in [../regulatory-status.md](../regulatory-status.md) section 5.2.
 5. Reference implementation of the final step: [../../templates/consumer/order-button.html](../../templates/consumer/order-button.html).
 
 Why the stakes are high: if the order button is not worded as the law requires, the consumer is not bound by the contract or order [CRD art. 8(2)]. A wrong label is not a cosmetic defect; it can make every sale of the site unenforceable.
@@ -100,7 +100,7 @@ Labels to avoid: "Order", "Confirm", "Continue", "Next", "Submit", "Register", "
 
 Whether a given product falls under an exception is a legal judgement: see [withdrawal-function.md](withdrawal-function.md) section 7. The agent does not write "no right of withdrawal" on a product without the owner's written confirmation.
 
-The terms of sale themselves (template F-C7) are not provided by this skill yet. Do not generate them from memory; ask the owner for their text or their lawyer's.
+For the terms of sale themselves, read [../documents/terms-of-sale.md](../documents/terms-of-sale.md) and start from [../../templates/documents/terms-of-sale-fr.md](../../templates/documents/terms-of-sale-fr.md); never generate them from memory.
 
 ## 7. Dispute resolution
 

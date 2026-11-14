@@ -6,7 +6,7 @@ What a website must provide when it stores content supplied by its users (review
 
 1. Section 1 decides the category of the service. Each category adds duties to the previous one: intermediary service (section 2), hosting service (section 3), online platform (section 4).
 2. The skill does not decide whether a service is an online platform, nor whether the micro and small enterprise exclusion applies. Both are flagged "to confirm" in the scoping matrix (`dsa-online-platform-duties`). The agent builds sections 2 and 3, asks the owner about section 4, and records the answer.
-3. The date of application is in [../regulatory-status.md](../regulatory-status.md) section 5.3. A rule followed by relies on a fact read on the primary source on 2026-11-14 and not yet in that file (see [README.md](README.md), point 5).
+3. The date of application is in [../regulatory-status.md](../regulatory-status.md) section 5.3.
 4. Very large online platforms and search engines have many more duties; they are out of scope of this skill.
 
 ## 1. Which category

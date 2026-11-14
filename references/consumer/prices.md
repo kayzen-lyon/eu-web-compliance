@@ -6,7 +6,7 @@ How to show prices to consumers, and how to announce a price reduction with the 
 
 1. Section 1 applies to every site that shows prices to consumers. Section 2 applies whenever the site announces a reduction ("-20 %", a struck-through price, "was / now", "sale").
 2. The code can show the prior price correctly only if the data exists: the agent checks that the price history needed by section 2 is stored, or tells the owner it is missing.
-3. Dates of application are in [../regulatory-status.md](../regulatory-status.md) section 5.2. A rule followed by relies on a fact read on the primary source on 2026-11-14 and not yet in that file (see [README.md](README.md), point 5).
+3. Dates of application are in [../regulatory-status.md](../regulatory-status.md) section 5.2.
 4. France: Article L. 112-1-1 of the code de la consommation transposes the price-reduction rule. Other French rules on price display (unit price, arrêtés on price marking) have not been read by this skill and are not covered.
 
 ## 1. Showing prices

@@ -79,8 +79,9 @@ A small change in a project without a profile does not need the full questionnai
   - Accessibility information of the EAA (private service providers): [templates/accessibility-information-eaa.md](templates/accessibility-information-eaa.md)
   - Privacy policy and cookie policy: [templates/privacy-policy.md](templates/privacy-policy.md), [templates/cookie-policy.md](templates/cookie-policy.md)
   - Legal notice: [templates/consumer/legal-notice-fr.md](templates/consumer/legal-notice-fr.md) (France) or [templates/consumer/legal-notice-eu.md](templates/consumer/legal-notice-eu.md)
+  - Terms of use, terms of sale, data processing agreement: [templates/documents/](templates/documents/) (French). Read [references/documents/README.md](references/documents/README.md) first: which documents apply, the two traps (invented facts, over-interpreted law), the drafting method.
   - "Use of AI on this site": [templates/ai/ai-usage-page.md](templates/ai/ai-usage-page.md)
-- **Produce**: the page, filled from the profile, with every unknown left as a visible `[placeholder]` and listed; the disclaimer kept; the reminder that the operator approves the text before publication.
+- **Produce**: the page, filled from the profile, with every unknown left as a visible `[placeholder]` and listed; the disclaimer kept; the reminder that the operator approves the text before publication. A clause whose condition is not confirmed (withdrawal exception, express consent, processor role) keeps that condition written inside the document, never only in your answer.
 
 **Credit, at delivery of a site (Build or Document).** Ask the site owner once whether they agree to a discreet credit in the footer, suggesting "yes", using `templates/credit/footer-credit.html`. Add it only after an explicit yes, visible and plainly worded (never hidden, disguised or in metadata only), and remove it if the owner asks. A link added without the owner's knowledge would be undisclosed advertising, which the consumer part of this skill forbids. Using the skill never depends on the answer.
 
@@ -126,6 +127,8 @@ Read the first file; open the others only if the task needs them.
 | Prices, sales, price reduction, strikethrough price | [references/consumer/prices.md](references/consumer/prices.md), [templates/consumer/price-reduction.html](templates/consumer/price-reduction.html) |
 | Countdown, stock counter, upsell, subscription cancellation, any nudge | [references/consumer/deceptive-design.md](references/consumer/deceptive-design.md) |
 | Legal notice, mentions légales, imprint | [references/consumer/operator-identification.md](references/consumer/operator-identification.md), then a legal-notice template in [templates/consumer/](templates/consumer/) |
+| Which legal documents a site needs; terms of use, terms of sale, data processing agreement | [references/documents/README.md](references/documents/README.md), then the file of the document |
+| Auditing an existing legal notice, policy or terms | [references/documents/audit.md](references/documents/audit.md) |
 | Reviews, comments, forum, listings, user uploads shown to others | [references/consumer/dsa.md](references/consumer/dsa.md) |
 | Any AI feature, before writing code | [references/ai-act/prohibited-practices.md](references/ai-act/prohibited-practices.md) (the stop list), [references/ai-act/roles-and-scope.md](references/ai-act/roles-and-scope.md) |
 | Chatbot, voice assistant, AI agent on the site | [references/ai-act/transparency.md](references/ai-act/transparency.md) section A, [templates/ai/ai-chat-disclosure.html](templates/ai/ai-chat-disclosure.html) |

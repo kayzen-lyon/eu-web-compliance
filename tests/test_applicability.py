@@ -37,7 +37,7 @@ MICRO_SHOP = {
     "market.sells_to_consumers": True, "market.sells_what": ["goods"],
     "market.withdrawal_right_applies": True, "eaa.sectors": ["e-commerce"],
     "data.collects_personal_data": True, "data.non_essential_trackers": True,
-    "data.third_party_tool_kinds": ["analytics", "payment"], "data.transfers_outside_eu": False,
+    "data.third_party_tool_kinds": ["analytics", "payment"], "data.transfers_outside_eu": False, "data.processes_on_behalf_of_clients": False,
     "content.hosts_user_content": False, "site.user_accounts": True, **NO_AI, **NO_SENSITIVE,
 }
 LARGE_RETAILER = {
@@ -50,7 +50,7 @@ TOWN_HALL = {
     "market.sells_online": False, "market.sells_to_consumers": False,
     "market.withdrawal_right_applies": False, "eaa.sectors": [],
     "data.collects_personal_data": True, "data.non_essential_trackers": False,
-    "data.third_party_tool_kinds": [], "data.transfers_outside_eu": False,
+    "data.third_party_tool_kinds": [], "data.transfers_outside_eu": False, "data.processes_on_behalf_of_clients": False,
     "content.hosts_user_content": False, "site.user_accounts": False, **NO_AI, **NO_SENSITIVE,
 }
 GERMAN_SAAS = {
@@ -71,7 +71,7 @@ PERSONAL_BLOG = {
     "market.sells_online": False, "market.sells_to_consumers": False,
     "market.withdrawal_right_applies": False, "eaa.sectors": [],
     "data.collects_personal_data": False, "data.non_essential_trackers": False,
-    "data.third_party_tool_kinds": [], "data.transfers_outside_eu": False,
+    "data.third_party_tool_kinds": [], "data.transfers_outside_eu": False, "data.processes_on_behalf_of_clients": False,
     "content.hosts_user_content": False, "site.user_accounts": False, **NO_AI, **NO_SENSITIVE,
 }
 BASELINE_IDS = {"a11y-baseline-wcag22-aa", "privacy-baseline-no-tracker-before-consent",

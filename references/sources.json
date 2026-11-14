@@ -200,7 +200,7 @@
       "publisher": "République française (Légifrance)",
       "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069565/LEGISCTA000032221365/",
       "kind": "fr-law",
-      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, D. 221-5, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1; L. 221-18 and L. 221-28 read through a summarising tool",
+      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 212-1, L. 215-1, L. 215-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, L. 221-28, D. 221-5, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1; L. 221-18 read through a summarising tool; L. 212-1, L. 215-1, L. 215-1-1 and L. 221-28 read on 2026-11-14 through a tool returning short exact quotes",
       "consulted": "2026-11-14",
       "licence": "Licence Ouverte 2.0",
       "proof": "P",
@@ -1015,6 +1015,19 @@
       "consulted": "2026-11-14",
       "licence": "Reuse terms not reviewed",
       "proof": "P"
+    },
+    {
+      "id": "fr-code-consommation-r221-3-annexe",
+      "title": "Code de la consommation, annexe à l'article R. 221-3 (modèle d'information sur le droit de rétractation)",
+      "publisher": "République française (Légifrance)",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000053303407",
+      "kind": "fr-law",
+      "version": "In force since 19 June 2026 (décret n° 2026-3 du 5 janvier 2026, art. 7)",
+      "consulted": "2026-11-14",
+      "licence": "Licence Ouverte 2.0",
+      "proof": "P",
+      "tag": "C. conso R. 221-3",
+      "notes": "Read through a tool returning short exact quotes, not word for word in a browser; reproduce from Légifrance before use."
     }
   ]
 }

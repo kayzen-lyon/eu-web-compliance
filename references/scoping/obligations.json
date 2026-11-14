@@ -1633,7 +1633,8 @@
         "dsa"
       ],
       "status_section": "5.3",
-      "rules_file": "references/consumer/dsa.md"
+      "rules_file": "references/consumer/dsa.md",
+      "template": "templates/documents/terms-of-use-fr.md"
     },
     {
       "id": "dsa-hosting-notice-action",
@@ -1792,6 +1793,75 @@
       ],
       "status_section": "3.1",
       "rules_file": "references/scoping/out-of-scope.md"
+    },
+    {
+      "id": "con-terms-of-sale",
+      "domain": "consumer",
+      "jurisdiction": "EU",
+      "title": "Terms of sale carrying the pre-contractual information",
+      "requires": "The information of Article 6(1) of Directive 2011/83/EU is given, the terms can be stored and reproduced (Article 10(3) of Directive 2000/31/EC), and withdrawal exceptions are stated with their conditions.",
+      "applies_when": {
+        "def": "distance-selling-to-consumers"
+      },
+      "level": "mandatory",
+      "nature": "legal-text",
+      "sources": [
+        "consumer-rights-directive",
+        "ecommerce-directive",
+        "fr-code-consommation"
+      ],
+      "status_section": "5.2",
+      "rules_file": "references/documents/terms-of-sale.md",
+      "template": "templates/documents/terms-of-sale-fr.md"
+    },
+    {
+      "id": "terms-of-use",
+      "domain": "consumer",
+      "jurisdiction": "EU",
+      "title": "Terms of use for a service with accounts",
+      "requires": "Terms of use set the rules of the service; no rule read requires them outside hosted user content.",
+      "applies_when": {
+        "equals": {
+          "field": "site.user_accounts",
+          "value": true
+        }
+      },
+      "level": "recommended",
+      "nature": "skill-practice",
+      "sources": [
+        "dsa"
+      ],
+      "status_section": "5.3",
+      "rules_file": "references/documents/terms-of-use.md",
+      "template": "templates/documents/terms-of-use-fr.md"
+    },
+    {
+      "id": "gdpr-processor-agreement",
+      "domain": "privacy",
+      "jurisdiction": "EU",
+      "title": "GDPR: contract when the operator acts as processor",
+      "requires": "Where the operator processes personal data on behalf of business clients, a written contract covering Article 28(3) binds it to each controller.",
+      "applies_when": {
+        "all": [
+          {
+            "def": "personal-data"
+          },
+          {
+            "equals": {
+              "field": "data.processes_on_behalf_of_clients",
+              "value": true
+            }
+          }
+        ]
+      },
+      "level": "mandatory",
+      "nature": "legal-text",
+      "sources": [
+        "gdpr"
+      ],
+      "status_section": "3.1",
+      "rules_file": "references/documents/data-processing-agreement.md",
+      "template": "templates/documents/data-processing-agreement-fr.md"
     }
   ],
   "escalations": [

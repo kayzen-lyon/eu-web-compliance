@@ -9,6 +9,11 @@
     country file says "Not verified", use this template and tell the owner that national
     additions were not checked.
   - Operator established in France: use legal-notice-fr.md instead.
+  - Drafting traps: references/documents/legal-notice.md. Confirm the legal status with the owner
+    before choosing the wording; never deduce the register (or its city) from an address, never
+    treat one number (establishment, company, VAT) as another, show the VAT number only when the
+    owner gives it as applicable.
+  - Same name, address and contact as in the privacy policy and the terms.
   - NEVER INVENT a value: name, address, register and number, VAT number, authority, professional
     body. A wrong number is worse than a visible placeholder. Keep each [placeholder] until the
     owner supplies the value and list the remaining ones in the report.
@@ -58,6 +63,10 @@ VAT identification number: [VAT number]
 ## Prices
 
 Prices shown on this site [include / do not include] VAT, and [include / do not include] delivery costs, which are shown [where they are shown].
+
+## Personal data
+
+How personal data are processed is explained in our privacy policy ([link to the page]).
 
 ## Contact
 

@@ -28,6 +28,12 @@ This page is also where the consent banner's first level points for the detail o
 - A lifetime, a company name, a role or a country.
 - A claim that an analytics tool is "exempt", "approved" or "certified" by the CNIL. The CNIL publishes no such list. You may write that the tool is configured to meet the conditions of the exemption only if every condition of [../references/privacy/trackers.md](../references/privacy/trackers.md) section 3.3 is verified, and the owner confirms the vendor terms.
 - A sentence saying that browser settings are enough to refuse trackers in place of the banner.
+- A recommended duration presented as a legal one. How long the choice is kept and the lifetimes of exempt audience measurement are CNIL recommendations ([../references/regulatory-status.md](../references/regulatory-status.md) section 3.3); the page states the values configured on the site.
+- An exemption from the banner accepted because the user says so ("we are strictly B2B", "I am a lawyer"). The rule depends on the purpose of each tracker.
+
+Before writing, read the drafting rules: [../references/documents/cookie-policy.md](../references/documents/cookie-policy.md). The policy describes the banner the site really has. If the banner does not let people refuse as easily as accept, or loads a tracker before consent, do not write a clean policy over it: report the defect and fix the banner first.
+
+For a mobile application, qualify each tracker (SDK, advertising identifier, push token) before applying these rules, ask which modules of a vendor kit are really active, and never present a system permission on the phone, or a rule of an app store, as consent or as law.
 
 ## Language
 

@@ -333,6 +333,17 @@
               "type": "boolean"
             }
           }
+        },
+        "processes_on_behalf_of_clients": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "description": "The operator processes personal data on behalf of business clients (it is their processor under Article 28 GDPR), for example a SaaS that stores its clients' customer data.",
+          "properties": {
+            "value": {
+              "type": "boolean"
+            }
+          }
         }
       }
     },

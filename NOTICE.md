@@ -21,6 +21,7 @@ Each file that reuses content from one of these projects is listed in the table 
 | [etalab-ia/skills](https://github.com/etalab-ia/skills), DINUM | MIT, Copyright (c) 2026 Benoit Vinceneux | Copyright and permission notice |
 | [morellid/ai-act-skill](https://github.com/morellid/ai-act-skill) | MIT, Copyright (c) 2026 Davide Morelli | Copyright and permission notice |
 | [github/awesome-copilot](https://github.com/github/awesome-copilot) | MIT, Copyright GitHub, Inc. | Copyright and permission notice |
+| [JosephFa/redaction-legale-numerique](https://github.com/JosephFa/redaction-legale-numerique), by Joseph Farah | MIT, Copyright (c) 2026 Joseph Farah | Copyright and permission notice |
 
 ### Reused files
 
@@ -50,6 +51,14 @@ Each file that reuses content from one of these projects is listed in the table 
 | `references/consumer/deceptive-design.md` (examples summarised from section 4.2.7) | Commission Notice 2021/C 526/01 | EU text; reuse with acknowledgement of the source | 2026-11-14 |
 | `adapters/README.md`, `adapters/copilot-instructions.md`, `adapters/cursor-rule.mdc` (structure only: pointer files to a vendored skill, `.vendor/` path, AGENTS.md block; text written for this project) | morellid/ai-act-skill, `adapters/` | MIT, Copyright (c) 2026 Davide Morelli | 2026-11-14 |
 | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` (field layout only, no text reused) | Isalafont/claude-skill-rgaa-dev, `.claude-plugin/` | Licence Ouverte 2.0 | 2026-11-14 |
+| `references/documents/README.md` (applicability table, the two traps, four-step method, three-part delivery, disclaimer; translated, rewritten, re-sourced) | JosephFa/redaction-legale-numerique, `SKILL.md`, commit d103856 | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/legal-notice.md`, `templates/consumer/legal-notice-fr.md`, `templates/consumer/legal-notice-eu.md` (drafting traps by operator type; reworked against LCEN art. 1-1) | same, `references/mentions-legales.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/privacy-policy.md`, `templates/privacy-policy.md` (traps on vendors, payment, retention, DPO, B2B roles) | same, `references/politique-confidentialite.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/cookie-policy.md`, `templates/cookie-policy.md` (traps, mobile trackers) | same, `references/cookies.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/terms-of-use.md`, `references/documents/terms-of-sale.md`, `templates/documents/terms-of-use-fr.md`, `templates/documents/terms-of-sale-fr.md` (checklists and outline; every rule re-checked or marked best practice) | same, `references/cgu-cgv.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/data-processing-agreement.md`, `templates/documents/data-processing-agreement-fr.md` (outline; clauses re-read on GDPR Articles 28 and 33) | same, `references/dpa.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/audit.md` (statuses, contradiction search, output table) | same, `references/audit.md` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
+| `references/documents/evaluation.md` (40 scenarios condensed from the adversarial and red-team test cases; expectations adapted) | same, `adversarial/manifest.json`, `redteam/manifest.json` | MIT, Copyright (c) 2026 Joseph Farah | 2026-11-14 |
 | `templates/accessibility-statement-fr.md` (mandatory format, reproduced word for word) | DINUM, page « Déclaration d'accessibilité » | Licence Ouverte 2.0 | 2026-11-14 |
 | `templates/accessibility-information-eaa.md` (quotes Article D. 412-57, 2°, and its annex) | Légifrance, code de la consommation | Licence Ouverte 2.0 | 2026-11-14 |
 

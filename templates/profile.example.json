@@ -3,56 +3,201 @@
   "project_name": "Example: online shop of a French SME (fictional)",
   "updated": "2026-11-14",
   "operator": {
-    "type": {"value": "company", "basis": "stated", "note": "User: \"a limited company (SAS)\""},
-    "activity_kind": {"value": "commercial", "basis": "inferred", "note": "Checkout flow in app/checkout/"},
-    "headcount": {"value": 34, "basis": "stated"},
-    "annual_turnover_eur": {"value": 6200000, "basis": "stated"},
-    "balance_sheet_total_eur": {"value": 3100000, "basis": "stated"},
-    "fr_turnover_3y_average_eur": {"value": 5600000, "basis": "stated"},
-    "country_of_establishment": {"value": "FR", "basis": "stated"},
-    "regulated_sector": {"value": false, "basis": "stated"}
+    "type": {
+      "value": "company",
+      "basis": "stated",
+      "note": "User: \"a limited company (SAS)\""
+    },
+    "activity_kind": {
+      "value": "commercial",
+      "basis": "inferred",
+      "note": "Checkout flow in app/checkout/"
+    },
+    "headcount": {
+      "value": 34,
+      "basis": "stated"
+    },
+    "annual_turnover_eur": {
+      "value": 6200000,
+      "basis": "stated"
+    },
+    "balance_sheet_total_eur": {
+      "value": 3100000,
+      "basis": "stated"
+    },
+    "fr_turnover_3y_average_eur": {
+      "value": 5600000,
+      "basis": "stated"
+    },
+    "country_of_establishment": {
+      "value": "FR",
+      "basis": "stated"
+    },
+    "regulated_sector": {
+      "value": false,
+      "basis": "stated"
+    }
   },
   "market": {
-    "target_countries": {"value": ["FR", "BE"], "basis": "stated", "note": "Delivery to France and Belgium"},
-    "sells_online": {"value": true, "basis": "inferred", "note": "Payment provider SDK in package.json"},
-    "sells_to_consumers": {"value": true, "basis": "stated"},
-    "sells_what": {"value": ["goods"], "basis": "stated"},
-    "withdrawal_right_applies": {"value": true, "basis": "assumed", "note": "Not answered; protective reading"}
+    "target_countries": {
+      "value": [
+        "FR",
+        "BE"
+      ],
+      "basis": "stated",
+      "note": "Delivery to France and Belgium"
+    },
+    "sells_online": {
+      "value": true,
+      "basis": "inferred",
+      "note": "Payment provider SDK in package.json"
+    },
+    "sells_to_consumers": {
+      "value": true,
+      "basis": "stated"
+    },
+    "sells_what": {
+      "value": [
+        "goods"
+      ],
+      "basis": "stated"
+    },
+    "withdrawal_right_applies": {
+      "value": true,
+      "basis": "assumed",
+      "note": "Not answered; protective reading"
+    }
   },
   "eaa": {
-    "sectors": {"value": ["e-commerce"], "basis": "inferred", "note": "Consumers conclude contracts on the site"}
+    "sectors": {
+      "value": [
+        "e-commerce"
+      ],
+      "basis": "inferred",
+      "note": "Consumers conclude contracts on the site"
+    }
   },
   "data": {
-    "collects_personal_data": {"value": true, "basis": "inferred", "note": "Account, order and newsletter forms"},
-    "special_categories": {"value": false, "basis": "stated"},
-    "health_data": {"value": false, "basis": "stated"},
-    "non_essential_trackers": {"value": true, "basis": "inferred", "note": "Analytics and advertising tags in app/layout"},
-    "third_party_tool_kinds": {"value": ["analytics", "advertising", "payment", "chat-widget", "ai-api"], "basis": "inferred"},
-    "third_party_tools": {"value": ["analytics tag", "advertising pixel", "payment provider", "support chatbot widget"], "basis": "inferred"},
-    "transfers_outside_eu": {"value": true, "basis": "assumed", "note": "Vendors' hosting locations not checked"}
+    "collects_personal_data": {
+      "value": true,
+      "basis": "inferred",
+      "note": "Account, order and newsletter forms"
+    },
+    "special_categories": {
+      "value": false,
+      "basis": "stated"
+    },
+    "health_data": {
+      "value": false,
+      "basis": "stated"
+    },
+    "non_essential_trackers": {
+      "value": true,
+      "basis": "inferred",
+      "note": "Analytics and advertising tags in app/layout"
+    },
+    "third_party_tool_kinds": {
+      "value": [
+        "analytics",
+        "advertising",
+        "payment",
+        "chat-widget",
+        "ai-api"
+      ],
+      "basis": "inferred"
+    },
+    "third_party_tools": {
+      "value": [
+        "analytics tag",
+        "advertising pixel",
+        "payment provider",
+        "support chatbot widget"
+      ],
+      "basis": "inferred"
+    },
+    "transfers_outside_eu": {
+      "value": true,
+      "basis": "assumed",
+      "note": "Vendors' hosting locations not checked"
+    },
+    "processes_on_behalf_of_clients": {
+      "value": false,
+      "basis": "stated"
+    }
   },
   "audience": {
-    "includes_minors": {"value": false, "basis": "stated"}
+    "includes_minors": {
+      "value": false,
+      "basis": "stated"
+    }
   },
   "ai": {
-    "conversational_assistant": {"value": true, "basis": "inferred", "note": "Chatbot widget loaded in app/layout"},
-    "content_generation_feature": {"value": false, "basis": "inferred"},
-    "generated_content_published": {"value": false, "basis": "stated"},
-    "emotion_or_biometric": {"value": false, "basis": "stated"},
-    "decisions_about_people": {"value": false, "basis": "stated"},
-    "role": {"value": "deployer", "basis": "stated", "note": "Third-party chatbot used as supplied"}
+    "conversational_assistant": {
+      "value": true,
+      "basis": "inferred",
+      "note": "Chatbot widget loaded in app/layout"
+    },
+    "content_generation_feature": {
+      "value": false,
+      "basis": "inferred"
+    },
+    "generated_content_published": {
+      "value": false,
+      "basis": "stated"
+    },
+    "emotion_or_biometric": {
+      "value": false,
+      "basis": "stated"
+    },
+    "decisions_about_people": {
+      "value": false,
+      "basis": "stated"
+    },
+    "role": {
+      "value": "deployer",
+      "basis": "stated",
+      "note": "Third-party chatbot used as supplied"
+    }
   },
   "content": {
-    "hosts_user_content": {"value": true, "basis": "inferred", "note": "Product reviews"}
+    "hosts_user_content": {
+      "value": true,
+      "basis": "inferred",
+      "note": "Product reviews"
+    }
   },
   "site": {
-    "user_accounts": {"value": true, "basis": "inferred"},
-    "languages": {"value": ["fr", "nl"], "basis": "inferred"},
-    "stack": {"value": ["Next.js", "PostgreSQL"], "basis": "inferred"}
+    "user_accounts": {
+      "value": true,
+      "basis": "inferred"
+    },
+    "languages": {
+      "value": [
+        "fr",
+        "nl"
+      ],
+      "basis": "inferred"
+    },
+    "stack": {
+      "value": [
+        "Next.js",
+        "PostgreSQL"
+      ],
+      "basis": "inferred"
+    }
   },
   "referents": {
-    "dpo": {"value": false, "basis": "stated"},
-    "lawyer": {"value": true, "basis": "stated"},
-    "accessibility_lead": {"value": false, "basis": "stated"}
+    "dpo": {
+      "value": false,
+      "basis": "stated"
+    },
+    "lawyer": {
+      "value": true,
+      "basis": "stated"
+    },
+    "accessibility_lead": {
+      "value": false,
+      "basis": "stated"
+    }
   }
 }
