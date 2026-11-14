@@ -99,6 +99,10 @@ How to read it:
 - Withdrawing consent must be as easy as giving it (Article 7(3)). [src: gdpr]
 - The age of consent for information society services is 16, and Member States may lower it to no less than 13 (Article 8). In France it is 15 (Article 45 of loi n° 78-17); below that age, joint consent of the minor and the holder of parental responsibility is required. [src: gdpr, fr-loi-78-17]
 - A personal data breach is notified to the supervisory authority, where feasible, within 72 hours (Article 33). [src: gdpr]
+- The controller answers a request on the rights of Articles 15 to 22 without undue delay and in any event within one month of receipt; the period may be extended by two further months where necessary, and the person is told of the extension within the first month (Article 12(3)). [src: gdpr]
+- Records of processing (Article 30(5)): the obligation does not apply to an enterprise or organisation employing fewer than 250 persons unless the processing is likely to result in a risk to the rights and freedoms of data subjects, is not occasional, or includes special categories of data (Article 9(1)) or data relating to criminal convictions and offences (Article 10). [src: gdpr]
+- An impact assessment is required in particular for: systematic and extensive evaluation of personal aspects based on automated processing, including profiling, on which decisions with legal or similarly significant effects are based; large-scale processing of special categories or of criminal data; large-scale systematic monitoring of a publicly accessible area (Article 35(3)). [src: gdpr]
+- A data protection officer is designated where processing is carried out by a public authority or body (except courts acting in their judicial capacity), or where the core activities consist of large-scale regular and systematic monitoring, or large-scale processing of special categories or criminal data (Article 37(1)). [src: gdpr]
 - Fines (Article 83): up to EUR 10 million or 2 % of worldwide annual turnover under paragraph 4; up to EUR 20 million or 4 % under paragraphs 5 and 6, whichever is higher. [src: gdpr]
 
 ### 3.2 ePrivacy and its French transposition
@@ -120,6 +124,7 @@ How to read it:
 - Transfers to US entities certified under the EU-US Data Privacy Framework have been possible since the adequacy decision of 10 July 2023; for other recipients a compliant setup such as proxying remains necessary. [src: cnil-transfers-analytics]
 - Multi-device consent (recommendation published 16 January 2026) is optional and limited to authenticated environments. Its multi-device scope is stated at the first level of the consent interface; a rule resolves conflicts between the choice made before login and the choice stored in the account; moving to multi-device consent requires a new consent. [src: cnil-cookies-recommendation]
 - Tracking pixels in emails (recommendation adopted 12 March 2026): consent is required for measuring opens for campaign performance or personalisation and for profiling. Individual open measurement strictly limited to deliverability of requested emails is exempt. Each email carries a withdrawal link in its footer. [src: cnil-email-pixels]
+- For the email deliverability exemption, only the date (day, without time) of the last known open should be kept; not asking the recipient again for 6 months after a choice is a recommended good practice. [src: cnil-email-pixels]
 - Session replay tools (délibération n° 2026-114, published 5 November 2026): prior consent is required; specific information is given at the first level of the consent interface; all content categories are masked by default; passwords and bank data are never collected; the tool should not be used for advertising retargeting. [src: cnil-session-replay]
 
 ## 4. Security
@@ -131,6 +136,7 @@ How to read it:
 - ANSSI-PA-102 v1.0 of 29 April 2024 addresses AI-assisted code generation in section 5.5: systematically review AI-generated source code (R30), limit generation for critical modules (R31), raise developer awareness (R32). [src: anssi-genai]
 - A joint ANSSI and BSI publication, "AI Coding Assistants", is dated 4 October 2024. [src: anssi-bsi-ai-coding]
 - ANSSI guides state that their recommendations are not normative. [src: anssi-web]
+- ANSSI "Les Essentiels : Mise en œuvre sécurisée d'un CMS", V1.1 (12/2023), lists ten unnumbered good practices, most of them pointing to other ANSSI guides (TLS, MFA, web, administration, logging, backup). [src: anssi-cms]
 - OWASP Top 10:2025 is final. Categories: A01 Broken Access Control; A02 Security Misconfiguration; A03 Software Supply Chain Failures; A04 Cryptographic Failures; A05 Injection; A06 Insecure Design; A07 Authentication Failures; A08 Software or Data Integrity Failures; A09 Security Logging and Alerting Failures; A10 Mishandling of Exceptional Conditions. [src: owasp-top10-2025]
 - The Cyber Resilience Act applies to products with digital elements. Its recital 12 excludes websites that do not support the functionality of such a product. It is therefore not treated as applicable to a website as such. [src: cra]
 

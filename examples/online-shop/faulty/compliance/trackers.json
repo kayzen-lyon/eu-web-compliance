@@ -1,0 +1,26 @@
+{
+  "about": "Tracker declaration of the fixed online shop, read by scripts/check-privacy.mjs. Only the entries of \"exempt\" may be present before consent. The third parties listed with \"exempt\": false run only after consent through the reference consent loader.",
+  "exempt": [
+    {
+      "name": "eu-consent",
+      "kind": "cookie",
+      "match": "exact",
+      "purpose": "consent-choice",
+      "justification": "Set by the reference consent banner. Stores only the visitor's choice per purpose, its date and the banner version; no identifier."
+    },
+    {
+      "name": "basket",
+      "kind": "localStorage",
+      "match": "exact",
+      "purpose": "shopping-basket",
+      "justification": "Written only when the visitor uses \"Add to basket\"; holds product ids, names, prices and quantities, nothing else."
+    }
+  ],
+  "third_parties": [
+    { "host": "googletagmanager.com", "purpose": "analytics", "exempt": false },
+    { "host": "google-analytics.com", "purpose": "analytics", "exempt": false },
+    { "host": "connect.facebook.net", "purpose": "marketing", "exempt": false },
+    { "host": "facebook.com", "purpose": "marketing", "exempt": false },
+    { "host": "youtube-nocookie.com", "purpose": "video", "exempt": false }
+  ]
+}

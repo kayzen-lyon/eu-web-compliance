@@ -1,0 +1,813 @@
+{
+  "meta": {
+    "name": "eu-web-compliance security headers baseline",
+    "version": "1.0.0",
+    "date": "2026-11-14",
+    "human_readable_rules": "references/security/web-baseline.md (sections 1 to 3 and 9)",
+    "configurations": "references/security/headers-configs.md",
+    "sources": {
+      "ANSSI WEB": "ANSSI-PA-009 v2.0 (28 April 2021), sources.json id anssi-web",
+      "ANSSI TLS": "ANSSI TLS guide v1.2 (26 March 2020), sources.json id anssi-tls",
+      "OWASP": "OWASP Top 10:2025 category, sources.json id owasp-top10-2025",
+      "best practice": "No official source; never reported as a breach of a rule"
+    },
+    "not_normative": "ANSSI recommendations are not normative. Findings are reported against the skill's baseline, not as legal non-conformities.",
+    "scope": {
+      "required_values": {
+        "always": "Every response (HTML, assets, API).",
+        "https-only": "Responses served over HTTPS. On a plain-HTTP local test server, check that the configuration declares the header and report it as 'declared, not effective over HTTP'.",
+        "when-html": "Responses whose Content-Type starts with text/html.",
+        "recommended": "Absence is reported at the severity given, never as a failure of the baseline."
+      },
+      "html_detection": "Content-Type header starting with text/html (case-insensitive)."
+    },
+    "check_types": {
+      "present": "The header exists (any value). Repeated headers are joined with ', ' before other checks, except Set-Cookie.",
+      "absent": "The header does not exist.",
+      "equals": "Value, trimmed, equals one of 'values' (case-insensitive unless 'case_sensitive': true).",
+      "matches": "Value matches the regular expression 'pattern' (JavaScript syntax, flags in 'flags').",
+      "not-matches": "Value does not match the regular expression 'pattern'.",
+      "not-contains": "Value does not contain any of the strings in 'values' (case-insensitive).",
+      "min-number": "The numeric parameter named 'parameter' (form name=value, separators ';') is present and >= 'min'.",
+      "contains-directive": "For CSP: the effective policy has the directive (see csp.directive_fallback) and, if 'allowed_values' is given, every source of the directive is in that list.",
+      "csp": "Run every entry of csp.required_directives (as contains-directive, plus forbidden_values) and csp.forbidden_sources on each Content-Security-Policy header.",
+      "when": "A check with 'when': 'present' runs only if the header exists; absence is then not a finding.",
+      "applies": "A check with 'applies': 'when-html' runs only on HTML responses."
+    },
+    "cookie_check_semantics": {
+      "applies_to": "'session' = name matches cookies.session_cookie_name_pattern (or the project's declared list); 'non-session' = the others; 'all' = every cookie.",
+      "attribute": "Attribute names are compared case-insensitively; SameSite values are compared case-insensitively.",
+      "present": "The attribute appears in the Set-Cookie string.",
+      "absent": "The attribute does not appear.",
+      "equals": "The attribute's value is one of 'values'.",
+      "severity_non_session": "Severity to use instead of 'severity' when the cookie is not a session cookie."
+    },
+    "severity_levels": {
+      "high": "Exploitable or removes a main protection. Fix before going live.",
+      "medium": "Weakens a protection or departs from an ANSSI recommendation. Fix in the same change when possible.",
+      "low": "Defence in depth or hygiene.",
+      "info": "Reported for awareness; no fix required."
+    },
+    "not_checked": [
+      "TLS protocol versions, cipher suites, key sizes and certificate details (use an external TLS test; values in references/security/anssi-values.md)",
+      "Whether HTTP redirects to HTTPS (needs a request on port 80)",
+      "Whether a CSP nonce changes on each response (fetch the same page twice and compare to check it)",
+      "Whether the CSP allowlist is minimal for the third-party services actually used",
+      "Subresource integrity attributes in HTML (an HTML check, not a header check)",
+      "Cross-Origin-Embedder-Policy (breaks most third-party embeds; set only when the site needs cross-origin isolation)",
+      "Cache-Control on authenticated pages",
+      "CORS behaviour for origins other than the one used by the checker",
+      "Headers added by a CDN or proxy that is not in front of the tested URL"
+    ],
+    "consumers": "scripts/check-security.mjs (through scripts/lib/security-baseline.mjs) reads the primary fields: per header 'check', 'values', 'pattern', 'directive', 'min', 'csp'; 'cookies' keys required_attributes, session_cookie_patterns, session_required_attributes, samesite_allowed, session_prefix_recommended; and 'absent'. The other fields ('checks', top-level 'csp', 'cookies.checks', 'cors') describe the full baseline with per-check severities, for checkers that implement them.",
+    "primary_vs_detailed": "When both exist, the primary fields and the detailed fields must say the same thing. Edit both together."
+  },
+  "headers": [
+    {
+      "id": "hsts",
+      "name": "Strict-Transport-Security",
+      "required": "https-only",
+      "check": "contains-directive",
+      "directive": "max-age",
+      "min": 31536000,
+      "checks": [
+        {
+          "type": "present",
+          "severity": "high"
+        },
+        {
+          "type": "min-number",
+          "parameter": "max-age",
+          "min": 31536000,
+          "severity": "medium",
+          "description": "max-age of one year or more"
+        },
+        {
+          "type": "matches",
+          "pattern": "(^|;)\\s*includeSubDomains\\s*(;|$)",
+          "flags": "i",
+          "severity": "low",
+          "description": "includeSubDomains, once every subdomain is on HTTPS"
+        }
+      ],
+      "severity": "high",
+      "rationale": "Makes the browser use HTTPS for every later visit, so a first request over plain HTTP cannot be intercepted and an invalid certificate cannot be clicked through. One year and includeSubDomains are the values of the guide's example.",
+      "source": [
+        "ANSSI WEB R2"
+      ],
+      "rule_ref": "web-baseline.md section 1"
+    },
+    {
+      "id": "csp",
+      "name": "Content-Security-Policy",
+      "required": "when-html",
+      "check": "present",
+      "csp": {
+        "required_directives": [
+          "default-src",
+          "object-src",
+          "base-uri",
+          "frame-ancestors",
+          "form-action"
+        ],
+        "forbidden_sources": {
+          "script-src": [
+            "'unsafe-inline'",
+            "'unsafe-eval'",
+            "data:",
+            "*",
+            "https:",
+            "http:"
+          ],
+          "style-src": [
+            "'unsafe-inline'"
+          ],
+          "object-src": [
+            "*",
+            "data:"
+          ],
+          "default-src": [
+            "*"
+          ]
+        }
+      },
+      "checks": [
+        {
+          "type": "present",
+          "severity": "high"
+        },
+        {
+          "type": "csp",
+          "severity": "high",
+          "description": "Evaluated with the rules of the 'csp' block below"
+        }
+      ],
+      "severity": "high",
+      "rationale": "Limits where scripts, styles, frames and connections may come from, so injected markup is not executed. Set by HTTP header so that frame-ancestors and reporting work.",
+      "source": [
+        "ANSSI WEB R13",
+        "ANSSI WEB R14",
+        "ANSSI WEB R15",
+        "ANSSI WEB R16",
+        "ANSSI WEB R17"
+      ],
+      "rule_ref": "web-baseline.md section 2",
+      "notes": "A policy found only in a <meta http-equiv> tag is accepted as the guide's fallback (R14-) with severity medium, and frame-ancestors is then reported missing because browsers ignore it in meta. Content-Security-Policy-Report-Only alone does not count as a policy."
+    },
+    {
+      "id": "x-frame-options",
+      "name": "X-Frame-Options",
+      "required": "when-html",
+      "check": "equals",
+      "values": [
+        "DENY",
+        "SAMEORIGIN"
+      ],
+      "checks": [
+        {
+          "type": "present",
+          "severity": "medium"
+        },
+        {
+          "type": "equals",
+          "values": [
+            "DENY",
+            "SAMEORIGIN"
+          ],
+          "severity": "medium",
+          "description": "DENY or SAMEORIGIN; ALLOW-FROM is not used"
+        }
+      ],
+      "severity": "medium",
+      "rationale": "Defence in depth against clickjacking for browsers that do not apply CSP frame-ancestors. Must match frame-ancestors ('none' with DENY, 'self' with SAMEORIGIN).",
+      "source": [
+        "ANSSI WEB R18"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    },
+    {
+      "id": "referrer-policy",
+      "name": "Referrer-Policy",
+      "required": "always",
+      "check": "equals",
+      "values": [
+        "no-referrer",
+        "same-origin",
+        "strict-origin",
+        "strict-origin-when-cross-origin"
+      ],
+      "checks": [
+        {
+          "type": "present",
+          "severity": "medium"
+        },
+        {
+          "type": "equals",
+          "values": [
+            "no-referrer",
+            "same-origin",
+            "strict-origin",
+            "strict-origin-when-cross-origin"
+          ],
+          "severity": "medium",
+          "description": "One of the four strict values; the last valid token wins when several are listed"
+        }
+      ],
+      "severity": "medium",
+      "rationale": "Stops full URLs (which may hold search terms, identifiers or e-mail addresses) from leaking to other sites. The guide forbids keeping the default and forbids unsafe-url.",
+      "source": [
+        "ANSSI WEB R21"
+      ],
+      "rule_ref": "web-baseline.md section 2",
+      "notes": "When the header lists several comma-separated policies, browsers use the last one they understand: evaluate the last token."
+    },
+    {
+      "id": "content-type",
+      "name": "Content-Type",
+      "required": "always",
+      "check": "present",
+      "checks": [
+        {
+          "type": "present",
+          "severity": "medium"
+        },
+        {
+          "type": "matches",
+          "pattern": "^text/html\\s*;\\s*charset=utf-8",
+          "flags": "i",
+          "severity": "low",
+          "applies": "when-html",
+          "description": "HTML declares charset=utf-8"
+        }
+      ],
+      "severity": "medium",
+      "rationale": "An explicit type tells the browser how it may use the resource, so a file is not interpreted as something else.",
+      "source": [
+        "ANSSI WEB R6"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    },
+    {
+      "id": "x-content-type-options",
+      "name": "X-Content-Type-Options",
+      "required": "always",
+      "check": "equals",
+      "values": [
+        "nosniff"
+      ],
+      "checks": [
+        {
+          "type": "present",
+          "severity": "medium"
+        },
+        {
+          "type": "equals",
+          "values": [
+            "nosniff"
+          ],
+          "severity": "medium"
+        }
+      ],
+      "severity": "medium",
+      "rationale": "Stops the browser from guessing a type other than the declared one, so an uploaded text file cannot run as a script or stylesheet. Not in the ANSSI guide; complements R6.",
+      "source": [
+        "OWASP A02"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    },
+    {
+      "id": "coop",
+      "name": "Cross-Origin-Opener-Policy",
+      "required": "when-html",
+      "check": "equals",
+      "values": [
+        "same-origin",
+        "same-origin-allow-popups"
+      ],
+      "checks": [
+        {
+          "type": "present",
+          "severity": "medium"
+        },
+        {
+          "type": "equals",
+          "values": [
+            "same-origin",
+            "same-origin-allow-popups"
+          ],
+          "severity": "medium",
+          "description": "same-origin; same-origin-allow-popups only on pages that open a payment or sign-in popup"
+        }
+      ],
+      "severity": "medium",
+      "rationale": "Isolates the page's browsing context from windows opened by or opening other sites.",
+      "source": [
+        "ANSSI WEB R46"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    },
+    {
+      "id": "corp",
+      "name": "Cross-Origin-Resource-Policy",
+      "required": "recommended",
+      "check": "equals",
+      "values": [
+        "same-origin",
+        "same-site",
+        "cross-origin"
+      ],
+      "checks": [
+        {
+          "type": "present",
+          "severity": "low"
+        },
+        {
+          "type": "equals",
+          "values": [
+            "same-origin",
+            "same-site",
+            "cross-origin"
+          ],
+          "severity": "low",
+          "description": "cross-origin only for resources meant to be embedded by other sites"
+        }
+      ],
+      "severity": "low",
+      "rationale": "Declares which sites may embed the resource, reducing cross-origin data leaks. Mentioned but not recommended by number in the ANSSI guide.",
+      "source": [
+        "best practice"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    },
+    {
+      "id": "permissions-policy",
+      "name": "Permissions-Policy",
+      "required": "recommended",
+      "check": "present",
+      "checks": [
+        {
+          "type": "present",
+          "severity": "low"
+        }
+      ],
+      "severity": "low",
+      "rationale": "Turns off browser features the site does not use (camera, microphone, geolocation), limiting what injected or third-party code can do. Not supported by every browser.",
+      "source": [
+        "best practice"
+      ],
+      "rule_ref": "web-baseline.md section 2"
+    }
+  ],
+  "csp": {
+    "directive_fallback": {
+      "script-src": "default-src",
+      "script-src-elem": "script-src",
+      "script-src-attr": "script-src",
+      "style-src": "default-src",
+      "style-src-elem": "style-src",
+      "style-src-attr": "style-src",
+      "img-src": "default-src",
+      "font-src": "default-src",
+      "connect-src": "default-src",
+      "media-src": "default-src",
+      "object-src": "default-src",
+      "frame-src": "child-src",
+      "child-src": "default-src",
+      "worker-src": "child-src",
+      "manifest-src": "default-src"
+    },
+    "no_fallback": [
+      "base-uri",
+      "form-action",
+      "frame-ancestors",
+      "sandbox",
+      "upgrade-insecure-requests",
+      "report-to",
+      "report-uri"
+    ],
+    "parsing": "Split the policy on ';' into directives; the first token is the directive name (lower-case), the rest are sources. When several CSP headers are present, each one must pass: the browser enforces all of them. Keywords keep their quotes ('self', 'none', 'unsafe-inline').",
+    "nonce_pattern": "^'nonce-[A-Za-z0-9+/_=-]+'$",
+    "hash_pattern": "^'sha(256|384|512)-[A-Za-z0-9+/_=-]+'$",
+    "required_directives": [
+      {
+        "directive": "default-src",
+        "severity": "high",
+        "forbidden_values": [
+          "*"
+        ],
+        "rationale": "Without default-src, every type of resource not named is allowed from anywhere.",
+        "source": [
+          "ANSSI WEB R16"
+        ]
+      },
+      {
+        "directive": "frame-ancestors",
+        "severity": "medium",
+        "allowed_values_hint": [
+          "'none'",
+          "'self'",
+          "explicit https origins"
+        ],
+        "forbidden_values": [
+          "*",
+          "https:",
+          "http:"
+        ],
+        "rationale": "Main protection against clickjacking. Works only in the HTTP header.",
+        "source": [
+          "ANSSI WEB R17"
+        ]
+      },
+      {
+        "directive": "object-src",
+        "severity": "medium",
+        "allowed_values": [
+          "'none'"
+        ],
+        "rationale": "Plugins are not needed and have been a script-injection path; 'none' removes them.",
+        "source": [
+          "best practice"
+        ]
+      },
+      {
+        "directive": "base-uri",
+        "severity": "medium",
+        "allowed_values": [
+          "'self'",
+          "'none'"
+        ],
+        "rationale": "Not covered by default-src. An injected <base> tag would otherwise redirect every relative script URL.",
+        "source": [
+          "best practice"
+        ]
+      },
+      {
+        "directive": "form-action",
+        "severity": "low",
+        "forbidden_values": [
+          "*",
+          "https:",
+          "http:"
+        ],
+        "rationale": "Not covered by default-src. Limits where forms, including injected ones, can send data.",
+        "source": [
+          "best practice"
+        ]
+      }
+    ],
+    "forbidden_sources": [
+      {
+        "id": "unsafe-inline-script",
+        "source_token": "'unsafe-inline'",
+        "in_effective_directives": [
+          "script-src",
+          "script-src-elem",
+          "script-src-attr"
+        ],
+        "severity": "high",
+        "severity_if_nonce_or_hash_present": "medium",
+        "rationale": "Allows any inline script, so injected markup runs. With a nonce or hash in the same directive, modern browsers ignore it, but the guide still forbids the keyword.",
+        "source": [
+          "ANSSI WEB R15"
+        ]
+      },
+      {
+        "id": "unsafe-inline-style",
+        "source_token": "'unsafe-inline'",
+        "in_effective_directives": [
+          "style-src",
+          "style-src-elem",
+          "style-src-attr"
+        ],
+        "severity": "medium",
+        "rationale": "Allows any inline style; injected CSS can still exfiltrate data or disguise content.",
+        "source": [
+          "ANSSI WEB R15"
+        ]
+      },
+      {
+        "id": "unsafe-eval",
+        "source_token": "'unsafe-eval'",
+        "in_effective_directives": [
+          "*"
+        ],
+        "severity": "high",
+        "rationale": "Allows eval() and equivalent constructs, which the guide forbids (R9, R10).",
+        "source": [
+          "ANSSI WEB R15"
+        ]
+      },
+      {
+        "id": "unsafe-hashes",
+        "source_token": "'unsafe-hashes'",
+        "in_effective_directives": [
+          "script-src",
+          "script-src-attr",
+          "style-src",
+          "style-src-attr"
+        ],
+        "severity": "medium",
+        "rationale": "Re-enables inline event handlers or style attributes; move them to external files.",
+        "source": [
+          "ANSSI WEB R5"
+        ]
+      },
+      {
+        "id": "data-script",
+        "source_token": "data:",
+        "in_effective_directives": [
+          "script-src",
+          "script-src-elem",
+          "object-src",
+          "frame-src",
+          "child-src",
+          "worker-src"
+        ],
+        "severity": "high",
+        "rationale": "A data: URL can carry a whole script, which defeats the policy.",
+        "source": [
+          "ANSSI WEB R15"
+        ]
+      },
+      {
+        "id": "data-other",
+        "source_token": "data:",
+        "in_effective_directives": [
+          "img-src",
+          "font-src",
+          "style-src",
+          "media-src",
+          "connect-src",
+          "default-src"
+        ],
+        "severity": "low",
+        "rationale": "The guide forbids data: in any directive. Lower risk outside scripts; replace inline data: images and fonts with files.",
+        "source": [
+          "ANSSI WEB R15"
+        ]
+      },
+      {
+        "id": "wildcard-script",
+        "source_token": "*",
+        "in_effective_directives": [
+          "script-src",
+          "script-src-elem",
+          "object-src",
+          "default-src"
+        ],
+        "severity": "high",
+        "rationale": "Allows scripts from any origin.",
+        "source": [
+          "ANSSI WEB R16"
+        ]
+      },
+      {
+        "id": "scheme-only-script",
+        "source_token_pattern": "^(https?:|wss?:)$",
+        "in_effective_directives": [
+          "script-src",
+          "script-src-elem",
+          "object-src",
+          "default-src"
+        ],
+        "severity": "high",
+        "rationale": "A scheme alone (https:) allows scripts from any host on that scheme, which is equivalent to a wildcard for an attacker.",
+        "source": [
+          "ANSSI WEB R13"
+        ]
+      },
+      {
+        "id": "insecure-scheme",
+        "source_token_pattern": "^(http:|ws:)|^http://|^ws://",
+        "in_effective_directives": [
+          "*"
+        ],
+        "severity": "medium",
+        "rationale": "Loads resources over an unprotected channel, which an attacker on the network can replace.",
+        "source": [
+          "ANSSI WEB R1"
+        ]
+      }
+    ],
+    "exemptions": [
+      "'strict-dynamic' together with a nonce or hash: host and scheme sources in script-src are ignored by browsers that support it, so 'scheme-only-script' and 'wildcard-script' are reported at severity low in that case (they serve as a fallback for old browsers)."
+    ]
+  },
+  "cookies": {
+    "required_attributes": [
+      "Secure",
+      "SameSite"
+    ],
+    "session_cookie_patterns": [
+      "(^|[-_.])(sess|session|sid|ssid|auth|token|jwt|login)([-_.]|$)|^(PHPSESSID|JSESSIONID|ASP\\.NET_SessionId|connect\\.sid|laravel_session|_session_id|wordpress_logged_in_.*|wordpress_sec_.*|__Host-.*|__Secure-.*)$"
+    ],
+    "session_required_attributes": [
+      "HttpOnly"
+    ],
+    "samesite_allowed": [
+      "Strict",
+      "Lax"
+    ],
+    "session_prefix_recommended": "__Host-",
+    "source": [
+      "ANSSI WEB R29",
+      "ANSSI WEB R30",
+      "ANSSI WEB R31",
+      "ANSSI WEB R32",
+      "ANSSI WEB R33"
+    ],
+    "applies": "Every Set-Cookie header of every response.",
+    "session_cookie_name_flags": "i",
+    "session_cookie_note": "The name pattern is a heuristic. The project may declare its session cookie names; a declared list replaces the pattern. samesite_allowed applies to every cookie: a cookie that truly needs SameSite=None (third-party embed) is reported, and the report states the reason it is kept.",
+    "checks": [
+      {
+        "id": "cookie-secure",
+        "applies_to": "all",
+        "attribute": "Secure",
+        "check": "present",
+        "required": "https-only",
+        "severity": "high",
+        "severity_non_session": "medium",
+        "rationale": "Without Secure, the cookie can travel over plain HTTP, for example after a downgrade or a redirect.",
+        "source": [
+          "ANSSI WEB R31"
+        ]
+      },
+      {
+        "id": "cookie-httponly-session",
+        "applies_to": "session",
+        "attribute": "HttpOnly",
+        "check": "present",
+        "severity": "high",
+        "rationale": "A session cookie readable by JavaScript is stolen by the first injected script.",
+        "source": [
+          "ANSSI WEB R30"
+        ]
+      },
+      {
+        "id": "cookie-httponly-other",
+        "applies_to": "non-session",
+        "attribute": "HttpOnly",
+        "check": "present",
+        "severity": "info",
+        "rationale": "Set it whenever JavaScript does not need the cookie; the checker cannot know whether it does.",
+        "source": [
+          "ANSSI WEB R29"
+        ]
+      },
+      {
+        "id": "cookie-samesite-session",
+        "applies_to": "session",
+        "attribute": "SameSite",
+        "check": "equals",
+        "values": [
+          "Strict",
+          "Lax"
+        ],
+        "severity": "high",
+        "rationale": "A session cookie must declare SameSite and never use None, to limit cross-site request forgery.",
+        "source": [
+          "ANSSI WEB R33"
+        ]
+      },
+      {
+        "id": "cookie-samesite-other",
+        "applies_to": "non-session",
+        "attribute": "SameSite",
+        "check": "present",
+        "severity": "low",
+        "rationale": "Strict by default, Lax when the cookie must follow links from other sites. None must come with Secure and a stated reason.",
+        "source": [
+          "ANSSI WEB R32"
+        ]
+      },
+      {
+        "id": "cookie-samesite-none-needs-secure",
+        "applies_to": "all",
+        "attribute": "SameSite",
+        "check": "if SameSite=None then Secure present",
+        "severity": "medium",
+        "rationale": "Browsers reject SameSite=None without Secure.",
+        "source": [
+          "best practice"
+        ]
+      },
+      {
+        "id": "cookie-domain",
+        "applies_to": "session",
+        "attribute": "Domain",
+        "check": "absent",
+        "severity": "low",
+        "rationale": "Without Domain the cookie stays on the host that set it; with Domain it is also sent to every subdomain.",
+        "source": [
+          "ANSSI WEB R27"
+        ]
+      },
+      {
+        "id": "cookie-host-prefix",
+        "applies_to": "session",
+        "attribute": "name prefix __Host-",
+        "check": "present",
+        "severity": "info",
+        "rationale": "The prefix makes the browser enforce Secure, Path=/ and no Domain.",
+        "source": [
+          "best practice"
+        ]
+      }
+    ]
+  },
+  "cors": [
+    {
+      "id": "cors-wildcard-credentials",
+      "condition": "Access-Control-Allow-Origin is '*' and Access-Control-Allow-Credentials is 'true'",
+      "severity": "high",
+      "rationale": "Browsers refuse this combination; its presence means the server logic is wrong and may echo arbitrary origins elsewhere.",
+      "source": [
+        "ANSSI WEB R40"
+      ]
+    },
+    {
+      "id": "cors-wildcard-html",
+      "condition": "Access-Control-Allow-Origin is '*' on an HTML response or on a response that sets a cookie",
+      "severity": "medium",
+      "rationale": "A wildcard is for public, unauthenticated data only.",
+      "source": [
+        "ANSSI WEB R40"
+      ]
+    },
+    {
+      "id": "cors-origin-reflection",
+      "condition": "Request sent with 'Origin: https://evil.example' receives 'Access-Control-Allow-Origin: https://evil.example'",
+      "severity": "high",
+      "rationale": "The server echoes any origin instead of checking it against an allowlist.",
+      "source": [
+        "ANSSI WEB R40"
+      ]
+    }
+  ],
+  "absent": [
+    {
+      "id": "server-version",
+      "name": "Server",
+      "pattern": "\\d",
+      "severity": "low",
+      "rationale": "A version number tells an attacker which known vulnerabilities to try. Hiding it does not fix anything; it only removes a hint. The ANSSI TLS guide's nginx example sets server_tokens off for this reason.",
+      "source": [
+        "OWASP A02"
+      ],
+      "meaning": "Reported when the header is present and its value matches pattern."
+    },
+    {
+      "id": "x-powered-by",
+      "name": "X-Powered-By",
+      "severity": "low",
+      "rationale": "Discloses the framework and often its version.",
+      "source": [
+        "OWASP A02"
+      ],
+      "meaning": "Reported when the header is present."
+    },
+    {
+      "id": "x-aspnet-version",
+      "name": "X-AspNet-Version",
+      "severity": "low",
+      "rationale": "Discloses the framework version.",
+      "source": [
+        "OWASP A02"
+      ],
+      "meaning": "Reported when the header is present."
+    },
+    {
+      "id": "x-aspnetmvc-version",
+      "name": "X-AspNetMvc-Version",
+      "severity": "low",
+      "rationale": "Discloses the framework version.",
+      "source": [
+        "OWASP A02"
+      ],
+      "meaning": "Reported when the header is present."
+    },
+    {
+      "id": "x-generator",
+      "name": "X-Generator",
+      "pattern": "\\d",
+      "severity": "low",
+      "rationale": "CMS generators often announce their version.",
+      "source": [
+        "OWASP A02"
+      ],
+      "meaning": "Reported when the header is present and its value matches pattern."
+    },
+    {
+      "id": "x-xss-protection",
+      "name": "X-XSS-Protection",
+      "pattern": "^\\s*(?!0\\s*$)",
+      "severity": "low",
+      "rationale": "The legacy browser XSS filter is retired and added vulnerabilities; the guide says to send 0 when a strict CSP is in place. Absence is fine.",
+      "source": [
+        "ANSSI WEB section 5.2.1"
+      ],
+      "meaning": "Reported when the header is present with a value other than 0. Absence is fine."
+    }
+  ]
+}

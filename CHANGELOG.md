@@ -16,3 +16,9 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les
   - modèles de déclaration d'accessibilité (France) et d'information d'accessibilité (EAA) ;
   - vérificateur `scripts/check-a11y.mjs` (axe-core, parcours clavier, redistribution à 320 px, contrôles de structure, catalogue d'anti-patterns) ;
   - deux sites de test, chacun en version fautive (78 défauts plantés au total) et corrigée, et `scripts/check-examples.mjs`, qui exige zéro non-conformité sur les versions corrigées et au moins 90 % des défauts « code » retrouvés sur les versions fautives.
+- Étape M2 (protection des données et sécurité) :
+  - données personnelles et traceurs : 216 règles (`references/privacy/`) distinguant l'exigence légale, la recommandation de la CNIL et la bonne pratique ; bandeau de consentement de référence sans dépendance (`templates/consent/`) ; modèles de politique de confidentialité et de politique cookies ; modèle de déclaration des traceurs ;
+  - sécurité : 256 règles (`references/security/`) appuyées sur les guides de l'ANSSI, complétées par l'OWASP ; socle d'en-têtes lisible par machine ; configurations pour nginx, Apache, Caddy, Netlify, Cloudflare Pages, Vercel, Express et Next.js ; valeurs chiffrées de l'ANSSI ; modules authentification, téléversement, CMS et code généré par IA ;
+  - vérificateurs `scripts/check-privacy.mjs` (traceurs avant consentement, comportement du bandeau) et `scripts/check-security.mjs` (en-têtes, cookies, hygiène côté navigateur), avec leurs tests ;
+  - deux sites de test (boutique en ligne, application avec compte), 42 défauts plantés ; `check-examples.mjs` mesure désormais les trois vérificateurs ;
+  - état réglementaire complété : délais de réponse aux demandes de droits, registre des traitements, analyse d'impact, délégué à la protection des données, pixels de suivi, fiche CMS de l'ANSSI.

@@ -1,0 +1,12 @@
+{
+  "exempt": [
+    {
+      "name": "ewc-consent",
+      "kind": "localStorage",
+      "match": "exact",
+      "purpose": "consent-choice",
+      "justification": "Stores only the visitor's choice (accepted or refused)."
+    }
+  ],
+  "third_parties": []
+}

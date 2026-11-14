@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in - security fixture (weak)</title>
+  <script id="widget" src="https://cdn.example.net/widget.js"></script>
+  <script id="inline-config">
+    var config = { password: "fixture-value-not-a-secret" };
+    localStorage.setItem('auth_token', 'eyJhbGciOiJub25lIn0.eyJzdWIiOiJmaXh0dXJlIn0.');
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Sign in</h1>
+    <form id="sign-in" action="http://example.com/sign-in" method="post">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="off">
+      <button type="submit" onclick="return true">Sign in</button>
+    </form>
+    <p><a id="help" href="https://example.org/help" target="_blank">Help</a></p>
+    <img id="pixel" src="http://example.com/pixel.gif" alt="" width="1" height="1">
+  </main>
+</body>
+</html>

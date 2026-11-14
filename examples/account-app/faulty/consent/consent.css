@@ -1,0 +1,165 @@
+/*
+ * Reference consent banner: styles (eu-web-compliance, MIT licence).
+ * Adapt the custom properties to the site's palette. Keep three things:
+ *   - every choice button has the same style (no "primary" accept button);
+ *   - text and button contrast stay at 4.5:1 or more, focus stays visible;
+ *   - nothing has a fixed width, so the banner reflows at 320 CSS pixels.
+ */
+
+:root {
+  --consent-bg: #ffffff;
+  --consent-fg: #1a1a1a;
+  --consent-border: #1a1a1a;
+  --consent-button-bg: #ffffff;
+  --consent-button-fg: #1a1a1a;
+  --consent-focus: #1a1a1a;
+  --consent-link: #0b4f9c;
+  --consent-placeholder-bg: #f2f2f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --consent-bg: #1a1a1a;
+    --consent-fg: #f5f5f5;
+    --consent-border: #f5f5f5;
+    --consent-button-bg: #1a1a1a;
+    --consent-button-fg: #f5f5f5;
+    --consent-focus: #f5f5f5;
+    --consent-link: #9cc7ff;
+    --consent-placeholder-bg: #2a2a2a;
+  }
+}
+
+.consent-banner {
+  padding: 1rem;
+  border-block-end: 2px solid var(--consent-border);
+  background: var(--consent-bg);
+  color: var(--consent-fg);
+}
+
+.consent-banner h2,
+.consent-settings h2 {
+  margin-block: 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.consent-banner p,
+.consent-banner ul,
+.consent-settings p {
+  max-width: 70ch;
+  margin-block: 0 0.75rem;
+}
+
+.consent-banner a,
+.consent-settings a,
+.consent-placeholder a {
+  color: var(--consent-link);
+  text-decoration: underline;
+}
+
+.consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* One style for every choice: same size, same weight, same contrast. */
+.consent-button {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 2px solid var(--consent-border);
+  border-radius: 0.25rem;
+  background: var(--consent-button-bg);
+  color: var(--consent-button-fg);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.consent-button:hover {
+  text-decoration: underline;
+}
+
+.consent-banner :focus-visible,
+.consent-settings :focus-visible,
+.consent-placeholder :focus-visible,
+.consent-manage:focus-visible {
+  outline: 3px solid var(--consent-focus);
+  outline-offset: 2px;
+}
+
+.consent-settings {
+  width: min(40rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  padding: 1rem;
+  border: 2px solid var(--consent-border);
+  background: var(--consent-bg);
+  color: var(--consent-fg);
+}
+
+.consent-settings::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+.consent-purpose {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--consent-border);
+}
+
+.consent-purpose legend {
+  padding-inline: 0.25rem;
+  font-weight: 700;
+}
+
+.consent-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.consent-choice label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.consent-choice input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+}
+
+.consent-placeholder {
+  max-width: 100%;
+  padding: 1rem;
+  border: 2px dashed var(--consent-border);
+  background: var(--consent-placeholder-bg);
+  color: var(--consent-fg);
+}
+
+.consent-placeholder iframe {
+  max-width: 100%;
+}
+
+.consent-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .consent-button {
+    transition: background-color 0.15s ease;
+  }
+}

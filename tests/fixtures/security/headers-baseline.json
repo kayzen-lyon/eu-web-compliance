@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "description": "Minimal baseline used by tests/checkers.test.mjs. The reference baseline of the skill is references/security/headers-baseline.json.",
+    "unknown_fields_are_ignored": true
+  },
+  "headers": [
+    {
+      "name": "Content-Security-Policy",
+      "required": "when-html",
+      "check": "present",
+      "csp": {
+        "required_directives": ["default-src", "script-src", "object-src", "base-uri", "frame-ancestors", "form-action"],
+        "forbidden_sources": { "script-src": ["'unsafe-inline'", "'unsafe-eval'", "*", "data:"] }
+      },
+      "severity": "high",
+      "rationale": "Limits what an injected script can do.",
+      "source": "ANSSI-PA-009"
+    },
+    {
+      "name": "Strict-Transport-Security",
+      "required": "https-only",
+      "check": "contains-directive",
+      "directive": "max-age",
+      "min": 31536000,
+      "severity": "high",
+      "source": "ANSSI-PA-009"
+    },
+    { "name": "X-Content-Type-Options", "required": "always", "check": "equals", "value": "nosniff", "severity": "medium", "source": "ANSSI-PA-009" },
+    {
+      "name": "Referrer-Policy",
+      "required": "always",
+      "check": "matches",
+      "pattern": "^(no-referrer|same-origin|strict-origin|strict-origin-when-cross-origin)$",
+      "severity": "medium",
+      "source": "ANSSI-PA-009"
+    },
+    { "name": "Permissions-Policy", "required": "recommended", "check": "present", "severity": "low" },
+    { "name": "X-Frame-Options", "required": "recommended", "check": "equals", "values": ["DENY", "SAMEORIGIN"], "severity": "low" }
+  ],
+  "cookies": {
+    "required_attributes": ["Secure", "SameSite"],
+    "session_cookie_patterns": ["^sid$", "sess"],
+    "session_required_attributes": ["HttpOnly"],
+    "samesite_allowed": ["Strict", "Lax"]
+  },
+  "absent": ["X-Powered-By"]
+}

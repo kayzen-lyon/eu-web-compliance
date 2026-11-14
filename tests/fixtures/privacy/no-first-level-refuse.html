@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - tracker fixture (no first-level refuse)</title>
+  <script type="text/plain" data-consent-purpose="advertising" src="https://connect.facebook.net/en_US/fbevents.js"></script>
+  <script src="js/consent.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Home</h1>
+    <p>Test page: the banner offers "Accept all" and "Customise"; refusing takes a second step.</p>
+  </main>
+  <footer>
+    <button type="button" data-consent-action="manage">Manage cookies</button>
+  </footer>
+  <div data-consent-banner role="region" aria-label="Cookies" hidden>
+    <p>We use cookies to measure and personalise advertising.</p>
+    <button type="button" data-consent-action="accept">Accept all</button>
+    <button type="button" data-consent-action="customise">Customise</button>
+    <div id="consent-panel" hidden>
+      <button type="button" data-consent-action="refuse">Refuse all</button>
+    </div>
+  </div>
+</body>
+</html>

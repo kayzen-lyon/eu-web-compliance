@@ -1,0 +1,13 @@
+{
+  "about": "Copy to compliance/trackers.json in the project and complete it. scripts/check-privacy.mjs reads it: anything a page stores or requests before consent that is not declared exempt here is reported as a non-conformity. Declaring a tracker exempt is a claim the site owner must be able to justify against references/privacy/trackers.md section 3; this file does not make it true.",
+  "exempt": [
+    {
+      "name": "eu-consent",
+      "kind": "cookie",
+      "match": "exact",
+      "purpose": "consent-choice",
+      "justification": "Set by the reference consent banner. Stores only the visitor's choice per purpose, its date and the banner version; no identifier. Trackers that store the visitor's choice are exempt from consent (CNIL guidelines, Article 5)."
+    }
+  ],
+  "third_parties": []
+}

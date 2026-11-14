@@ -1,0 +1,43 @@
+{
+  "about": "Privacy defects planted in examples/account-app/faulty by scripts/examples/plant_account_app.py. scripts/check-privacy.mjs --expected scores the entries of \"defects\". kind: code = check-privacy.mjs is designed to find it; runtime = needs an interaction the checker does not perform; human = needs a person. Defects that no checker rule covers are listed in \"not_scored\" with rule null, because the --expected loader requires a rule string.",
+  "defects": [
+    { "id": "AA-P-01", "page": "index.html", "rule": "third-party-request-before-consent", "detail": "cdn.segment.com", "kind": "code", "severity": "major",
+      "summary": "A product analytics library is loaded on the home page before any choice.",
+      "source": "ePrivacy art. 5(3)",
+      "fixed_by": "Audience measurement is declared with type=\"text/plain\" and data-consent-purpose=\"analytics\"; no other analytics library is loaded." },
+    { "id": "AA-P-02", "page": "index.html", "rule": "third-party-request-before-consent", "detail": "fonts.googleapis.com", "kind": "code", "severity": "minor",
+      "summary": "A web font is loaded from a third-party font service, which receives the visitor's IP address on every page view.",
+      "source": "GDPR art. 6(1)",
+      "fixed_by": "The site uses system fonts; a web font would be self-hosted." },
+    { "id": "AA-P-03", "page": "sign-up.html", "rule": "third-party-request-before-consent", "detail": "www.googleadservices.com", "kind": "code", "severity": "major",
+      "summary": "An advertising conversion tag is loaded on the sign-up page before consent.",
+      "source": "ePrivacy art. 5(3)",
+      "fixed_by": "No advertising tag; any conversion measurement would be a declared purpose activated by the consent loader." },
+    { "id": "AA-P-04", "page": "sign-up.html", "rule": "no-withdrawal-control", "kind": "code", "severity": "minor",
+      "summary": "The footer of this page has no \"Manage cookies\" control, so a visitor who accepted cannot withdraw consent from here.",
+      "source": "GDPR art. 7(3)",
+      "fixed_by": "Every page has the \"Manage cookies\" button in its footer." },
+    { "id": "AA-P-05", "page": "account.html", "rule": "third-party-request-before-consent", "detail": "www.clarity.ms", "kind": "code", "severity": "major",
+      "summary": "A session replay script records the account page, which shows the member's personal data, before consent.",
+      "source": "CNIL session replay",
+      "fixed_by": "No session replay tool is used." },
+    { "id": "AA-P-06", "page": "sign-in.html", "rule": "storage-before-consent", "detail": "fp_device_id", "kind": "code", "severity": "major",
+      "summary": "A first-party script writes a persistent device identifier to localStorage before consent; it is not declared and serves no exempt purpose.",
+      "source": "ePrivacy art. 5(3)",
+      "fixed_by": "Nothing is written on load except the session cookie, declared exempt in compliance/trackers.json." },
+    { "id": "AA-P-07", "page": "privacy.html", "rule": "refuse-less-prominent", "kind": "code", "severity": "minor",
+      "summary": "\"Refuse\" is a small grey link under the \"Accept all\" and \"Customise\" buttons, so refusing is less visible than accepting.",
+      "source": "CNIL recommendation",
+      "fixed_by": "\"Refuse all\" is a button of the same size, colours and font as \"Accept all\", next to it." },
+    { "id": "AA-P-08", "page": "reset-password.html", "rule": "third-party-request-before-consent", "detail": "widget.helpdesk.example", "kind": "code", "severity": "major",
+      "summary": "The support chat widget, run by an external help-desk provider that sets trackers, is loaded with the page instead of after consent.",
+      "source": "ePrivacy art. 5(3)",
+      "fixed_by": "The chat script keeps type=\"text/plain\" and data-consent-purpose=\"chat\"; without consent the page gives an email address." }
+  ],
+  "not_scored": [
+    { "id": "AA-P-09", "page": "sign-up.html", "rule": null, "kind": "human", "severity": "major",
+      "summary": "The newsletter box of the sign-up form is ticked in advance, so subscribing is not an unambiguous act of the member.",
+      "source": "GDPR art. 4(11)",
+      "fixed_by": "The newsletter box is unticked; the member ticks it to subscribe." }
+  ]
+}

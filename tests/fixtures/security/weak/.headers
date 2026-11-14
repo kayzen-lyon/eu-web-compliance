@@ -1,0 +1,7 @@
+# Planted defects, listed in ../weak-expected.json
+/*
+  Content-Security-Policy: default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' data:
+  X-Powered-By: ExampleFramework/1.2
+  Server: ExampleHTTPd/2.4.1
+/index.html
+  Set-Cookie: sid=fixture-session; Path=/

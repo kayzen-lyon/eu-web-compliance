@@ -1,0 +1,120 @@
+<!--
+  Reference consent banner: HTML fragment (eu-web-compliance, MIT licence).
+  Read templates/consent/README.md before using it.
+
+  Where each part goes:
+    1. CONFIG and BANNER: first thing in <body>, right after the skip link.
+    2. MANAGE BUTTON: in the footer of every page.
+    3. SETTINGS DIALOG and STATUS REGION: anywhere in <body>, usually at the end.
+    4. consent.js: <script src="/consent/consent.js" defer></script> in <head>, or at the end of <body>.
+
+  Everything in [square brackets] is a placeholder to replace with facts from the project.
+  One <fieldset data-purpose="..."> per consent purpose found in the tracker inventory.
+  Purpose ids are lower case letters, digits and hyphens; the same id is used in data-consent-purpose.
+  Never invent a purpose, a company or a duration: ask the site owner.
+-->
+
+<!-- 1. CONFIG: version changes whenever a purpose or a partner changes, which asks every visitor again.
+     maxAgeMonths: how long a choice is kept before asking again. Default: the duration the CNIL
+     recommends, see references/regulatory-status.md section 3.3. -->
+<script type="application/json" id="eu-consent-config">
+{
+  "version": "[2026-11-14]",
+  "maxAgeMonths": 6,
+  "storage": "cookie",
+  "reloadOnWithdraw": true,
+  "focusTarget": "#main"
+}
+</script>
+
+<!-- 1. BANNER: in the page flow, at the top, not modal. Hidden until consent.js decides to show it. -->
+<section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+  <h2 id="consent-title">Cookies and other trackers</h2>
+  <p>
+    [Site or company name] and [the companies listed in our partners list] would like to use trackers on your device to:
+  </p>
+  <ul class="consent-purpose-summary">
+    <li><strong>Audience measurement:</strong> count visits and see which pages are read, to improve the site.</li>
+    <li><strong>Videos from external platforms:</strong> play videos hosted by [video platform], which sets its own trackers.</li>
+  </ul>
+  <p>
+    You can accept or refuse all of them, or choose purpose by purpose. Refusing does not prevent you from using the site:
+    external videos are then replaced by a link. You can change your mind at any time with "Manage cookies" at the bottom of every page.
+    <a href="[/cookies]">Cookie policy and list of companies using trackers on this site</a>
+  </p>
+  <div class="consent-actions">
+    <button type="button" class="consent-button" data-consent="accept">Accept all</button>
+    <button type="button" class="consent-button" data-consent="refuse">Refuse all</button>
+    <button type="button" class="consent-button" data-consent="customise">Customise</button>
+  </div>
+</section>
+
+<!-- 2. MANAGE BUTTON: on every page, same place (footer). -->
+<button type="button" class="consent-button consent-manage" data-consent-open>Manage cookies</button>
+
+<!-- 3. SETTINGS DIALOG: native modal dialog. Radios start on "Refuse" unless the visitor already accepted. -->
+<dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+  <form method="dialog">
+    <h2 id="consent-settings-title" tabindex="-1" autofocus>Choose by purpose</h2>
+    <p>
+      Your choice applies to this browser. It is kept for [6] months, then we ask again.
+      If you withdraw a consent you gave earlier, the page reloads to stop the services concerned.
+    </p>
+
+    <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="[_example_analytics_*]" data-storage="[example_analytics]">
+      <legend>Audience measurement</legend>
+      <p id="purpose-analytics-text">
+        [Site or company name] uses [tool name] to count visits and see which pages are read. Data: pages viewed, approximate device type.
+        Companies involved: [list].
+      </p>
+      <div class="consent-choice">
+        <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accept</label>
+        <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuse</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="consent-purpose" data-purpose="video" data-cookies="" data-storage="">
+      <legend>Videos from external platforms</legend>
+      <p id="purpose-video-text">
+        Videos are played by [video platform], which sets trackers on your device and may use them for its own purposes.
+        Without your consent, a link to the video is shown instead.
+      </p>
+      <div class="consent-choice">
+        <label><input type="radio" name="video" value="accept" aria-describedby="purpose-video-text"> Accept</label>
+        <label><input type="radio" name="video" value="refuse" aria-describedby="purpose-video-text" checked> Refuse</label>
+      </div>
+    </fieldset>
+
+    <p class="consent-note">
+      Trackers that are strictly necessary (keeping your choice, your basket, your session) do not need your consent.
+      They are listed in the <a href="[/cookies]">cookie policy</a>.
+    </p>
+
+    <div class="consent-actions">
+      <button class="consent-button" value="accept">Accept all</button>
+      <button class="consent-button" value="refuse">Refuse all</button>
+      <button class="consent-button" value="save">Save my choices</button>
+      <button class="consent-button" value="cancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- 3. STATUS REGION: announces the result of a choice to screen reader users. -->
+<div id="consent-status" role="status" class="consent-visually-hidden"></div>
+
+<!-- How to declare a script that needs consent (illustration). It stays inert text until its purpose is accepted.
+<script type="text/plain" data-consent-purpose="analytics" src="/js/analytics.js"></script>
+<script type="text/plain" data-consent-purpose="analytics">
+  // inline code that sets or reads trackers
+</script>
+-->
+
+<!-- How to declare an embed that needs consent (illustration). The <template> is inert: no request is made until consent.
+<div class="consent-placeholder" data-consent-placeholder data-consent-purpose="video">
+  <p>This video is hosted by [video platform], which uses trackers. <a href="[https://video.example/watch?v=ID]">Watch it on [video platform]</a>.</p>
+  <button type="button" class="consent-button" data-consent-allow="video">Allow videos from external platforms</button>
+  <template data-consent-content>
+    <iframe src="[https://video.example/embed/ID]" title="[Video: title of the video]" width="560" height="315" allowfullscreen></iframe>
+  </template>
+</div>
+-->

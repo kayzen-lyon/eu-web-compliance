@@ -1,0 +1,17 @@
+# Security headers of the fixed version, in the format of a Netlify _headers file.
+# scripts/lib/static-server.mjs applies them when a checker serves this folder over plain HTTP:
+# browsers ignore HSTS there, but it is declared so that the configuration can be checked.
+# The CSP lists, in the narrowest directive, each third-party origin that runs only after consent.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://widget.helpdesk.example; style-src 'self'; img-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://widget.helpdesk.example; frame-src https://widget.helpdesk.example; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+# Simulated session: the sign-in response sets the session cookie, with the __Host- prefix,
+# Secure, HttpOnly and SameSite=Lax.
+/sign-in.html
+  Set-Cookie: __Host-sid=demo-session-0001; Path=/; Secure; HttpOnly; SameSite=Lax

@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "purpose": "Classification hints used by scripts/check-privacy.mjs to sort what a page sets or requests before consent.",
+    "caution": "Host names and cookie names below are illustrations of common properties, not a list of unlawful vendors. A purpose cannot be known from a name: a match is a reason to look, and a site states its exempt trackers in compliance/trackers.json. Whether a given setup needs consent depends on its purpose and configuration.",
+    "verdicts": {
+      "non-exempt": "Reported as a non-conformity when present before consent or after refusal.",
+      "to-review": "Reported as a point to review: the purpose may or may not be exempt."
+    },
+    "sources": ["eprivacy", "fr-loi-78-17", "cnil-cookies-guidelines", "cnil-cookies-recommendation", "cnil-audience-measurement", "cnil-session-replay"]
+  },
+  "host_categories": [
+    {
+      "id": "advertising",
+      "label": "Advertising and ad measurement",
+      "why": "Hosts that serve or measure advertising usually read or write an identifier to recognise the same browser across several sites; advertising is not among the exempt purposes.",
+      "verdict": "non-exempt",
+      "hosts": ["doubleclick.net", "googlesyndication.com", "googleadservices.com", "adnxs.com", "criteo.com", "criteo.net", "taboola.com", "outbrain.com", "amazon-adsystem.com", "adsrvr.org", "bat.bing.com"]
+    },
+    {
+      "id": "social-tracking",
+      "label": "Social network pixels and plugins",
+      "why": "Pixels and share or like plugins loaded from a social network let that network link the visit to its own identifiers, including for people who are not members.",
+      "verdict": "non-exempt",
+      "hosts": ["connect.facebook.net", "facebook.com", "platform.twitter.com", "ads-twitter.com", "snap.licdn.com", "px.ads.linkedin.com", "analytics.tiktok.com", "ct.pinterest.com"]
+    },
+    {
+      "id": "third-party-analytics",
+      "label": "Audience measurement on a vendor's infrastructure",
+      "why": "Exemption of audience measurement requires conditions that a checker cannot verify from the browser (measurement for the publisher's exclusive account, anonymous statistics only, no cross-site tracking, no transmission to third parties). Libraries and loaders served from these hosts usually set a persistent identifier.",
+      "verdict": "non-exempt",
+      "hosts": ["google-analytics.com", "analytics.google.com", "googletagmanager.com", "stats.g.doubleclick.net", "segment.io", "segment.com", "cdn.segment.com", "mixpanel.com", "amplitude.com", "heapanalytics.com"]
+    },
+    {
+      "id": "session-replay",
+      "label": "Session replay and heatmaps",
+      "why": "Session replay records the user's interactions with the page; the CNIL requires prior consent for it.",
+      "verdict": "non-exempt",
+      "hosts": ["hotjar.com", "hotjar.io", "clarity.ms", "fullstory.com", "contentsquare.net", "mouseflow.com", "smartlook.com", "logrocket.io", "logr-ingest.com"]
+    },
+    {
+      "id": "configurable-analytics",
+      "label": "Audience measurement that can be configured for exemption",
+      "why": "Some measurement tools can be configured to meet the exemption conditions, or work without storing anything on the terminal; the configuration decides, and it is not visible from the browser.",
+      "verdict": "to-review",
+      "hosts": ["matomo.cloud", "plausible.io", "piwik.pro", "simpleanalytics.com", "cdn.usefathom.com"]
+    },
+    {
+      "id": "video-and-map-embeds",
+      "label": "Embedded players and maps",
+      "why": "Embedded players and maps load content from a third party that may read or write identifiers; a click-to-load placeholder avoids the request before consent.",
+      "verdict": "to-review",
+      "hosts": ["youtube.com", "youtube-nocookie.com", "ytimg.com", "player.vimeo.com", "dailymotion.com", "maps.googleapis.com", "maps.google.com"]
+    },
+    {
+      "id": "fonts-and-cdn",
+      "label": "Font services and public code hosting",
+      "why": "No identifier is expected, but each request transmits the visitor's IP address to a third party, and code hosted elsewhere can change without notice; self-hosting avoids both.",
+      "verdict": "to-review",
+      "hosts": ["fonts.googleapis.com", "fonts.gstatic.com", "use.typekit.net", "cdnjs.cloudflare.com", "cdn.jsdelivr.net", "unpkg.com", "code.jquery.com"]
+    }
+  ],
+  "storage_name_patterns": [
+    { "pattern": "^_ga($|_)", "category": "third-party-analytics", "verdict": "non-exempt", "why": "Name used by a widespread analytics library for a persistent browser identifier." },
+    { "pattern": "^(_gid|_gat.*|__utm[abcvz])$", "category": "third-party-analytics", "verdict": "non-exempt", "why": "Names used by analytics libraries for visitor or session identifiers and throttling." },
+    { "pattern": "^(_gcl_.*|IDE|test_cookie|_uet.*|MUID)$", "category": "advertising", "verdict": "non-exempt", "why": "Names used by advertising and conversion measurement to recognise the browser." },
+    { "pattern": "^(_fbp|_fbc|fr|_ttp|_tt_.*|li_.*|bcookie|_pin_unauth)$", "category": "social-tracking", "verdict": "non-exempt", "why": "Names used by social network pixels to link the visit to the network's identifiers." },
+    { "pattern": "^(_hj.*|_clck|_clsk|_cs_.*|_uetsid)$", "category": "session-replay", "verdict": "non-exempt", "why": "Names used by session replay and heatmap tools." },
+    { "pattern": "^(ajs_anonymous_id|ajs_user_id|mp_.*_mixpanel|amplitude_id.*|AMP_.*)$", "category": "third-party-analytics", "verdict": "non-exempt", "why": "Names used by product analytics libraries for a persistent identifier." },
+    { "pattern": "^(_pk_id.*|_pk_ses.*|_pk_ref.*)$", "category": "configurable-analytics", "verdict": "to-review", "why": "Names used by a measurement tool that can be configured to meet the exemption conditions; the configuration decides." }
+  ],
+  "exempt_name_hints": [
+    { "pattern": "consent|cookie_?choice|cookie_?pref|tarteaucitron|axeptio|didomi|euconsent|^cmp", "purpose": "consent-choice", "why": "The name suggests storage of the user's choice about trackers, an exempt purpose if it stores nothing else." },
+    { "pattern": "^(phpsessid|jsessionid|asp\\.net_sessionid|connect\\.sid|sessionid|session|sess|sid|__host-.*(sess|sid).*|__secure-.*(sess|sid).*|auth.*|.*csrf.*|.*xsrf.*)$", "purpose": "authentication", "why": "The name suggests a session, authentication or anti-forgery token, exempt if strictly needed for a service the user asked for." },
+    { "pattern": "cart|basket|panier", "purpose": "shopping-basket", "why": "The name suggests a shopping basket, an exempt purpose." },
+    { "pattern": "^(lang|locale|language|i18n|theme|color-?scheme|font-?size|contrast)", "purpose": "interface-personalisation", "why": "The name suggests an interface preference the user expects to be kept (language, display), an exempt purpose." },
+    { "pattern": "^(awsalb.*|serverid|route|lb_.*)$", "purpose": "load-balancing", "why": "The name suggests load balancing or traffic routing, an exempt purpose." }
+  ]
+}

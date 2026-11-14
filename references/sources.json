@@ -360,7 +360,8 @@
       "version": "Page dated 4 July 2025",
       "consulted": "2026-11-14",
       "licence": "CNIL content; reuse terms not reviewed",
-      "proof": "P"
+      "proof": "P",
+      "tag": "CNIL audience measurement"
     },
     {
       "id": "cnil-transfers-analytics",
@@ -371,7 +372,8 @@
       "version": "Page dated 15 November 2023",
       "consulted": "2026-11-14",
       "licence": "CNIL content; reuse terms not reviewed",
-      "proof": "P"
+      "proof": "P",
+      "tag": "CNIL transfers"
     },
     {
       "id": "cnil-email-pixels",
@@ -850,6 +852,117 @@
       "version": "develop branch on the consultation date; the skill runs axe-core 4.14",
       "consulted": "2026-11-14",
       "licence": "MPL-2.0",
+      "proof": "P"
+    },
+    {
+      "id": "anssi-cms",
+      "title": "Les Essentiels : Mise en œuvre sécurisée d'un CMS",
+      "publisher": "ANSSI",
+      "url": "https://messervices.cyber.gouv.fr/documents-guides/anssi_essentiels_mise-en-oeuvre-securisee-cms_v1.1%20(1).pdf",
+      "kind": "guidance",
+      "version": "V1.1, 12/2023; ten unnumbered good practices",
+      "consulted": "2026-11-14",
+      "licence": "Not printed on the sheet",
+      "proof": "P",
+      "tag": "ANSSI CMS"
+    },
+    {
+      "id": "owasp-password-storage",
+      "title": "OWASP Password Storage Cheat Sheet",
+      "publisher": "OWASP Foundation",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "kind": "guidance",
+      "version": "Online, read 2026-11-14",
+      "consulted": "2026-11-14",
+      "licence": "CC BY-SA 4.0: cite parameter values only, no text copied",
+      "proof": "P"
+    },
+    {
+      "id": "nextjs-csp",
+      "title": "How to set a Content Security Policy for your Next.js application",
+      "publisher": "Vercel",
+      "url": "https://nextjs.org/docs/app/guides/content-security-policy",
+      "kind": "tool",
+      "version": "Page lastUpdated 2026-03-20",
+      "consulted": "2026-11-14",
+      "licence": "Documentation, cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "helmet-docs",
+      "title": "Helmet documentation",
+      "publisher": "Helmet maintainers",
+      "url": "https://helmet.js.org/",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "netlify-headers",
+      "title": "Custom headers",
+      "publisher": "Netlify",
+      "url": "https://docs.netlify.com/routing/headers/",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "cloudflare-pages-headers",
+      "title": "Headers (Pages)",
+      "publisher": "Cloudflare",
+      "url": "https://developers.cloudflare.com/pages/configuration/headers/",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "vercel-json",
+      "title": "vercel.json configuration",
+      "publisher": "Vercel",
+      "url": "https://vercel.com/docs/project-configuration/vercel-json",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "nginx-docs",
+      "title": "nginx modules ngx_http_headers_module, ngx_http_ssl_module, ngx_http_core_module",
+      "publisher": "nginx",
+      "url": "https://nginx.org/en/docs/",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "apache-httpd-docs",
+      "title": "Apache HTTP Server 2.4: mod_headers, mod_ssl, core",
+      "publisher": "Apache Software Foundation",
+      "url": "https://httpd.apache.org/docs/2.4/",
+      "kind": "tool",
+      "version": "2.4",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "caddy-docs",
+      "title": "Caddyfile directives header and tls; Automatic HTTPS",
+      "publisher": "Caddy",
+      "url": "https://caddyserver.com/docs/",
+      "kind": "tool",
+      "version": "Online",
+      "consulted": "2026-11-14",
+      "licence": "Cited by link",
       "proof": "P"
     }
   ]

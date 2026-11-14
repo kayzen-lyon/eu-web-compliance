@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout – Lindenmoor Tea Company</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="consent/consent.css">
+  <script src="consent/consent.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="https://static.hotjar.com/c/hotjar-0000000.js?sv=6" async></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <script type="application/json" id="eu-consent-config">
+  {
+    "version": "2026-11-14",
+    "maxAgeMonths": 6,
+    "storage": "cookie",
+    "reloadOnWithdraw": true,
+    "focusTarget": "#main"
+  }
+  </script>
+
+  <section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+    <h2 id="consent-title">Cookies and other trackers</h2>
+    <p>
+      Lindenmoor Tea Company and the companies listed in our cookie policy would like to use trackers on your device to:
+    </p>
+    <ul class="consent-purpose-summary">
+      <li><strong>Audience measurement:</strong> count visits and see which pages are read, to improve the shop.</li>
+      <li><strong>Marketing:</strong> measure the effect of our advertising on a social network and show you our offers there.</li>
+      <li><strong>Videos from external platforms:</strong> play videos hosted by an external video platform, which sets its own trackers.</li>
+    </ul>
+    <p>
+      You can accept or refuse all of them, or choose purpose by purpose. Refusing does not prevent you from using the site: external videos are then replaced by a link.
+      You can change your mind at any time with "Manage cookies" at the bottom of every page.
+      <a href="cookies.html">Cookie policy and list of companies using trackers on this site</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-button" data-consent="accept">Accept all</button>
+      <button type="button" class="consent-button" data-consent="refuse">Refuse all</button>
+      <button type="button" class="consent-button" data-consent="customise">Customise</button>
+    </div>
+  </section>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <p class="brand"><a class="brand-link" href="index.html">Lindenmoor Tea Company</a></p>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Our teas</a></li>
+          <li><a href="basket.html">Basket</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1>Checkout</h1>
+    <p class="lead">Demonstration only: no payment is taken, no order is placed and nothing you type leaves your browser.</p>
+    <p>All fields are required unless marked "optional". We use these details only to deliver your order; see our <a href="privacy.html">privacy policy</a>.</p>
+
+    <form id="checkout-form" action="http://pay.lindenmoor-tea.example/checkout" method="post">
+      <fieldset>
+        <legend>Delivery address</legend>
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input type="text" id="full-name" name="full-name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <span class="hint" id="email-hint">We send the order confirmation and delivery updates to this address.</span>
+          <input type="email" id="email" name="email" autocomplete="email" aria-describedby="email-hint" required>
+        </div>
+        <div class="field">
+          <label for="street">Street and number</label>
+          <input type="text" id="street" name="street" autocomplete="street-address" required>
+        </div>
+        <div class="field">
+          <label for="postcode">Postcode</label>
+          <input type="text" id="postcode" name="postcode" autocomplete="postal-code" required>
+        </div>
+        <div class="field">
+          <label for="city">Town or city</label>
+          <input type="text" id="city" name="city" autocomplete="address-level2" required>
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <select id="country" name="country" autocomplete="country-name" required>
+            <option value="">Choose a country</option>
+            <option>Belgium</option>
+            <option>France</option>
+            <option>Germany</option>
+            <option>Ireland</option>
+            <option>Netherlands</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Delivery</legend>
+        <div class="choice">
+          <input type="radio" id="delivery-standard" name="delivery" value="standard" checked>
+          <label for="delivery-standard">Standard, 3 to 5 working days, €4.50</label>
+        </div>
+        <div class="choice">
+          <input type="radio" id="delivery-express" name="delivery" value="express">
+          <label for="delivery-express">Express, next working day, €9.00</label>
+        </div>
+        <div class="choice">
+          <input type="radio" id="delivery-collect" name="delivery" value="collect">
+          <label for="delivery-collect">Collect from the workshop, free</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Payment</legend>
+        <p>This example shop has no payment provider. Choose how you would pay in a real shop; nothing is charged.</p>
+        <div class="choice">
+          <input type="radio" id="pay-transfer" name="payment" value="transfer" checked>
+          <label for="pay-transfer">Bank transfer after the order</label>
+        </div>
+        <div class="choice">
+          <input type="radio" id="pay-collection" name="payment" value="collection">
+          <label for="pay-collection">Pay at collection</label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="note">Note for the delivery (optional)</label>
+        <textarea id="note" name="note" rows="3"></textarea>
+      </div>
+
+      <p><button type="submit" class="button">Place the order</button></p>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <nav aria-label="Legal information">
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="cookies.html">Cookie policy</a></li>
+          <li><a href="legal.html">Legal notice</a></li>
+        </ul>
+      </nav>
+      <p class="footer-manage"><button type="button" class="consent-button consent-manage" data-consent-open>Manage cookies</button></p>
+      <p class="footer-note">Lindenmoor Tea Company is a fictional business. This is an example site of the eu-web-compliance project: no order is taken and nothing is sent.</p>
+    </div>
+  </footer>
+
+  <dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+    <form method="dialog">
+      <h2 id="consent-settings-title" tabindex="-1" autofocus>Choose by purpose</h2>
+      <p>
+        Your choice applies to this browser. It is kept for 6 months, then we ask again.
+        If you withdraw a consent you gave earlier, the page reloads to stop the services concerned.
+      </p>
+
+      <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="_ga _ga_*" data-storage="">
+        <legend>Audience measurement</legend>
+        <p id="purpose-analytics-text">
+          Lindenmoor Tea Company uses an audience measurement service to count visits and see which pages are read. Data: pages viewed, approximate device type. Company involved: the analytics provider listed in the cookie policy.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accept</label>
+          <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuse</label>
+        </div>
+      </fieldset>
+      <fieldset class="consent-purpose" data-purpose="marketing" data-cookies="_fbp" data-storage="">
+        <legend>Marketing</legend>
+        <p id="purpose-marketing-text">
+          We measure which of our advertisements on a social network lead to visits and orders, and the network may show you our offers. Data: pages viewed, products added to the basket, orders. Company involved: the social network listed in the cookie policy, which also uses the data for its own purposes.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="marketing" value="accept" aria-describedby="purpose-marketing-text"> Accept</label>
+          <label><input type="radio" name="marketing" value="refuse" aria-describedby="purpose-marketing-text" checked> Refuse</label>
+        </div>
+      </fieldset>
+      <fieldset class="consent-purpose" data-purpose="video" data-cookies="" data-storage="">
+        <legend>Videos from external platforms</legend>
+        <p id="purpose-video-text">
+          Videos are played by an external video platform, which sets trackers on your device and may use them for its own purposes. Without your consent, a link to the video is shown instead.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="video" value="accept" aria-describedby="purpose-video-text"> Accept</label>
+          <label><input type="radio" name="video" value="refuse" aria-describedby="purpose-video-text" checked> Refuse</label>
+        </div>
+      </fieldset>
+
+      <p class="consent-note">
+        Trackers that are strictly necessary (keeping your choice, your basket, your session) do not need your consent.
+        They are listed in the <a href="cookies.html">cookie policy</a>.
+      </p>
+
+      <div class="consent-actions">
+        <button class="consent-button" value="accept">Accept all</button>
+        <button class="consent-button" value="refuse">Refuse all</button>
+        <button class="consent-button" value="save">Save my choices</button>
+        <button class="consent-button" value="cancel">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="consent-status" role="status" class="consent-visually-hidden"></div>
+  <script type="text/plain" data-consent-purpose="analytics" src="js/analytics-config.js"></script>
+  <script type="text/plain" data-consent-purpose="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-LT00EXAMPLE"></script>
+</body>
+</html>

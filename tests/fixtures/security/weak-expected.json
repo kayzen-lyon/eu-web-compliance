@@ -1,0 +1,16 @@
+[
+  { "id": "SEC-01", "page": "index.html", "rule": "csp-unsafe-inline", "kind": "code", "severity": "major" },
+  { "id": "SEC-02", "page": "index.html", "rule": "csp-unsafe-eval", "kind": "code", "severity": "major" },
+  { "id": "SEC-03", "page": "index.html", "rule": "csp-permissive-script-source", "detail": "data:", "kind": "code", "severity": "major" },
+  { "id": "SEC-04", "page": "index.html", "rule": "csp-directive-value", "detail": "object-src", "kind": "code", "severity": "major" },
+  { "id": "SEC-05", "page": "index.html", "rule": "no-framing-protection", "kind": "code", "severity": "major" },
+  { "id": "SEC-06", "page": "index.html", "rule": "missing-header", "detail": "X-Content-Type-Options", "kind": "code", "severity": "major" },
+  { "id": "SEC-07", "page": "index.html", "rule": "missing-header", "detail": "Referrer-Policy", "kind": "code", "severity": "major" },
+  { "id": "SEC-08", "page": "index.html", "rule": "header-should-be-absent", "detail": "X-Powered-By", "kind": "code", "severity": "minor" },
+  { "id": "SEC-09", "page": "index.html", "rule": "server-version-disclosure", "detail": "ExampleHTTPd", "kind": "code", "severity": "minor" },
+  { "id": "SEC-10", "page": "index.html", "rule": "cookie-missing-attribute", "detail": "sid Secure", "kind": "code", "severity": "major" },
+  { "id": "SEC-11", "page": "index.html", "rule": "cookie-missing-attribute", "detail": "sid HttpOnly", "kind": "code", "severity": "major" },
+  { "id": "SEC-12", "page": "index.html", "rule": "cookie-missing-attribute", "detail": "sid SameSite", "kind": "code", "severity": "major" },
+  { "id": "SEC-13", "page": "index.html", "rule": "third-party-script-without-integrity", "detail": "cdn.example.net", "kind": "code", "severity": "major" },
+  { "id": "SEC-14", "page": "index.html", "rule": "form-posts-over-http", "detail": "example.com", "kind": "code", "severity": "major" }
+]

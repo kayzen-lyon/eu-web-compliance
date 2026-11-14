@@ -1,0 +1,5 @@
+[
+  { "id": "PRV-01", "page": "tracker-before-consent.html", "rule": "third-party-request-before-consent", "detail": "googletagmanager.com", "kind": "code", "severity": "major" },
+  { "id": "PRV-02", "page": "tracker-before-consent.html", "rule": "storage-before-consent", "detail": "_ga", "kind": "code", "severity": "major" },
+  { "id": "PRV-03", "page": "no-first-level-refuse.html", "rule": "no-first-level-refuse", "kind": "runtime", "severity": "major" }
+]

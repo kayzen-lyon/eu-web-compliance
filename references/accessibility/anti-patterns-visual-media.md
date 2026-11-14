@@ -77,7 +77,7 @@ input { border: 2px solid #6b6b6b; background: #fff; }   /* about 5.3:1 */
 A fixed height with `overflow: hidden`, a line clamp or an ellipsis works for the designer's text at the designer's size. With larger text or wider spacing, the end of the text is cut off with no way to read it.
 
 - Severity: major. Criterion: WCAG 1.4.4, 1.4.12; RGAA 10.4, 10.12.
-- Detect: a rule that combines a fixed `height` with `overflow: hidden`, or uses `-webkit-line-clamp` or `text-overflow: ellipsis`. A defect when the hidden text is not available otherwise.
+- Detect: a rule that combines a fixed `height` with `overflow: hidden`, or uses `-webkit-line-clamp` or `text-overflow: ellipsis`. A defect when the hidden text is not available otherwise. Rules of the visually-hidden technique (1px size with `clip` or `clip-path`) are excluded.
 
 Bad:
 ```css
