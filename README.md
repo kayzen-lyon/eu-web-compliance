@@ -58,6 +58,10 @@ python scripts/validate.py
 
 The script only needs Python 3.8 or later. With `--strict`, a source consulted more than 90 days ago makes the check fail.
 
+## Author
+
+Tarek BELHADJ, [Kayzen](https://www.kayzen-lyon.com), by the author of [Nexus](https://nexus.kayzen-lyon.com).
+
 ## Licence
 
 Original code and text under the [MIT licence](LICENSE). Content reused from other projects keeps its original licence, detailed in [NOTICE.md](NOTICE.md).

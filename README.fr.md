@@ -58,6 +58,10 @@ python scripts/validate.py
 
 Le script ne demande que Python 3.8 ou plus récent. Avec `--strict`, une source consultée il y a plus de 90 jours fait échouer le contrôle.
 
+## Auteur
+
+Tarek BELHADJ, [Kayzen](https://www.kayzen-lyon.com), par l'auteur de [Nexus](https://nexus.kayzen-lyon.com).
+
 ## Licence
 
 Code et textes originaux sous [licence MIT](LICENSE). Les contenus repris d'autres projets gardent leur licence d'origine, détaillée dans [NOTICE.md](NOTICE.md).
