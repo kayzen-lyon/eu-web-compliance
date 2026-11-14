@@ -18,6 +18,7 @@
 //   ai-editorial-responsibility       NT  exception éditoriale invoquée sans responsable publié (nom et contact)
 //   order-button-label                NC/NT bouton de commande vague (NC) ou autre formulation (NT)
 //   order-button-not-found            NT  aucun bouton de commande sur la dernière étape déclarée
+//   order-button-not-reachable        NT  bouton de commande masqué au chargement, libellé vide ou illisible
 //   order-start-information           NT  moyens de paiement ou restrictions de livraison non trouvés au début de la commande
 //   withdrawal-function-missing       NC  aucune commande de rétractation sur une page
 //   withdrawal-function-label         NT  commande de rétractation avec un autre libellé que celui de la loi
@@ -26,6 +27,8 @@
 //   withdrawal-statement-fields       NC  nom, identification du contrat ou adresse électronique manquant
 //   withdrawal-statement-extra-fields NT  champ obligatoire en plus des trois prévus (motif...)
 //   withdrawal-confirm-button         NC/NT bouton de confirmation absent ou vague (NC), autre libellé (NT)
+//   withdrawal-confirm-not-reachable  NT  bouton de confirmation masqué à l'ouverture, libellé vide ou illisible
+//   (un bouton de commande ou de confirmation masqué au chargement est lu dans le DOM ; il ne donne jamais de NC)
 //   price-reduction-prior-price       NT  réduction annoncée sans prix antérieur indiqué
 //   pre-ticked-option                 NC  option payante ou consentement marketing coché d'avance
 //   countdown-resets                  NC  compte à rebours qui repart au rechargement
@@ -270,13 +273,15 @@ function orderButtonFindings(r, ctx) {
   const { data } = r;
   let button = data.order_button;
   if (!button) {
-    const visibleSubmits = data.submits.filter((s) => s.visible && s.in_main);
-    button = visibleSubmits[visibleSubmits.length - 1] || null;
+    const inMain = data.submits.filter((s) => s.in_main);
+    const visibleSubmits = inMain.filter((s) => s.visible);
+    button = visibleSubmits[visibleSubmits.length - 1] || inMain[inMain.length - 1] || null;
   }
   if (!button) {
     return [finding('order-button-not-found', 'NT', 'order-button', site, { selector: 'main',
       message: 'This page is declared as the final order step, but no button that submits a form was found: check the button that places the order by hand.' })];
   }
+  if (!button.visible) return hiddenOrderButtonFindings(button, site);
   const name = button.name;
   const shown = button.visible_text || name;
   const classes = [classifyActionLabel(name, 'order'), classifyActionLabel(shown, 'order')];
@@ -286,6 +291,21 @@ function orderButtonFindings(r, ctx) {
     message: vague
       ? `The button that places the order reads "${shown}"${name !== shown ? ` (accessible name "${name}")` : ''}: it does not say that ordering entails an obligation to pay. Label it "Order with obligation to pay" / "Commande avec obligation de paiement"; otherwise the consumer is not bound by the order.`
       : `The button that places the order reads "${shown}"${name !== shown ? ` (accessible name "${name}")` : ''}, not the wording of the law ("Order with obligation to pay" / "Commande avec obligation de paiement"). Whether it is an equally unambiguous formulation is for a professional to confirm.` })];
+}
+
+// Bouton de commande masqué au chargement (étape finale cachée tant que le panier est vide) :
+// son libellé est lu dans le DOM. Libellé de la loi : rien à signaler ; libellé vide ou illisible :
+// étape non atteinte, à vérifier à la main ; autre libellé : à revoir. Jamais de NC, car le
+// vérificateur ne voit pas le bouton tel qu'il sera affiché.
+function hiddenOrderButtonFindings(button, site) {
+  const label = button.dom_name || button.name || '';
+  if (classifyActionLabel(label, 'order') === 'legal') return [];
+  if (!label) {
+    return [finding('order-button-not-reachable', 'NT', 'order-button', site, { selector: button.selector, detail: '',
+      message: 'The checker could not reach the final order step (the order button is hidden when the page loads, for example while the basket is empty, and its label cannot be read): check the label by hand. It must read "Order with obligation to pay" / "Commande avec obligation de paiement" or an equally unambiguous formulation.' })];
+  }
+  return [finding('order-button-label', 'NT', 'order-button', site, { selector: button.selector, detail: label,
+    message: `The button that places the order is hidden when the page loads; its label in the page reads "${label}", not the wording of the law ("Order with obligation to pay" / "Commande avec obligation de paiement"). Check the label shown at the final step by hand; whether another wording is equally unambiguous is for a professional to confirm.` })];
 }
 
 function withdrawalLinkFindings(r, p, ctx) {
@@ -423,8 +443,16 @@ async function withdrawalFlow(browser, ctx, results) {
         message: `The withdrawal statement requires more than name, contract and email (${extra.map((f) => `"${f.label || f.name}"`).join(', ')}). The consumer withdraws without giving any reason: make extra fields optional or remove them.` }));
     }
     const button = form.buttons.filter((b) => b.visible).pop() || form.buttons.pop();
-    const cls = button ? classifyActionLabel(button.name, 'confirm') : 'missing';
-    if (cls !== 'legal') {
+    const hiddenLabel = button && !button.visible ? (button.dom_name || button.name || '') : null;
+    const cls = button ? classifyActionLabel(hiddenLabel === null ? button.name : hiddenLabel, 'confirm') : 'missing';
+    if (hiddenLabel !== null && cls !== 'legal') {
+      // Bouton masqué au chargement (affiché après la saisie, par exemple) : jamais de NC.
+      out.push(hiddenLabel
+        ? finding('withdrawal-confirm-button', 'NT', 'withdrawal', site, { selector: button.selector, detail: hiddenLabel,
+          message: `The button that sends the withdrawal statement is hidden when the form opens; its label in the page reads "${hiddenLabel}", not the wording of the law ("Confirm withdrawal" / "Confirmer la rétractation"). Check the label shown to the consumer by hand.` })
+        : finding('withdrawal-confirm-not-reachable', 'NT', 'withdrawal', site, { selector: button.selector, detail: '',
+          message: 'The checker could not reach the confirmation of the withdrawal statement (the button is hidden when the form opens and its label cannot be read): check the label by hand. It must read "Confirm withdrawal" / "Confirmer la rétractation" or an unambiguous corresponding formulation.' }));
+    } else if (cls !== 'legal') {
       const nc = cls === 'vague' || cls === 'missing';
       out.push(finding('withdrawal-confirm-button', nc ? 'NC' : 'NT', 'withdrawal', site, { selector: button ? button.selector : form.selector, detail: button ? button.name : '',
         message: !button ? 'The withdrawal statement has no confirmation button.'

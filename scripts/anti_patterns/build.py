@@ -139,7 +139,7 @@ The block below is the single source for detection patterns: one JSON array, one
 
 Detector fields:
 
-- `type: "regex"`: `value` is a regular expression written to work both with Python `re` and with JavaScript `RegExp`; `flags` uses `i` (ignore case) and `s` (dot matches newline). Apply it to source files of the kind given by `target`: `html` (HTML and templates, including JSX, Vue and Angular templates), `css` or `js`. When `unless` is present, it is a second expression: if it matches anywhere in the same file, drop the finding.
+- `type: "regex"`: `value` is a regular expression written to work both with Python `re` and with JavaScript `RegExp`; `flags` uses `i` (ignore case) and `s` (dot matches newline). Apply it to source files of the kind given by `target`: `html` (HTML and templates, including JSX, Vue and Angular templates), `css` or `js`. When `unless` is present, it is a second expression: if it matches anywhere in the same file, drop the finding. When `page_condition` is present, it names a check run on the rendered page; drop the finding when the page does not meet it (`link-in-text-without-underline`: the page has a link inside running text, outside `nav`, `header` and `footer`, not styled as a button and not the only content of its block, that is not underlined).
 - `type: "selector"`: `value` is a CSS selector for `document.querySelectorAll` on the rendered page (`target: "dom"`). Some use `:has()` and `:is()`.
 - `type: "structural"`: `value` describes in words a check that needs the DOM, computed styles or program logic.
 

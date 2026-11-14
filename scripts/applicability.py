@@ -275,6 +275,9 @@ def check_table(table: Any, schema: dict) -> List[str]:
             conditions.append((label, entry["skill_applies_when"]))
     for entry in table.get("escalations", []):
         conditions.append((f"escalation {entry.get('id', '?')}", entry.get("when")))
+        if not isinstance(entry.get("escalate_on_assumption", True), bool):
+            found.append(f"escalation {entry.get('id', '?')}: escalate_on_assumption must be "
+                         "true or false")
     for label, condition in conditions:
         try:
             evaluate(condition, {}, definitions, known)
@@ -408,6 +411,10 @@ def build_matrix(profile: dict, table: dict, schema: dict, today: Optional[dt.da
     for entry in table.get("escalations", []):
         result = evaluate(entry["when"], profile, definitions, known)
         if result.certain and not result.value:
+            continue
+        if (not result.certain and entry.get("escalate_on_assumption", True) is False
+                and result.pending and all(kind == "assumed" for kind, _ in result.pending)):
+            # Resting only on assumed answers: listed under assumptions, not raised as a stop.
             continue
         escalations.append({
             "id": entry["id"], "title": entry["title"],

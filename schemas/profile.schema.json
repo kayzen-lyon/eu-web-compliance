@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "eu-web-compliance project profile",
-  "description": "Answers of the scoping step, stored in compliance/profile.json of the user's project. Every answer is an object {value, basis}: 'stated' when the user said it, 'inferred' when the agent read it in the repository, 'assumed' when nobody answered and the most protective reading was recorded. A missing answer and an 'assumed' answer both make the obligations that depend on it 'to-confirm'. The keyword x-protective-assumption states the protective reading of each answer; x-question gives the number of the question in references/scoping/questionnaire.md.",
+  "description": "Answers of the scoping step, stored in compliance/profile.json of the user's project. Every answer is an object {value, basis}: 'stated' when the user said it, 'inferred' when the agent read it in the repository or it follows obviously from stated facts, 'assumed' when nobody answered, the answer is genuinely unknown, and the most protective reading was recorded. A missing answer and an 'assumed' answer both make the obligations that depend on it 'to-confirm'. The keyword x-protective-assumption states the protective reading of each answer; x-question gives the number of the question in references/scoping/questionnaire.md.",
   "type": "object",
   "additionalProperties": false,
   "required": [

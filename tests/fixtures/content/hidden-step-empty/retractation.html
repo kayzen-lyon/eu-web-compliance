@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Rétractation</title>
+</head>
+<body>
+  <main>
+    <h1>Se rétracter d'un contrat</h1>
+    <section data-withdrawal>
+      <button type="button" data-wd-open aria-controls="wd-statement">Renoncer au contrat ici</button>
+      <div id="wd-statement" hidden>
+        <form>
+          <label for="wd-name">Votre nom</label><input id="wd-name" autocomplete="name" required>
+          <label for="wd-contract">Numéro de commande</label><input id="wd-contract" required>
+          <label for="wd-email">Adresse électronique pour la confirmation</label><input id="wd-email" type="email" autocomplete="email" required>
+          <button type="submit" id="wd-confirm" hidden></button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <ul>
+      <li><a href="mentions.html">Mentions légales</a></li>
+      <li><a href="retractation.html">Renoncer au contrat ici</a></li>
+    </ul>
+  </footer>
+  <script>
+    document.querySelector('[data-wd-open]').addEventListener('click', function () {
+      document.getElementById('wd-statement').hidden = false;
+    });
+    document.querySelector('#wd-statement form').addEventListener('input', function (event) {
+      var confirm = document.getElementById('wd-confirm');
+      confirm.textContent = 'Confirmer la rétractation';
+      confirm.hidden = !event.currentTarget.checkValidity();
+    });
+  </script>
+</body>
+</html>

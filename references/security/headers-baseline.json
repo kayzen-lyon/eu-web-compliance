@@ -46,7 +46,7 @@
       "high": "Exploitable or removes a main protection. Fix before going live.",
       "medium": "Weakens a protection or departs from an ANSSI recommendation. Fix in the same change when possible.",
       "low": "Defence in depth or hygiene.",
-      "info": "Reported for awareness; no fix required."
+      "info": "Reported for awareness as a point to review (NT), never as a non-conformity; no fix required."
     },
     "not_checked": [
       "TLS protocol versions, cipher suites, key sizes and certificate details (use an external TLS test; values in references/security/anssi-values.md)",
@@ -86,8 +86,8 @@
           "type": "matches",
           "pattern": "(^|;)\\s*includeSubDomains\\s*(;|$)",
           "flags": "i",
-          "severity": "low",
-          "description": "includeSubDomains, once every subdomain is on HTTPS"
+          "severity": "info",
+          "description": "to review: includeSubDomains is missing; add it only once every subdomain of the domain is served over HTTPS (web-baseline.md section 1), so its absence is not a non-conformity"
         }
       ],
       "severity": "high",

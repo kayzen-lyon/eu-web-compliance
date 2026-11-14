@@ -1,0 +1,15 @@
+{
+  "about": "Fixture of tests/content.test.mjs: the final order step and the withdrawal confirmation are hidden at load and carry the legal labels; no order button is declared, so the checker guesses it.",
+  "language": "fr",
+  "operator": {
+    "country": "FR",
+    "registered": true,
+    "vat": true
+  },
+  "distance_selling_to_consumers": true,
+  "pages": {
+    "legal_notice": "mentions.html",
+    "order_final": "commande.html",
+    "withdrawal": "retractation.html"
+  }
+}

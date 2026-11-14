@@ -43,6 +43,41 @@ class AntiPatternsBuildTest(unittest.TestCase):
                     if detector.get("unless"):
                         re.compile(detector["unless"])
 
+    def test_link_underline_detector_ignores_navigation_links(self):
+        text = (REFS / "anti-patterns.md").read_text(encoding="utf-8")
+        entries = json.loads(re.search(r"```json\n(.*?)\n```", text, re.S).group(1))
+        entry = next(e for e in entries if e["id"] == "AP-VIS-02")
+        detector = next(d for d in entry["detect"] if d["type"] == "regex")
+        self.assertEqual(detector.get("page_condition"), "link-in-text-without-underline")
+        rx = re.compile(detector["value"], re.I)
+        flagged = [
+            "a { color: #0b5fff; text-decoration: none; }",
+            "a:link, a:visited { text-decoration: none }",
+            "main a { text-decoration: none }",
+            ".prose p > a { color: teal; text-decoration: none }",
+            "@media (min-width: 40em) { a { text-decoration: none } }",
+            "nav a, a { text-decoration: none }",
+        ]
+        ignored = [
+            "nav a { text-decoration: none }",
+            ".site-header a { text-decoration: none }",
+            "footer a, .footer-links a { text-decoration: none }",
+            ".menu li a { text-decoration: none }",
+            "ul.links a { text-decoration: none }",
+            "header nav a:visited { text-decoration: none }",
+            "a.btn { text-decoration: none }",
+            ".button-link a { text-decoration: none }",
+            "[role=navigation] a { text-decoration: none }",
+            "a:hover { text-decoration: none }",
+            "main a { text-decoration: underline }",
+        ]
+        for css in flagged:
+            with self.subTest(css=css):
+                self.assertTrue(rx.search(".x { color: red; }\n" + css))
+        for css in ignored:
+            with self.subTest(css=css):
+                self.assertIsNone(rx.search(".x { color: red; }\n" + css))
+
 
 if __name__ == "__main__":
     unittest.main()

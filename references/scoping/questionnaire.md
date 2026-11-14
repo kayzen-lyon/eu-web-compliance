@@ -12,15 +12,16 @@ Each answer in the profile is an object with a `value` and a `basis`. The schema
 
 | Basis | Use it when | Effect on the matrix |
 |---|---|---|
-| `stated` | The user said it in this conversation or in a project document. Quote the words in `note`. | The answer decides. |
-| `inferred` | A file of the repository shows it. Name the file in `note`. | The answer decides. |
-| `assumed` | Nobody answered and the most protective reading was written down. Say so in `note`. | Rows that depend on it are `to-confirm`. |
+| `stated` | The user said it in this conversation, in the request or brief, or in a project document. Quote the words in `note`. | The answer decides. |
+| `inferred` | A file of the repository shows it, or it follows obviously from stated facts. Name the file, or the stated facts and the reasoning, in `note`. | The answer decides. |
+| `assumed` | Nobody answered, the answer is genuinely unknown and it matters, and the most protective reading was written down. Say so in `note`. | Rows that depend on it are `to-confirm`. |
 | (no answer) | No protective value can be written, for example a headcount. | Rows that depend on it are `to-confirm`. |
 
-Two rules keep the profile honest:
+Three rules keep the profile honest:
 
-1. Infer a "yes" from evidence, never a "no" from silence. Finding an analytics tag proves trackers are present. Finding none proves nothing: tags are often injected by a tag manager, a CMS plugin or the hosting platform. A "no" is `stated` by the user, or it is not written.
+1. Infer a "yes" from evidence, never a "no" from silence. Finding an analytics tag proves trackers are present. Finding none in the code proves nothing: tags are often injected by a tag manager, a CMS plugin or the hosting platform. A "no" is `stated` by the user, or `inferred` from what the user stated (rule 3); it is never read from the absence of code.
 2. Never record a guess as `inferred`. A number of employees, a turnover, a legal form or a country are not in the code. Ask.
+3. Read the request before assuming. What the request or brief says is `stated`; what follows obviously from it is `inferred`, with the reason in `note`. Examples: a town hall is a public body with an institutional activity, and it does not sell to consumers; an online shop that sells tea to consumers sells online, at a distance, to consumers, and `eaa.sectors` contains `e-commerce`; a brief that lists every feature of the site and names no AI feature has no AI feature, and one that names no user posts hosts no user content. Only what is genuinely unknown and changes the matrix gets the protective value with basis `assumed` (section 4). A protective value that contradicts the brief (a town hall "selling online", AI content in a shop whose brief mentions none) is an error, not prudence.
 
 ## 2. What to read in the repository before asking
 
@@ -129,10 +130,12 @@ How to turn answers into fields:
 When the user does not answer a question, or the agent runs without anyone to ask (continuous integration, batch generation, an autonomous task):
 
 1. Do not stop the work and do not invent an answer.
-2. For a yes-or-no answer, write the protective value given by `x-protective-assumption` in the schema, with basis `assumed` and a `note` saying that nobody answered. The protective value is the one that brings more obligations, not fewer: the site sells to consumers, collects personal data, has trackers, may be used by minors, hosts user content.
-3. For a figure, a legal form or a country, write nothing. No protective number exists that would not be an invention. The rows that need it come out as `to-confirm`.
-4. Treat every `to-confirm` row as if it applied until someone confirms. In particular, never rely on an exemption (microenterprise, non-professional publisher, "not an online platform") on the strength of an assumption.
-5. Run the script. Its output lists the assumed answers and the missing ones; copy that list to the top of whatever you deliver, so that the user sees which questions are still open.
+2. First record what the request, the brief and the repository already settle: stated facts as `stated`, their obvious consequences as `inferred` with the reason (section 1, rule 3). A question the brief answers is not unanswered.
+3. For a yes-or-no answer that is still genuinely unknown and changes the matrix, write the protective value given by `x-protective-assumption` in the schema, with basis `assumed` and a `note` saying that nobody answered. The protective value is the one that brings more obligations, not fewer: the site sells to consumers, collects personal data, has trackers, may be used by minors, hosts user content. Never write a protective value that contradicts a stated or inferred fact.
+4. For a figure, a legal form or a country, write nothing. No protective number exists that would not be an invention. The rows that need it come out as `to-confirm`.
+5. Treat every `to-confirm` row as if it applied until someone confirms. In particular, never rely on an exemption (microenterprise, non-professional publisher, "not an online platform") on the strength of an assumption.
+6. Raise a referral to a professional ([out-of-scope.md](out-of-scope.md)) on stated or inferred facts. On an assumed answer alone, raise it only where the stakes justify it (a possibly prohibited or high-risk AI use, health or other special-category data, minors exposed to profiling or advertising); otherwise list the assumption as an open question, not as a stop. The script does not raise the regulated-sector referral on an assumed answer alone.
+7. Run the script. Its output lists the assumed answers and the missing ones; copy that list to the top of whatever you deliver, so that the user sees which questions are still open.
 
 An assumption is replaced, never silently kept: when the user answers later, change the value, set the basis to `stated` and run the script again.
 

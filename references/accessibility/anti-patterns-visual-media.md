@@ -26,7 +26,7 @@ Good:
 With the underline removed, a link inside a paragraph differs from the words around it by its hue alone. People who do not perceive that hue cannot find the links.
 
 - Severity: major. Criterion: WCAG 1.4.1; RGAA 10.6.
-- Detect: a rule that removes the underline of all links. Fine for links in a navigation bar or a button-like component; a defect for links inside running text unless another non-colour cue exists.
+- Detect: a rule that removes the underline of all links, or of links in a content area. Selectors scoped to `nav`, `header`, `footer`, menus, breadcrumbs, lists (`li`, `ul`, `ol`) or buttons are not matched, and a match is kept only when the rendered page has a link inside running text that is not underlined: links in `nav`, `header` or `footer`, links styled as buttons (background, border, `btn` or `button` class, `role="button"`) and links that are the only content of their block, such as the items of a list of links, are not counted. WCAG 1.4.1 concerns links inside a block of text, not navigation lists. A defect for links inside running text unless another non-colour cue exists.
 
 Bad:
 ```css

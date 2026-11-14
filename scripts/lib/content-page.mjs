@@ -83,6 +83,31 @@ export function probe(arg) {
     if (el.tagName === 'INPUT') return clean(el.value || el.getAttribute('alt') || '');
     return accessibleText(el) || clean(el.title);
   };
+  // Nom lu dans le DOM, que l'élément soit affiché ou non (étape de commande masquée au
+  // chargement, par exemple quand le panier est vide) : aria-labelledby, aria-label, value d'un
+  // input, sinon le contenu sans les sous-arbres aria-hidden, sinon title.
+  const domText = (root) => {
+    const out = [];
+    const walk = (node) => {
+      if (node.nodeType === 3) { out.push(node.nodeValue); return; }
+      if (node.nodeType !== 1) return;
+      const el = node;
+      if (el.matches('script, style, template, noscript') || el.getAttribute('aria-hidden') === 'true') return;
+      if (el.hasAttribute('aria-label')) { out.push(el.getAttribute('aria-label')); return; }
+      if (el.tagName === 'IMG') { out.push(el.getAttribute('alt') || ''); return; }
+      el.childNodes.forEach(walk);
+    };
+    walk(root);
+    return clean(out.join(' '));
+  };
+  const domName = (el) => {
+    const ids = (el.getAttribute('aria-labelledby') || '').split(/\s+/).filter(Boolean);
+    const byRef = clean(ids.map((id) => (document.getElementById(id) || {}).textContent || '').join(' '));
+    if (byRef) return byRef;
+    if (el.getAttribute('aria-label')) return clean(el.getAttribute('aria-label'));
+    if (el.tagName === 'INPUT') return clean(el.value || el.getAttribute('alt') || '');
+    return domText(el) || clean(el.title);
+  };
   const labelOf = (input) => {
     const parts = [];
     if (input.labels) input.labels.forEach((l) => parts.push(l.textContent));
@@ -108,7 +133,7 @@ export function probe(arg) {
       const form = el.form;
       if (!form || (form.getAttribute('method') || '').toLowerCase() === 'dialog' || el.closest('dialog') || el.closest(CHAT_SCOPE)
         || form.closest('[role="search"]') || form.getAttribute('role') === 'search') continue;
-      submits.push({ selector: cssPath(el), name: accName(el), visible_text: visibleText(el), visible: visible(el),
+      submits.push({ selector: cssPath(el), name: accName(el), dom_name: domName(el), visible_text: visibleText(el), visible: visible(el),
         form: cssPath(form), in_main: Boolean(el.closest('main')) });
     }
     const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter((el) => !el.closest('dialog'))
@@ -158,7 +183,7 @@ export function probe(arg) {
     const main = document.querySelector('main') || document.body;
     const declaredButton = arg.orderButton ? document.querySelector(arg.orderButton) : null;
     const orderButton = declaredButton ? { selector: cssPath(declaredButton), name: accName(declaredButton),
-      visible_text: visibleText(declaredButton), visible: visible(declaredButton), in_main: true } : null;
+      dom_name: domName(declaredButton), visible_text: visibleText(declaredButton), visible: visible(declaredButton), in_main: true } : null;
     return { lang: document.documentElement.lang || null, title: document.title, links, submits, checkboxes, order_button: orderButton,
       reductions: Array.from(groups.values()), scarcity, odr, main_text: visibleText(main), body_text: visibleText(document.body) };
   }
@@ -315,7 +340,7 @@ export function probe(arg) {
         .map((x) => ({ selector: cssPath(x), label: labelOf(x), type: (x.type || '').toLowerCase(), autocomplete: (x.getAttribute('autocomplete') || '').toLowerCase(),
           required: x.required || x.getAttribute('aria-required') === 'true', name: x.name || '' }));
       const buttons = Array.from(form.querySelectorAll('button, input[type="submit"]')).filter((b) => ((b.getAttribute('type') || 'submit').toLowerCase() === 'submit'))
-        .map((b) => ({ selector: cssPath(b), name: accName(b), visible: visible(b) }));
+        .map((b) => ({ selector: cssPath(b), name: accName(b), dom_name: domName(b), visible: visible(b) }));
       return { selector: cssPath(form), fields, buttons };
     };
     return forms.map(describe);

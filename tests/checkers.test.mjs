@@ -141,6 +141,21 @@ describe('security-baseline: chargement et évaluation', () => {
     assert.ok(https.findings.some((f) => f.rule === 'weak-header-value' && f.header === 'Strict-Transport-Security'));
   });
 
+  test('HSTS : includeSubDomains absent est un point à revoir (NT), HSTS absent reste NC', async () => {
+    const reference = await loadBaseline(path.join(ROOT, 'references', 'security', 'headers-baseline.json'));
+    const hsts = (result) => result.findings.filter((f) => f.header === 'Strict-Transport-Security');
+    const noSub = hsts(evaluateHeaders({ headers: [{ name: 'Strict-Transport-Security', value: 'max-age=31536000' }], https: true, isHtml: true }, reference));
+    assert.equal(noSub.length, 1);
+    assert.equal(noSub[0].verdict, 'NT');
+    assert.match(noSub[0].message, /every subdomain/i);
+    const full = hsts(evaluateHeaders({ headers: [{ name: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' }], https: true, isHtml: true }, reference));
+    assert.deepEqual(full, []);
+    const missing = hsts(evaluateHeaders({ headers: [], https: true, isHtml: true }, reference));
+    assert.deepEqual(missing.map((f) => `${f.rule}:${f.verdict}`), ['missing-header:NC']);
+    const short = hsts(evaluateHeaders({ headers: [{ name: 'Strict-Transport-Security', value: 'max-age=300; includeSubDomains' }], https: true, isHtml: true }, reference));
+    assert.deepEqual(short.map((f) => `${f.rule}:${f.verdict}`), ['weak-header-value:NC']);
+  });
+
   test('forme détaillée : checks multiples, when present, cookies par portée, absent_or_minimal', () => {
     const baseline = normaliseBaseline({
       headers: [{ name: 'X-XSS-Protection', required: 'recommended', checks: [{ type: 'equals', values: ['0'], when: 'present', severity: 'low' }] },
@@ -304,5 +319,16 @@ describe('check-security sur tests/fixtures/security', () => {
     const result = await runChecker('check-security.mjs', [path.join(FIXTURES, 'security', 'good'), '--baseline', path.join(FIXTURES, 'absent.json')]);
     assert.equal(result.code, 2);
     assert.match(result.stderr, /introuvable/);
+  });
+});
+
+describe('check-a11y sur tests/fixtures/a11y/links', () => {
+  test('AP-VIS-02 : liens de nav, header, footer, liste de liens, bouton et lien seul non signalés ; lien dans un texte signalé', async () => {
+    const run = await runReport('check-a11y.mjs', [path.join(FIXTURES, 'a11y', 'links'), '--no-fail']);
+    const vis02 = (name) => pageOf(run.report, name).findings.filter((f) => f.rule === 'AP-VIS-02');
+    assert.deepEqual(vis02('navigation.html'), []);
+    const inText = vis02('text.html');
+    assert.equal(inText.length, 1);
+    assert.equal(inText[0].verdict, 'NT');
   });
 });

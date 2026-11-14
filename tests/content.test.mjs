@@ -3,7 +3,8 @@
 //
 // tests/fixtures/content/good : une page correcte par règle (aucun constat attendu) ;
 // tests/fixtures/content/bad  : chaque règle en échec au moins une fois (expected-defects.json) ;
-// tests/fixtures/content/bare : pas de compliance/site.json.
+// tests/fixtures/content/bare : pas de compliance/site.json ;
+// tests/fixtures/content/hidden-step, hidden-step-empty : étape finale et confirmation masquées au chargement.
 // Les tests de bout en bout lancent un navigateur (Chromium de Playwright, sinon Edge ou Chrome) ;
 // toute requête vers un hôte tiers est interrompue.
 
@@ -234,6 +235,25 @@ describe('check-content sur tests/fixtures/content/bad', () => {
     const f = pageOf(run.report, 'commande.html').findings.find((x) => x.rule === 'order-button-label');
     assert.equal(f.source, '[CRD art. 8(2)] [C. conso L. 221-14]');
     assert.deepEqual(f.refs, ['consumer-rights-directive', 'fr-code-consommation']);
+  });
+});
+
+describe('check-content : étape finale masquée au chargement (panier vide)', () => {
+  test('libellés de la loi lus dans le DOM malgré le masquage : aucun constat', async () => {
+    const run = await runReport([path.join(FIXTURES, 'hidden-step')]);
+    assert.equal(run.code, 0);
+    assert.deepEqual(run.report.pages.flatMap((p) => p.findings.map((f) => `${p.page} ${f.rule}`)), []);
+  });
+
+  test('libellés vides au chargement : à vérifier à la main (NT), jamais de NC', async () => {
+    const run = await runReport([path.join(FIXTURES, 'hidden-step-empty')]);
+    assert.equal(run.code, 0);
+    assert.deepEqual(run.report.pages.flatMap((p) => rules(p, 'NC')), []);
+    const order = pageOf(run.report, 'commande.html').findings.find((f) => f.rule === 'order-button-not-reachable');
+    assert.equal(order.verdict, 'NT');
+    assert.match(order.message, /could not reach the final order step/);
+    assert.ok(!rules(pageOf(run.report, 'commande.html')).includes('order-button-label'));
+    assert.ok(rules(pageOf(run.report, 'retractation.html'), 'NT').includes('withdrawal-confirm-not-reachable'));
   });
 });
 

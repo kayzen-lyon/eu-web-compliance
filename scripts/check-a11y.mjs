@@ -334,7 +334,7 @@ async function loadCatalogue(file) {
   const detectors = [];
   for (const entry of entries) {
     for (const d of entry.detect || []) {
-      const base = { entry, type: d.type, target: d.target };
+      const base = { entry, type: d.type, target: d.target, pageCondition: d.page_condition || null };
       if (d.type === 'regex') {
         const flags = (d.flags || '').replace(/g/g, '');
         detectors.push({ ...base, regex: new RegExp(d.value, `${flags}g`), unless: d.unless ? new RegExp(d.unless, flags) : null });
@@ -356,9 +356,12 @@ function catalogueFinding(entry, extra) {
 }
 
 // Applique les motifs textuels au HTML de la page et aux CSS et JS locaux qu'elle charge.
-function runTextDetectors(texts, detectors) {
+// Un motif qui déclare une condition de page (« page_condition ») n'est retenu que si la page
+// la remplit ; une condition inconnue ou non évaluée laisse le motif s'appliquer.
+function runTextDetectors(texts, detectors, pageConditions = {}) {
   const findings = [];
   for (const d of detectors.filter((x) => x.type === 'regex')) {
+    if (d.pageCondition && pageConditions[d.pageCondition] === false) continue;
     for (const { kind, file, text } of texts) {
       if (d.target !== kind) continue;
       if (d.unless && d.unless.test(text)) continue;
@@ -369,6 +372,46 @@ function runTextDetectors(texts, detectors) {
     }
   }
   return findings;
+}
+
+// Exécuté dans la page : conditions de page des motifs du catalogue, par nom.
+// « link-in-text-without-underline » : la page a au moins un lien dans un texte courant qui n'est
+// pas souligné (WCAG 1.4.1 vise les liens dans un bloc de texte). Ne comptent pas : les liens de
+// nav, header et footer (ou des rôles équivalents), les liens à l'allure de bouton (rôle button,
+// classe btn ou button, fond ou bordure), et les liens qui sont le seul contenu de leur bloc,
+// dont les éléments d'une liste de liens.
+function runPageConditions(names) {
+  const outside = 'nav, header, footer, [role="navigation"], [role="banner"], [role="contentinfo"], '
+    + '[role="menu"], [role="menubar"], [role="tablist"], [role="toolbar"]';
+  const transparent = (colour) => colour === 'transparent' || /rgba\([^)]*,\s*0\)$/.test(colour);
+  const buttonLike = (link, style) => link.getAttribute('role') === 'button'
+    || /(^|[\s_-])(btn|button)([\s_-]|$)/i.test(link.getAttribute('class') || '')
+    || !transparent(style.backgroundColor)
+    || (Number.parseFloat(style.borderBottomWidth) > 0 && style.borderBottomStyle !== 'none');
+  const blockOf = (node) => {
+    let block = node.parentElement;
+    while (block && block !== document.body && getComputedStyle(block).display.startsWith('inline')) block = block.parentElement;
+    return block;
+  };
+  const onlyContent = (block) => {
+    const copy = block.cloneNode(true);
+    copy.querySelectorAll('a[href]').forEach((a) => a.remove());
+    return !/[\p{L}\p{N}]/u.test(copy.textContent || '');
+  };
+  const conditions = {
+    'link-in-text-without-underline': () => Array.from(document.querySelectorAll('a[href]')).some((link) => {
+      if (link.closest(outside)) return false;
+      const style = getComputedStyle(link);
+      if (style.textDecorationLine.includes('underline') || buttonLike(link, style)) return false;
+      const block = blockOf(link);
+      return Boolean(block) && !onlyContent(block);
+    }),
+  };
+  const out = {};
+  for (const name of names) {
+    if (conditions[name]) out[name] = conditions[name]();
+  }
+  return out;
 }
 
 // Exécuté dans la page : applique les sélecteurs du catalogue.
@@ -596,10 +639,12 @@ async function checkPage(browser, axeSource, url, texts, options) {
     const selectorHits = await page.evaluate(runSelectorDetectors, selectorDetectors.map((d) => d.selector));
     const domFindings = selectorDetectors.flatMap((d, i) => (selectorHits[i] || []).map((selector) => catalogueFinding(d.entry, { selector })));
     domFindings.push(...await page.evaluate(runStructuralChecks));
+    const conditionNames = [...new Set(options.detectors.map((d) => d.pageCondition).filter(Boolean))];
+    const pageConditions = conditionNames.length ? await page.evaluate(runPageConditions, conditionNames) : {};
     await page.reload({ waitUntil: 'load' });
     const keyboard = await runKeyboardWalk(page, options.maxTabs);
     const reflow = await runReflow(browser, url);
-    const textFindings = runTextDetectors(texts, options.detectors);
+    const textFindings = runTextDetectors(texts, options.detectors, pageConditions);
     const findings = [...axeFindings, ...domFindings, ...keyboard.findings, ...reflow, ...textFindings];
     let matches = null;
     if (options.expected && options.expected.length) {

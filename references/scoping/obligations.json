@@ -1961,7 +1961,8 @@
         ]
       },
       "what_to_do": "Sector rules and a sector authority apply on top of what this matrix lists. Consult the compliance function or a lawyer of the sector.",
-      "status_section": "1.4"
+      "status_section": "1.4",
+      "escalate_on_assumption": false
     }
   ]
 }

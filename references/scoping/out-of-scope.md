@@ -19,6 +19,8 @@ How to tell the user: say what you found and where (file, feature, answer of the
 
 "Not ruled out" means the answer is missing or was only assumed. The agent then behaves as if the situation were present, and asks the question again at the first opportunity.
 
+Referrals rest on facts. Raise one on a stated or inferred answer, and on an assumed answer alone only where the stakes justify it: a possibly prohibited or high-risk AI use, health or other special-category data, minors exposed to profiling or advertising. Elsewhere an assumed answer is an open question to put to the user, not a stop; the script does not list the regulated-sector case when it rests only on an assumed answer. Before assuming anything, record what the request or brief already settles ([questionnaire.md](questionnaire.md) section 1, rule 3): a town hall does not sell online, and a brief that lists the features of a shop and names no AI feature rules AI out.
+
 ## 2. Legal qualifications the skill does not make
 
 These rows of the matrix come out as `to-confirm` by design, because the answer depends on a legal assessment of the facts and not on a fact the profile can hold.

@@ -292,6 +292,27 @@ class ProfilesTest(unittest.TestCase):
                                     "gdpr-children-consent": "to-confirm",
                                     "gdpr-special-categories": "applies"})
 
+    def test_assumed_regulated_sector_alone_does_not_escalate(self):
+        sector = "operator.regulated_sector"
+
+        def beyond(result):
+            return {item["id"]: item["state"] for item in result["beyond_the_skill"]}
+
+        assumed = matrix({**TOWN_HALL, sector: True}, assumed=(sector,))
+        self.assertNotIn("esc-regulated-sector", beyond(assumed))
+        self.assertIn(sector, [item["field"] for item in assumed["assumptions"]["assumed_answers"]])
+        stated = matrix({**TOWN_HALL, sector: True})
+        self.assertEqual(beyond(stated)["esc-regulated-sector"], "flagged")
+        missing = matrix(TOWN_HALL, without=(sector,))
+        self.assertEqual(beyond(missing)["esc-regulated-sector"], "not-ruled-out")
+        sector_stated = matrix({**TOWN_HALL, sector: True, "eaa.sectors": ["consumer-banking"]},
+                               assumed=(sector,))
+        self.assertEqual(beyond(sector_stated)["esc-regulated-sector"], "flagged")
+        # Other escalations keep raising on an assumed answer.
+        minors = matrix({**TOWN_HALL, "audience.includes_minors": True},
+                        assumed=("audience.includes_minors",))
+        self.assertEqual(beyond(minors)["esc-minors"], "not-ruled-out")
+
 
 class OutputTest(unittest.TestCase):
     def test_markdown_opens_with_disclaimer_and_closes_with_referral(self):
