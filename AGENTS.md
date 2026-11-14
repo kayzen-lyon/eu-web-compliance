@@ -12,10 +12,10 @@ From the root of the website project, one of:
 
 ```bash
 # Submodule: easy to update with `git submodule update --remote`
-git submodule add https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
+git submodule add https://github.com/kayzen-lyon/eu-web-compliance.git .vendor/eu-web-compliance
 
 # Or a plain snapshot
-git clone --depth 1 https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
+git clone --depth 1 https://github.com/kayzen-lyon/eu-web-compliance.git .vendor/eu-web-compliance
 ```
 
 For the browser checks, run `npm install` once inside `.vendor/eu-web-compliance` (Node 20+); the other scripts need only Python 3.8+.

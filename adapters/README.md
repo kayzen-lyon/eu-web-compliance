@@ -7,8 +7,8 @@ Agents that load skills natively (Claude Code, Codex, and those supported by `np
 ## 1. Vendor the skill in the website project
 
 ```bash
-git submodule add https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
-# or: git clone --depth 1 https://github.com/skyymar69-rgb/eu-web-compliance.git .vendor/eu-web-compliance
+git submodule add https://github.com/kayzen-lyon/eu-web-compliance.git .vendor/eu-web-compliance
+# or: git clone --depth 1 https://github.com/kayzen-lyon/eu-web-compliance.git .vendor/eu-web-compliance
 ```
 
 The adapters assume `.vendor/eu-web-compliance/`; if you choose another folder, replace that path in the file you copy. For the browser checks, run `npm install` once in that folder (Node 20+).

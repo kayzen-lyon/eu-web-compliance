@@ -47,31 +47,31 @@ Lors d'un test de bout en bout, des agents neufs ont construit les mêmes petits
 
 ## Installation
 
-Le dépôt est <https://github.com/skyymar69-rgb/eu-web-compliance>. Quelle que soit la méthode, le dossier du skill doit s'appeler `eu-web-compliance`, comme le champ `name` de son `SKILL.md`.
+Le dépôt est <https://github.com/kayzen-lyon/eu-web-compliance>. Quelle que soit la méthode, le dossier du skill doit s'appeler `eu-web-compliance`, comme le champ `name` de son `SKILL.md`.
 
 **Claude Code, comme plugin.** Dans une session :
 
 ```text
-/plugin marketplace add skyymar69-rgb/eu-web-compliance
+/plugin marketplace add kayzen-lyon/eu-web-compliance
 /plugin install eu-web-compliance@eu-web-compliance
 ```
 
 **Claude Code, comme skill personnel.** Cloner dans le dossier des skills (ou dans `.claude/skills/` d'un seul projet) :
 
 ```bash
-git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
+git clone https://github.com/kayzen-lyon/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
 ```
 
 **Codex.** Cloner dans le dossier des skills de l'utilisateur (ou dans `.agents/skills/` d'un seul projet) :
 
 ```bash
-git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
+git clone https://github.com/kayzen-lyon/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
 ```
 
 **L'outil `skills` en ligne de commande.** Il trouve le `SKILL.md` à la racine du dépôt et l'installe pour l'agent indiqué (`claude-code`, `codex`, `cursor`, `github-copilot`, entre autres) ; `-g` l'installe pour tous vos projets :
 
 ```bash
-npx skills add skyymar69-rgb/eu-web-compliance -a codex
+npx skills add kayzen-lyon/eu-web-compliance -a codex
 ```
 
 **GitHub Copilot, Cursor et les autres agents qui lisent `AGENTS.md`.** Placer le skill dans le projet (par exemple dans `.vendor/eu-web-compliance/`) et copier le fichier de renvoi adapté : voir [adapters/README.md](adapters/README.md) et la partie A d'[AGENTS.md](AGENTS.md).

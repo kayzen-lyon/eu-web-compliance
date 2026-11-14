@@ -47,31 +47,31 @@ In an end-to-end test, fresh agents built the same small websites with and witho
 
 ## Installation
 
-The repository is <https://github.com/skyymar69-rgb/eu-web-compliance>. Whatever the method, the skill's folder must be named `eu-web-compliance`, the `name` of its `SKILL.md`.
+The repository is <https://github.com/kayzen-lyon/eu-web-compliance>. Whatever the method, the skill's folder must be named `eu-web-compliance`, the `name` of its `SKILL.md`.
 
 **Claude Code, as a plugin.** In a session:
 
 ```text
-/plugin marketplace add skyymar69-rgb/eu-web-compliance
+/plugin marketplace add kayzen-lyon/eu-web-compliance
 /plugin install eu-web-compliance@eu-web-compliance
 ```
 
 **Claude Code, as a personal skill.** Clone into your skills folder (or into `.claude/skills/` of one project):
 
 ```bash
-git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
+git clone https://github.com/kayzen-lyon/eu-web-compliance.git ~/.claude/skills/eu-web-compliance
 ```
 
 **Codex.** Clone into the user skills folder (or into `.agents/skills/` of one project):
 
 ```bash
-git clone https://github.com/skyymar69-rgb/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
+git clone https://github.com/kayzen-lyon/eu-web-compliance.git ~/.agents/skills/eu-web-compliance
 ```
 
 **The `skills` CLI.** It finds the `SKILL.md` at the root of the repository and installs it for the agent you name (`claude-code`, `codex`, `cursor`, `github-copilot`, among others); `-g` installs it for all your projects:
 
 ```bash
-npx skills add skyymar69-rgb/eu-web-compliance -a codex
+npx skills add kayzen-lyon/eu-web-compliance -a codex
 ```
 
 **GitHub Copilot, Cursor and other agents that read `AGENTS.md`.** Vendor the skill in the project (for example in `.vendor/eu-web-compliance/`) and copy the matching pointer file: see [adapters/README.md](adapters/README.md) and part A of [AGENTS.md](AGENTS.md).
