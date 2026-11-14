@@ -13,7 +13,7 @@ Licence terms below were read on the sources recorded in [references/sources.jso
 
 ## Upstream skills
 
-No content has been copied from these projects yet. They will be drawn on from milestone M1; each reused file will be added to the table below when it enters the repository.
+Each file that reuses content from one of these projects is listed in the table below.
 
 | Project | Licence | Attribution required |
 |---------|---------|----------------------|
@@ -26,7 +26,18 @@ No content has been copied from these projects yet. They will be drawn on from m
 
 | File in this repository | Origin | Licence | Date taken |
 |-------------------------|--------|---------|------------|
-| None yet | | | |
+| `scripts/rgaa_official.py` (adapted) | etalab-ia/skills, `skills/rgaa/scripts/officiel.py` and `check-classement.py`, commit 0eae080 | MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
+| `references/accessibility/rgaa/4.1.2/evaluation-modes.json` (English translation of a provisional classification proposed by Isabelle Lafont) | etalab-ia/skills, `skills/rgaa/references/classement/*.md`, commit 0eae080 | MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
+| `references/accessibility/rgaa/4.1.2/sources/*.json` (unmodified) and the generated `criteria-*.md` and `glossary.md` | DISIC/accessibilite.numerique.gouv.fr, folder `RGAA/`, commit 95d5ef33 (last updated 2026-01-07), DINUM | Licence Ouverte 2.0 | 2026-11-14 |
+| `references/accessibility/mapping.json` (success criterion names and levels) | WCAG 2.2, W3C Recommendation | W3C Document License 2023 | 2026-11-14 |
+| `references/accessibility/impacts.md` (adapted, translated, reorganised by defect family; attribution also in the file) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/impacts.md`, v1.2.2, by Isabelle Lafont; etalab-ia/skills, `skills/rgaa/references/impacts.md` | Licence Ouverte 2.0; MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
+| `references/accessibility/fallbacks.md` (outline and order of preference reused, text rewritten, no code reused) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/fallbacks.md`, v1.2.2, by Isabelle Lafont | Licence Ouverte 2.0 | 2026-11-14 |
+| `references/accessibility/rules.md` (selection of rules inspired by the golden rules and checklists, text rewritten) | Isalafont/claude-skill-rgaa-dev, `skills/rgaa-dev/SKILL.md` and `checklist.md`, v1.2.2; github/awesome-copilot, `instructions/a11y.instructions.md` | Licence Ouverte 2.0; MIT, Copyright GitHub, Inc. | 2026-11-14 |
+| `references/accessibility/anti-patterns*.md` and their generator `scripts/anti_patterns/` (list partly derived from the S, A, K, F, V and D anti-patterns; text, examples, severities and detection patterns rewritten) | github/awesome-copilot, `instructions/a11y.instructions.md`; Isalafont/claude-skill-rgaa-dev, `SKILL.md` (ARIA anti-patterns) | MIT, Copyright GitHub, Inc.; Licence Ouverte 2.0 | 2026-11-14 |
+| `references/accessibility/components/*.md` (keyboard behaviour follows the WAI-ARIA Authoring Practices; original code, no APG code copied) | W3C WAI-ARIA Authoring Practices Guide | Cited by link only | 2026-11-14 |
+| `references/accessibility/wcag-2.2-additions.md` (success criterion numbers and names; requirements described in this project's own words) | WCAG 2.2, W3C Recommendation | W3C Document License 2023 | 2026-11-14 |
+| `templates/accessibility-statement-fr.md` (mandatory format, reproduced word for word) | DINUM, page « Déclaration d'accessibilité » | Licence Ouverte 2.0 | 2026-11-14 |
+| `templates/accessibility-information-eaa.md` (quotes Article D. 412-57, 2°, and its annex) | Légifrance, code de la consommation | Licence Ouverte 2.0 | 2026-11-14 |
 
 ## Official texts and standards
 

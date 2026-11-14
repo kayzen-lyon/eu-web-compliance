@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "eu-web-compliance project profile",
+  "description": "Answers of the scoping step, stored in compliance/profile.json of the user's project. Every answer is an object {value, basis}: 'stated' when the user said it, 'inferred' when the agent read it in the repository, 'assumed' when nobody answered and the most protective reading was recorded. A missing answer and an 'assumed' answer both make the obligations that depend on it 'to-confirm'. The keyword x-protective-assumption states the protective reading of each answer; x-question gives the number of the question in references/scoping/questionnaire.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "project_name": {"type": "string"},
+    "updated": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Date of the last change to this profile, YYYY-MM-DD."},
+    "operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Who operates the website (the person or body responsible for it, not the developer or the agency).",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/answer",
+          "x-question": 1,
+          "x-protective-assumption": "None possible: the operator type decides which texts apply. Left missing, so the obligations that depend on it stay to-confirm.",
+          "properties": {"value": {"type": "string", "enum": ["public-body", "private-public-service-mission", "company", "association", "individual"]}}
+        },
+        "activity_kind": {
+          "$ref": "#/$defs/answer",
+          "x-question": 1,
+          "x-protective-assumption": "commercial",
+          "description": "commercial: the site sells, promotes or is funded by an economic activity. institutional: public body or non-profit acting outside any economic activity. personal: a private individual acting outside any professional activity.",
+          "properties": {"value": {"type": "string", "enum": ["commercial", "institutional", "personal"]}}
+        },
+        "headcount": {
+          "$ref": "#/$defs/answer",
+          "x-question": 2,
+          "x-protective-assumption": "Not a microenterprise (no exemption relied on). No number is invented: the answer stays missing.",
+          "description": "Number of persons employed by the operator.",
+          "properties": {"value": {"type": "number", "minimum": 0}}
+        },
+        "annual_turnover_eur": {
+          "$ref": "#/$defs/answer",
+          "x-question": 2,
+          "x-protective-assumption": "Not a microenterprise (no exemption relied on). No number is invented: the answer stays missing.",
+          "description": "Annual turnover of the operator, in euros.",
+          "properties": {"value": {"type": "number", "minimum": 0}}
+        },
+        "balance_sheet_total_eur": {
+          "$ref": "#/$defs/answer",
+          "x-question": 2,
+          "x-protective-assumption": "Not a microenterprise (no exemption relied on). No number is invented: the answer stays missing.",
+          "description": "Annual balance sheet total of the operator, in euros.",
+          "properties": {"value": {"type": "number", "minimum": 0}}
+        },
+        "fr_turnover_3y_average_eur": {
+          "$ref": "#/$defs/answer",
+          "x-question": 2,
+          "x-protective-assumption": "Unknown: the French Article 47 turnover test stays to-confirm for a company. No number is invented.",
+          "description": "Average of the turnover made in France over the last three financial years, in euros. Only used for the French Article 47 threshold.",
+          "properties": {"value": {"type": "number", "minimum": 0}}
+        },
+        "country_of_establishment": {
+          "$ref": "#/$defs/answer",
+          "x-question": 3,
+          "x-protective-assumption": "None possible. Left missing: national rules stay to-confirm.",
+          "description": "ISO 3166-1 alpha-2 code, upper case.",
+          "properties": {"value": {"type": "string", "pattern": "^[A-Z]{2}$"}}
+        },
+        "regulated_sector": {
+          "$ref": "#/$defs/answer",
+          "x-question": 5,
+          "x-protective-assumption": true,
+          "description": "The operator carries out an activity that needs a licence or is supervised by a sector authority (for example banking, insurance, health, legal professions, gambling, telecommunications, transport).",
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    },
+    "market": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target_countries": {
+          "$ref": "#/$defs/answer",
+          "x-question": 3,
+          "x-protective-assumption": "None possible. Left missing: national rules stay to-confirm.",
+          "description": "Countries whose public the site addresses (language, currency, delivery, domain). ISO 3166-1 alpha-2 codes, upper case.",
+          "properties": {"value": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z]{2}$"}}}
+        },
+        "sells_online": {
+          "$ref": "#/$defs/answer",
+          "x-question": 4,
+          "x-protective-assumption": true,
+          "description": "Orders or contracts can be concluded on the site, with businesses or consumers.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "sells_to_consumers": {
+          "$ref": "#/$defs/answer",
+          "x-question": 4,
+          "x-protective-assumption": true,
+          "description": "The site offers goods, services or digital content to consumers (natural persons acting outside their trade or profession).",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "sells_what": {
+          "$ref": "#/$defs/answer",
+          "x-question": 4,
+          "x-protective-assumption": "Unknown. Informative only: no condition reads it.",
+          "properties": {"value": {"type": "array", "items": {"type": "string", "enum": ["goods", "services", "digital-content", "subscriptions"]}}}
+        },
+        "withdrawal_right_applies": {
+          "$ref": "#/$defs/answer",
+          "x-question": 4,
+          "x-protective-assumption": true,
+          "description": "At least one contract concluded on the site carries a right of withdrawal for the consumer. The exceptions to that right are not encoded in this skill: the user states the answer.",
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    },
+    "eaa": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sectors": {
+          "$ref": "#/$defs/answer",
+          "x-question": 5,
+          "x-protective-assumption": "Unknown: the European Accessibility Act rows stay to-confirm.",
+          "description": "Services of Article 2(2) of Directive (EU) 2019/882 that the site provides to consumers. Empty list when none. 'e-commerce' whenever a consumer can conclude a contract on the site.",
+          "properties": {"value": {"type": "array", "items": {"type": "string", "enum": ["e-commerce", "consumer-banking", "passenger-transport", "e-books", "electronic-communications", "audiovisual-media-access"]}}}
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "collects_personal_data": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "description": "The site or a tool it loads processes data about identifiable persons (forms, accounts, orders, logs kept with IP addresses, analytics with identifiers).",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "special_categories": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "description": "Data of Article 9 GDPR are processed.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "health_data": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "non_essential_trackers": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "description": "The site, or a third-party script it loads, stores or reads information on the visitor's device for a purpose other than the two exemptions of Article 5(3) of Directive 2002/58/EC.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "third_party_tool_kinds": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": "Unknown: rows about analytics, session replay and email tracking stay to-confirm.",
+          "properties": {"value": {"type": "array", "items": {"type": "string", "enum": ["analytics", "advertising", "social-embed", "video-embed", "maps", "chat-widget", "session-replay", "email-tracking", "payment", "fonts-or-cdn", "captcha", "ai-api", "other"]}}}
+        },
+        "third_party_tools": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": "Unknown. Informative only: no condition reads it.",
+          "description": "Names of the third-party tools found or declared.",
+          "properties": {"value": {"type": "array", "items": {"type": "string"}}}
+        },
+        "transfers_outside_eu": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "description": "Personal data are sent to a recipient outside the European Union, directly or through a third-party tool.",
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    },
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "includes_minors": {
+          "$ref": "#/$defs/answer",
+          "x-question": 7,
+          "x-protective-assumption": true,
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    },
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conversational_assistant": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": true,
+          "description": "Visitors interact directly with an AI system (chatbot, voice assistant, AI search answering in natural language).",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "content_generation_feature": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": true,
+          "description": "The site offers a feature that generates text, image, audio or video for its users.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "generated_content_published": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": true,
+          "description": "The operator publishes on the site content generated or manipulated by AI.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "emotion_or_biometric": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": true,
+          "description": "Emotion recognition or biometric categorisation is used on visitors or users.",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "decisions_about_people": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": true,
+          "description": "An AI system takes or prepares decisions about persons (for example recruitment, credit, access to a service or benefit, grading, pricing per person).",
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "role": {
+          "$ref": "#/$defs/answer",
+          "x-question": 8,
+          "x-protective-assumption": "both",
+          "description": "Role of the operator under Article 3 of Regulation (EU) 2024/1689 for the AI systems of the site. provider: it develops the system or has it developed and puts it into service under its own name. deployer: it uses under its authority a system supplied by someone else. both: one of each, or unsure between the two.",
+          "properties": {"value": {"type": "string", "enum": ["provider", "deployer", "both"]}}
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hosts_user_content": {
+          "$ref": "#/$defs/answer",
+          "x-question": 9,
+          "x-protective-assumption": true,
+          "description": "The site stores content supplied by its users at their request (comments, reviews, forum posts, listings, uploads, profiles).",
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "user_accounts": {
+          "$ref": "#/$defs/answer",
+          "x-question": 6,
+          "x-protective-assumption": true,
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "languages": {
+          "$ref": "#/$defs/answer",
+          "x-question": 3,
+          "x-protective-assumption": "Unknown. Informative only: no condition reads it.",
+          "description": "BCP 47 language tags of the site.",
+          "properties": {"value": {"type": "array", "items": {"type": "string"}}}
+        },
+        "stack": {
+          "$ref": "#/$defs/answer",
+          "x-question": 0,
+          "x-protective-assumption": "Unknown. Informative only: no condition reads it.",
+          "description": "Frameworks and hosting detected in the repository.",
+          "properties": {"value": {"type": "array", "items": {"type": "string"}}}
+        }
+      }
+    },
+    "referents": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "People the operator can already turn to. Informative: used to address the 'consult a professional' lines.",
+      "properties": {
+        "dpo": {
+          "$ref": "#/$defs/answer",
+          "x-question": 10,
+          "x-protective-assumption": false,
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "lawyer": {
+          "$ref": "#/$defs/answer",
+          "x-question": 10,
+          "x-protective-assumption": false,
+          "properties": {"value": {"type": "boolean"}}
+        },
+        "accessibility_lead": {
+          "$ref": "#/$defs/answer",
+          "x-question": 10,
+          "x-protective-assumption": false,
+          "properties": {"value": {"type": "boolean"}}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "answer": {
+      "type": "object",
+      "required": ["value", "basis"],
+      "properties": {
+        "value": {},
+        "basis": {"type": "string", "enum": ["stated", "inferred", "assumed"]},
+        "note": {"type": "string", "description": "Where the answer comes from: the user's words, the file that shows it, or why it was assumed."}
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "eu-web-compliance",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Outils de vérification du skill eu-web-compliance (navigateur piloté et axe-core).",
+  "license": "MIT",
+  "scripts": {
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "test:examples": "node scripts/check-examples.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "playwright": "^1.65.1"
+  }
+}

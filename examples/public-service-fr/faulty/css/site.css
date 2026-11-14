@@ -1,0 +1,883 @@
+/* Mairie de Valmont-sur-Aure - site d'exemple (version fautive : défauts introduits volontairement, voir expected-defects.json).
+   Commune fictive. Exemples du projet eu-web-compliance (MIT). */
+
+:root {
+  --encre: #1c2733;
+  --fond: #ffffff;
+  --clair: #eef3f1;
+  --sarcelle: #0f5c5c;
+  --sarcelle-fonce: #0a4040;
+  --gris: #4d5961;
+  --trait: #66727a;
+  --erreur: #a3172b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-padding-top: 2rem;
+  scroll-padding-bottom: 2rem;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--encre);
+  background: var(--fond);
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: 2.125rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+h3 {
+  font-size: 1.1875rem;
+}
+
+p,
+ul,
+ol,
+dl {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--sarcelle);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--sarcelle-fonce);
+  text-decoration-thickness: 0.15em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--encre);
+  outline-offset: 2px;
+}
+
+.conteneur {
+  width: 100%;
+  max-width: 66rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Lien d'évitement : hors écran tant qu'il n'a pas le focus. */
+.lien-evitement {
+  position: absolute;
+  left: 0.5rem;
+  top: -5rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  color: var(--encre);
+  background: var(--fond);
+  border: 2px solid var(--encre);
+  font-weight: 600;
+}
+
+.lien-evitement:focus {
+  top: 0.5rem;
+}
+
+/* En-tête : jamais fixe ni collant. */
+.entete {
+  border-bottom: 4px solid var(--sarcelle);
+}
+
+.entete-interne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.marque {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+  color: var(--encre);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.marque svg {
+  flex: none;
+  color: var(--sarcelle);
+}
+
+.aide {
+  margin: 0 0 0 auto;
+}
+
+.aide a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  font-weight: 600;
+}
+
+.menu {
+  flex-basis: 100%;
+}
+
+.menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.5rem;
+  color: var(--encre);
+  font-weight: 600;
+}
+
+.menu a[aria-current="page"] {
+  color: var(--sarcelle-fonce);
+  text-decoration-thickness: 0.2em;
+}
+
+/* Fil d'Ariane */
+.fil ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+}
+
+.fil li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+  color: var(--gris);
+}
+
+.fil a {
+  display: inline-block;
+  padding: 0.25rem 0;
+}
+
+main {
+  padding: 1.5rem 0 1rem;
+}
+
+/* Boutons */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--sarcelle);
+  border: 2px solid var(--sarcelle);
+  border-radius: 0.25rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bouton:hover {
+  color: #ffffff;
+  background: var(--sarcelle-fonce);
+  border-color: var(--sarcelle-fonce);
+}
+
+.bouton-secondaire {
+  color: var(--sarcelle-fonce);
+  background: var(--fond);
+}
+
+.bouton-secondaire:hover {
+  color: #ffffff;
+}
+
+/* Accueil */
+.alerte {
+  padding: 0.75rem 1rem;
+  background: var(--clair);
+  border-left: 0.5rem solid var(--sarcelle);
+}
+
+.alerte p {
+  margin: 0;
+}
+
+.en-bref {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--trait);
+}
+
+.demarches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.demarches li {
+  padding: 1rem;
+  background: var(--clair);
+  border: 1px solid var(--trait);
+  border-radius: 0.25rem;
+}
+
+.demarches img {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.demarches a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  font-weight: 600;
+}
+
+.actus {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.actus img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--trait);
+}
+
+.actus h3 {
+  margin-top: 0.75rem;
+}
+
+.date {
+  color: var(--gris);
+}
+
+.telephone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.telephone a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  font-weight: 600;
+}
+
+/* Formulaires */
+fieldset {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--trait);
+  border-radius: 0.25rem;
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-weight: 700;
+}
+
+.champ {
+  margin-bottom: 1rem;
+}
+
+.champ label {
+  display: block;
+  font-weight: 600;
+}
+
+.indication {
+  display: block;
+  color: var(--gris);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="search"],
+input[type="file"] {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  font: inherit;
+  color: var(--encre);
+  background: var(--fond);
+  border: 2px solid var(--trait);
+  border-radius: 0.25rem;
+}
+
+.choix {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0;
+}
+
+.choix input {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0.125rem 0 0;
+  accent-color: var(--sarcelle);
+}
+
+.date-champs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.date-champs .champ {
+  margin: 0;
+}
+
+.date-champs input {
+  width: 4.5rem;
+}
+
+.date-champs .annee input {
+  width: 6.5rem;
+}
+
+.compteur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.compteur input {
+  width: 4.5rem;
+  text-align: center;
+}
+
+.compteur button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--encre);
+  background: var(--fond);
+  border: 2px solid var(--encre);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+[aria-invalid="true"] {
+  border-color: var(--erreur);
+  border-width: 3px;
+}
+
+.erreur {
+  margin: 0.25rem 0;
+  color: var(--erreur);
+  font-weight: 600;
+}
+
+.resume-erreurs {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 3px solid var(--erreur);
+  border-radius: 0.25rem;
+}
+
+.resume-erreurs[hidden] {
+  display: none;
+}
+
+.resume-erreurs h2,
+.resume-erreurs h3 {
+  margin-top: 0;
+  font-size: 1.1875rem;
+}
+
+.resume-erreurs ul {
+  margin-bottom: 0;
+}
+
+.resume-erreurs a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  color: var(--erreur);
+  font-weight: 600;
+}
+
+.statut:not(:empty) {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--clair);
+  border-left: 0.5rem solid var(--sarcelle);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Démarche en plusieurs étapes */
+.etapes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+}
+
+.etapes li {
+  padding: 0.25rem 0;
+  border-bottom: 4px solid transparent;
+  color: var(--gris);
+  counter-increment: etape;
+}
+
+.etapes li::before {
+  content: counter(etape) ". ";
+}
+
+.etapes li[aria-current="step"] {
+  color: var(--encre);
+  font-weight: 700;
+  border-bottom-color: var(--sarcelle);
+}
+
+.etapes li[aria-current="step"]::after {
+  content: " (en cours)";
+}
+
+.etape[hidden],
+.confirmation[hidden] {
+  display: none;
+}
+
+.etape h2,
+.confirmation h2 {
+  margin-top: 1rem;
+}
+
+.etape h2:focus,
+.confirmation h2:focus {
+  outline: 3px solid var(--encre);
+  outline-offset: 4px;
+}
+
+.recap {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) 1fr;
+  gap: 0.25rem 1rem;
+}
+
+.recap dt {
+  font-weight: 600;
+}
+
+.recap dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 30em) {
+  .recap {
+    grid-template-columns: 1fr;
+  }
+
+  .recap dd {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Recherche */
+.recherche-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 36rem;
+}
+
+.recherche-ligne input {
+  flex: 1 1 12rem;
+  max-width: none;
+}
+
+.resultats {
+  padding: 0;
+  list-style: none;
+}
+
+.resultats li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.resultats li[hidden] {
+  display: none;
+}
+
+.resultats h3 {
+  margin-bottom: 0.25rem;
+}
+
+.resultats p {
+  margin: 0;
+}
+
+.aide-recherche {
+  margin-top: 2rem;
+  padding: 0.75rem 1rem;
+  background: var(--clair);
+}
+
+/* Onglets */
+.onglets-liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  border-bottom: 2px solid var(--encre);
+}
+
+.onglets-liste button {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--encre);
+  background: var(--clair);
+  border: 2px solid var(--encre);
+  border-bottom: 0;
+  border-radius: 0.25rem 0.25rem 0 0;
+  cursor: pointer;
+}
+
+.onglets-liste button[aria-selected="true"] {
+  color: #ffffff;
+  background: var(--encre);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.onglets-liste button:focus-visible {
+  outline-offset: -6px;
+  outline-color: var(--encre);
+  box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+.panneau {
+  padding: 1rem;
+  border: 2px solid var(--encre);
+  border-top: 0;
+}
+
+.panneau[hidden] {
+  display: none;
+}
+
+.panneau > :last-child {
+  margin-bottom: 0;
+}
+
+/* Tableaux */
+.tableau-defilant {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+caption {
+  padding: 0.5rem 0;
+  font-weight: 700;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--trait);
+  text-align: left;
+}
+
+thead th {
+  background: var(--clair);
+}
+
+/* Plan : zone défilante native, utilisable au clavier et au pointeur. */
+.plan {
+  max-width: 100%;
+  max-height: 22rem;
+  overflow: auto;
+  border: 2px solid var(--encre);
+}
+
+.plan img {
+  display: block;
+  max-width: none;
+}
+
+/* Accordéon natif */
+details {
+  border: 1px solid var(--trait);
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+summary {
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+details > :not(summary) {
+  margin: 0;
+  padding: 0 1rem 1rem;
+}
+
+audio {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+}
+
+/* Pied de page */
+.pied {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  color: #ffffff;
+  background: var(--encre);
+}
+
+.pied a {
+  color: #ffffff;
+}
+
+.pied :focus-visible {
+  outline-color: #ffffff;
+}
+
+.pied address {
+  margin-bottom: 1rem;
+  font-style: normal;
+}
+
+.pied ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.pied li a {
+  display: inline-block;
+  padding: 0.5rem 0;
+}
+
+@media (max-width: 30em) {
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .aide {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Les règles ci-dessous n'existent que dans la version fautive ---- */
+
+.titre-page {
+  margin: 0 0 0.75rem;
+  font-size: 2.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.alerte {
+  height: 4.5rem;
+  overflow: hidden;
+}
+
+.demarches a:focus,
+.demarches a:focus-visible {
+  outline: none;
+}
+
+.actus .date {
+  color: #9aa3a8;
+}
+
+.pseudo-legende {
+  font-weight: 700;
+}
+
+.session {
+  font-weight: 600;
+}
+
+.etapes li.active {
+  color: #0f5c5c;
+}
+
+.compteur {
+  gap: 2px;
+}
+
+.compteur button {
+  width: 16px;
+  min-width: 0;
+  height: 16px;
+  min-height: 0;
+  border-width: 1px;
+}
+
+.compteur button svg {
+  width: 8px;
+  height: 8px;
+}
+
+.depot {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  color: var(--sarcelle-fonce);
+  font-weight: 600;
+  border: 2px solid var(--sarcelle);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.depot-natif {
+  display: none !important;
+}
+
+.recherche-form {
+  min-width: 40rem;
+}
+
+.aide-recherche {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 1.75rem 1rem;
+  border-top: 2px solid var(--encre);
+}
+
+.plan {
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.plan img {
+  pointer-events: none;
+  user-select: none;
+}
+
+.accordeon h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.accordeon-titre {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  color: var(--encre);
+  background: var(--fond);
+  border: 1px solid var(--trait);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.accordeon-panneau {
+  padding: 0 1rem 0.5rem;
+}

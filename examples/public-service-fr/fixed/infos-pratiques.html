@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Infos pratiques – Mairie de Valmont-sur-Aure</title>
+  <meta name="description" content="Horaires, contact, stationnement, plan d’accès et questions fréquentes de la mairie fictive de Valmont-sur-Aure.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="conteneur entete-interne">
+      <a class="marque" href="index.html">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18L20 6l14 12" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M4 26c4-4 8-4 12 0s8 4 12 0 6-3 8-1M4 34c4-4 8-4 12 0s8 4 12 0 6-3 8-1" fill="none" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <span>Mairie de Valmont-sur-Aure</span>
+      </a>
+      <p class="aide"><a href="infos-pratiques.html#panneau-contact">Aide et contact</a></p>
+      <nav class="menu" aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="demarche-acte.html">Acte d’état civil</a></li>
+          <li><a href="infos-pratiques.html" aria-current="page">Infos pratiques</a></li>
+          <li><a href="recherche.html">Recherche</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="fil conteneur" aria-label="Fil d’Ariane">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="infos-pratiques.html" aria-current="page">Infos pratiques</a></li>
+    </ol>
+  </nav>
+
+  <main id="contenu">
+    <div class="conteneur">
+      <h1>Infos pratiques</h1>
+
+      <h2 id="titre-onglets">Venir à la mairie</h2>
+      <div class="onglets">
+        <div class="onglets-liste" role="tablist" aria-labelledby="titre-onglets">
+          <button type="button" role="tab" id="onglet-horaires" aria-selected="true" aria-controls="panneau-horaires">Horaires</button>
+          <button type="button" role="tab" id="onglet-contact" aria-selected="false" aria-controls="panneau-contact" tabindex="-1">Contact</button>
+          <button type="button" role="tab" id="onglet-stationnement" aria-selected="false" aria-controls="panneau-stationnement" tabindex="-1">Stationnement</button>
+        </div>
+
+        <div class="panneau" role="tabpanel" id="panneau-horaires" aria-labelledby="onglet-horaires" tabindex="0">
+          <div class="tableau-defilant" role="region" aria-labelledby="horaires-titre" tabindex="0">
+            <table class="horaires">
+              <caption id="horaires-titre">Horaires d’ouverture au public</caption>
+              <colgroup>
+                <col>
+              </colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="2"></colgroup>
+              <thead>
+                <tr>
+                  <td rowspan="2"></td>
+                  <th scope="colgroup" colspan="2">Accueil général</th>
+                  <th scope="colgroup" colspan="2">Service état civil</th>
+                </tr>
+                <tr>
+                  <th scope="col">Matin</th>
+                  <th scope="col">Après-midi</th>
+                  <th scope="col">Matin</th>
+                  <th scope="col">Après-midi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Lundi</th>
+                  <td>Fermé</td>
+                  <td>14&nbsp;h – 17&nbsp;h</td>
+                  <td>Fermé</td>
+                  <td>Fermé</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mardi au vendredi</th>
+                  <td>9&nbsp;h – 12&nbsp;h</td>
+                  <td>14&nbsp;h – 17&nbsp;h</td>
+                  <td>9&nbsp;h – 12&nbsp;h</td>
+                  <td>Sur rendez-vous</td>
+                </tr>
+                <tr>
+                  <th scope="row">Samedi</th>
+                  <td>9&nbsp;h – 12&nbsp;h</td>
+                  <td>Fermé</td>
+                  <td>9&nbsp;h – 11&nbsp;h</td>
+                  <td>Fermé</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panneau" role="tabpanel" id="panneau-contact" aria-labelledby="onglet-contact" tabindex="0" hidden>
+          <address>
+            Mairie de Valmont-sur-Aure<br>
+            1, place de la Mairie, Valmont-sur-Aure
+          </address>
+          <p>Téléphone&nbsp;: <a href="tel:+33261910000">02&nbsp;61&nbsp;91&nbsp;00&nbsp;00</a></p>
+          <p>Courriel&nbsp;: <a href="mailto:mairie@valmont-sur-aure.example">mairie@valmont-sur-aure.example</a></p>
+        </div>
+
+        <div class="panneau" role="tabpanel" id="panneau-stationnement" aria-labelledby="onglet-stationnement" tabindex="0" hidden>
+          <p>Le parking de la place de la Halle (40 places, gratuit) se trouve à deux minutes à pied. Deux places réservées aux personnes titulaires d’une carte mobilité inclusion sont situées devant l’entrée, quai de l’Aure.</p>
+          <p>Arrêt de bus «&nbsp;Mairie&nbsp;», ligne 2. Arceaux à vélos sous le porche.</p>
+        </div>
+      </div>
+
+      <h2>Plan d’accès</h2>
+      <p>La mairie se trouve place de la Mairie, entre la rue du Moulin au nord et le quai de l’Aure au sud. L’entrée de plain-pied donne sur le quai. Le plan ci-dessous défile horizontalement et verticalement, à la souris, au doigt ou au clavier.</p>
+      <div class="plan" role="region" aria-label="Plan du centre-ville, zone défilante" tabindex="0">
+        <img src="img/plan-centre-ville.svg" width="900" height="480" alt="Plan schématique du centre-ville : la mairie est au centre, place de la Mairie ; la place de la Halle et son parking sont à l’ouest, l’Aure coule au sud.">
+      </div>
+
+      <h2>Questions fréquentes</h2>
+      <details>
+        <summary>Faut-il prendre rendez-vous pour une carte d’identité&nbsp;?</summary>
+        <p>Oui. Les rendez-vous se prennent par téléphone auprès de l’accueil, aux horaires d’ouverture.</p>
+      </details>
+      <details>
+        <summary>Combien de temps faut-il pour recevoir un acte d’état civil&nbsp;?</summary>
+        <p>L’acte est envoyé par courriel sous cinq jours ouvrés après une demande complète.</p>
+      </details>
+      <details>
+        <summary>La mairie est-elle accessible en fauteuil roulant&nbsp;?</summary>
+        <p>Oui, par l’entrée du quai de l’Aure, de plain-pied. Un ascenseur dessert la salle des mariages au premier étage.</p>
+      </details>
+
+      <h2>Le carillon de la mairie</h2>
+      <p>Extrait sonore de cinq secondes. Il ne contient aucune parole&nbsp;: on entend une seule note tenue, dont le volume ondule deux fois par seconde.</p>
+      <audio controls preload="none" src="media/carillon.wav">
+        <a href="media/carillon.wav">Télécharger l’extrait sonore (WAV, 40&nbsp;Ko)</a>
+      </audio>
+    </div>
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <address>
+        <strong>Mairie de Valmont-sur-Aure</strong><br>
+        1, place de la Mairie, Valmont-sur-Aure
+      </address>
+      <ul>
+        <li><a href="accessibilite.html">Accessibilité&nbsp;: déclaration (page d’exemple)</a></li>
+        <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+        <li><a href="recherche.html">Recherche</a></li>
+      </ul>
+      <p>Valmont-sur-Aure est une commune fictive. Ce site est un exemple du projet eu-web-compliance.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>

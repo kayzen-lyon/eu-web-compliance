@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accueil – Mairie de Valmont-sur-Aure</title>
+  <meta name="description" content="Site d’exemple d’une commune fictive : démarches en ligne, actualités et informations pratiques.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="conteneur entete-interne">
+      <a class="marque" href="index.html">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18L20 6l14 12" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M4 26c4-4 8-4 12 0s8 4 12 0 6-3 8-1M4 34c4-4 8-4 12 0s8 4 12 0 6-3 8-1" fill="none" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <span>Mairie de Valmont-sur-Aure</span>
+      </a>
+      <p class="aide"><a href="infos-pratiques.html#panneau-contact">Aide et contact</a></p>
+      <nav class="menu" aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html" aria-current="page">Accueil</a></li>
+          <li><a href="demarche-acte.html">Acte d’état civil</a></li>
+          <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+          <li><a href="recherche.html">Recherche</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <div class="conteneur">
+      <h1>Bienvenue à Valmont-sur-Aure</h1>
+
+      <div class="alerte">
+        <p><strong>Information&nbsp;:</strong> la mairie sera exceptionnellement fermée samedi matin pour l’inventaire annuel des archives. L’accueil téléphonique reste ouvert de 9&nbsp;h à 12&nbsp;h.</p>
+      </div>
+
+      <h2>Démarches et services</h2>
+      <ul class="demarches">
+        <li>
+          <img src="img/picto-document.svg" width="48" height="48" alt="">
+          <h3><a href="demarche-acte.html">Demander un acte d’état civil</a></h3>
+          <p>Naissance, mariage ou décès&nbsp;: la demande se fait en quatre étapes.</p>
+        </li>
+        <li>
+          <img src="img/picto-horloge.svg" width="48" height="48" alt="">
+          <h3><a href="infos-pratiques.html">Consulter les horaires et le plan d’accès</a></h3>
+          <p>Horaires de l’accueil et du service état civil, stationnement, questions fréquentes.</p>
+        </li>
+        <li>
+          <img src="img/picto-loupe.svg" width="48" height="48" alt="">
+          <h3><a href="recherche.html">Rechercher sur le site</a></h3>
+          <p>Trouvez une démarche ou une information par mot-clé.</p>
+        </li>
+      </ul>
+
+      <p class="telephone">
+        <img src="img/picto-telephone.svg" width="32" height="32" alt="">
+        <span>Accueil de la mairie&nbsp;:</span>
+        <a href="tel:+33261910000">02&nbsp;61&nbsp;91&nbsp;00&nbsp;00</a>
+      </p>
+
+      <h2>Actualités</h2>
+      <p class="en-bref">En bref&nbsp;: marché de producteurs tous les jeudis matin, place de la Halle. Collecte des encombrants le premier lundi du mois.</p>
+      <ul class="actus">
+        <li>
+          <img src="img/actu-marche.svg" width="320" height="200" alt="Dessin d’un étal de marché couvert d’un auvent rayé, avec des cagettes de fruits et de légumes.">
+          <h3>Le marché de producteurs s’agrandit</h3>
+          <p class="date">Publié le <time datetime="2026-11-05">5 novembre 2026</time></p>
+          <p>Six nouveaux exposants rejoignent la place de la Halle à partir du mois prochain, dont un fromager et une apicultrice.</p>
+        </li>
+        <li>
+          <img src="img/actu-bibliotheque.svg" width="320" height="200" alt="Dessin de la façade de la bibliothèque : un bâtiment bas à trois grandes fenêtres et une porte centrale.">
+          <h3>La bibliothèque rouvre après travaux</h3>
+          <p class="date">Publié le <time datetime="2026-10-21">21 octobre 2026</time></p>
+          <p>La rampe d’accès et la nouvelle banque d’accueil sont en service. L’inscription reste gratuite pour les habitants.</p>
+        </li>
+      </ul>
+
+      <section class="visiteurs">
+        <h2>Visiter Valmont-sur-Aure</h2>
+        <p>La commune accueille chaque été des visiteurs venus de l’étranger. Un message leur est destiné&nbsp;:</p>
+        <p lang="en">Welcome to Valmont-sur-Aure. The town hall reception desk can help you in English on weekday mornings, and a free map of the riverside walk is available at the entrance.</p>
+      </section>
+
+      <section>
+        <h2>Suivre ma demande</h2>
+        <p>Saisissez le numéro de dossier et le code de suivi reçus par courriel. Les deux champs sont obligatoires.</p>
+        <form id="suivi-form" action="index.html" method="post" novalidate>
+          <div class="resume-erreurs" id="suivi-erreurs" tabindex="-1" hidden>
+            <h3>Le formulaire contient des erreurs</h3>
+            <ul></ul>
+          </div>
+          <div class="champ">
+            <label for="dossier">Numéro de dossier</label>
+            <span class="indication" id="dossier-indication">Par exemple&nbsp;: VSA-2026-00123</span>
+            <input type="text" id="dossier" name="dossier" autocomplete="username" aria-describedby="dossier-indication" required data-msg-obligatoire="Saisissez votre numéro de dossier">
+          </div>
+          <div class="champ">
+            <label for="code-suivi">Code de suivi</label>
+            <span class="indication" id="code-indication">Vous pouvez le coller ou laisser votre gestionnaire de mots de passe le remplir.</span>
+            <input type="password" id="code-suivi" name="code" autocomplete="current-password" aria-describedby="code-indication" required data-msg-obligatoire="Saisissez votre code de suivi">
+          </div>
+          <p><button type="submit" class="bouton">Consulter ma demande</button></p>
+          <p class="statut" id="suivi-statut" role="status"></p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <address>
+        <strong>Mairie de Valmont-sur-Aure</strong><br>
+        1, place de la Mairie, Valmont-sur-Aure
+      </address>
+      <ul>
+        <li><a href="accessibilite.html">Accessibilité&nbsp;: déclaration (page d’exemple)</a></li>
+        <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+        <li><a href="recherche.html">Recherche</a></li>
+      </ul>
+      <p>Valmont-sur-Aure est une commune fictive. Ce site est un exemple du projet eu-web-compliance.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>

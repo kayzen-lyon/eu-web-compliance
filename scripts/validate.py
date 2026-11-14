@@ -37,7 +37,7 @@ MAX_SKILL_LINES = 300
 MAX_REFERENCE_LINES = 500
 STALE_DAYS = 90
 
-SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "compliance"}
+SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "compliance", ".playwright-mcp"}
 TEXT_SUFFIXES = {".md", ".json", ".py", ".yml", ".yaml", ".sh", ".txt", ".html", ".css", ".js"}
 REQUIRED_FILES = ("LICENSE", "README.md", "NOTICE.md", "CHANGELOG.md", "references/sources.json",
                   "references/regulatory-status.md")
@@ -45,6 +45,7 @@ REQUIRED_FILES = ("LICENSE", "README.md", "NOTICE.md", "CHANGELOG.md", "referenc
 NAME_LOWER = re.compile(r"^\.?[a-z0-9][a-z0-9.-]*$")
 NAME_UPPER = re.compile(r"^[A-Z][A-Z0-9-]*(\.[a-z0-9]+)*$")  # README.md, LICENSE, README.fr.md
 NAME_TEST = re.compile(r"^test_[a-z0-9_]+\.py$")
+NAME_MODULE = re.compile(r"^[a-z][a-z0-9_]*\.py$")  # module Python importable par les tests
 SKILL_NAME = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
@@ -140,7 +141,8 @@ def check_files(root: Path) -> List[Finding]:
         relpath = rel(root, path)
         name = path.name
         if not (NAME_LOWER.match(name) or NAME_UPPER.match(name)
-                or (relpath.startswith("tests/") and NAME_TEST.match(name))):
+                or (relpath.startswith("tests/") and NAME_TEST.match(name))
+                or (relpath.startswith("scripts/") and NAME_MODULE.match(name))):
             found.append(error(relpath, "nom de fichier : minuscules, chiffres, points et tirets"))
         if path.stat().st_size > MAX_FILE_BYTES:
             found.append(error(relpath, "fichier de plus de 5 Mo"))

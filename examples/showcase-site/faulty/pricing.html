@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <meta name="description" content="Typical prices, lead times and hourly rates of a fictional joinery workshop used as an example site.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="16" cy="16" r="4" fill="currentColor"/>
+        </svg>
+        <span>Brindle &amp; Oak Joinery</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li>
+            <button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls="submenu-services">Services</button>
+            <ul class="submenu" id="submenu-services" hidden>
+              <li><a href="pricing.html#kitchens">Fitted kitchens</a></li>
+              <li><a href="pricing.html#staircases">Staircases</a></li>
+              <li><a href="pricing.html#restoration">Restoration</a></li>
+            </ul>
+          </li>
+          <li><a href="pricing.html" aria-current="page">Pricing</a></li>
+          <li><a href="contact.html">Request a quote</a></li>
+          <li><a href="sign-in.html">Client area</a></li>
+        </ul>
+      </nav>
+      <p class="help-line">Need help? <a href="tel:+441632960417">Call 01632 960 417</a></p>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>Price guide</h1>
+      <p class="price-note">Every job is quoted individually after a visit. The figures below are what comparable work has cost over the last twelve months, so that you can judge whether we fit your budget before asking for a quote. All prices include materials, fitting and VAT.</p>
+
+      <h2>Typical prices</h2>
+      <div class="table-scroll" role="region" aria-labelledby="price-caption" tabindex="0">
+        <table class="prices">
+          <caption id="price-caption">Typical prices and lead times by type of work</caption>
+          <thead>
+            <tr>
+              <td class="head">Type of work</td>
+              <td class="head">Starting price</td>
+              <td class="head">Typical price</td>
+              <td class="head">Lead time</td>
+              <td class="head">Order book</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="kitchens">
+              <td class="head">Fitted kitchen</td>
+              <td>£8,500</td>
+              <td>£14,000</td>
+              <td>10 weeks</td>
+              <td>
+                <span class="status-dot dot-green"></span>
+              </td>
+            </tr>
+            <tr id="staircases">
+              <td class="head">Staircase</td>
+              <td>£3,200</td>
+              <td>£5,600</td>
+              <td>6 weeks</td>
+              <td>
+                <span class="status-dot dot-green"></span>
+              </td>
+            </tr>
+            <tr id="restoration">
+              <td class="head">Sash window restoration (per window)</td>
+              <td>£420</td>
+              <td>£650</td>
+              <td>3 weeks</td>
+              <td>
+                <span class="status-dot dot-red"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="head">Alcove bookcase</td>
+              <td>£1,100</td>
+              <td>£1,800</td>
+              <td>4 weeks</td>
+              <td>
+                <span class="status-dot dot-green"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Hourly rates for repairs</h2>
+      <p>Small repairs are charged by the hour, with a minimum of one hour.</p>
+      <div class="table-scroll" role="region" aria-labelledby="rates-caption" tabindex="0">
+        <table class="rates">
+          <caption id="rates-caption">Hourly rates by day and place of work, VAT included</caption>
+          <thead>
+            <tr>
+              <td rowspan="2"></td>
+              <th id="r-workshop" colspan="2">In our workshop</th>
+              <th id="r-site" colspan="2">At your home</th>
+            </tr>
+            <tr>
+              <th id="r-workshop-std" headers="r-workshop">Standard</th>
+              <th id="r-workshop-urgent" headers="r-workshop">Within 48 hours</th>
+              <th id="r-site-std" headers="r-site">Standard</th>
+              <th id="r-site-urgent" headers="r-site">Within 48 hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th id="r-weekday">Monday to Friday</th>
+              <td headers="r-weekday r-workshop r-workshop-std">£48</td>
+              <td headers="r-weekday r-workshop r-workshop-urgent">£62</td>
+              <td headers="r-weekday r-site r-site-std">£58</td>
+              <td headers="r-weekday r-site r-site-urgent">£75</td>
+            </tr>
+            <tr>
+              <th id="r-saturday">Saturday</th>
+              <td headers="r-weekend r-workshop r-workshop-std">£60</td>
+              <td headers="r-weekend r-workshop r-workshop-urgent">£78</td>
+              <td headers="r-weekend r-site r-site-std">£72</td>
+              <td headers="r-weekend r-site r-site-urgent">£94</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>What a quote always includes</h2>
+      <ul>
+        <li>A measured drawing of the piece and of the room.</li>
+        <li>The species and grade of timber, and the finish.</li>
+        <li>Delivery, fitting and removal of all waste.</li>
+        <li>A fixed price, valid for 60 days.</li>
+      </ul>
+      <p><a class="button" href="contact.html">Request a quote</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <address>
+        <strong>Brindle &amp; Oak Joinery</strong><br>
+        Unit 4, Mill Lane Yard, Ashcombe
+      </address>
+      <ul class="footer-links">
+        <li><a href="contact.html">Request a quote</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="sign-in.html">Client area</a></li>
+      </ul>
+      <p>Brindle &amp; Oak Joinery is a fictional business. This is an example site of the eu-web-compliance project.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>

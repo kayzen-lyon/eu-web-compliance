@@ -1,0 +1,695 @@
+{
+  "meta": {
+    "title": "Evaluation mode of each RGAA criterion",
+    "rgaa_version": "4.1.2",
+    "status": "provisional",
+    "status_note": "This classification is not part of the RGAA and is not official. Its authors state: « Classement provisoire, en attente de l’avis du pôle accessibilité numérique. Proposé par Isabelle Lafont. » (provisional classification, awaiting the opinion of the DINUM digital accessibility unit). Treat every entry as a working aid, not as a rule.",
+    "origin": {
+      "project": "etalab-ia/skills (DINUM), skill rgaa",
+      "url": "https://github.com/etalab-ia/skills/tree/main/skills/rgaa/references/classement",
+      "files": [
+        "criteres-1-3.md",
+        "criteres-4-7.md",
+        "criteres-8-10.md",
+        "criteres-11.md",
+        "criteres-12-13.md"
+      ],
+      "commit": "0eae08031868460b9f769e7010d48132c097d2ae",
+      "commit_date": "2026-11-09",
+      "licence": "MIT, Copyright (c) 2026 Benoit Vinceneux",
+      "date_taken": "2026-11-14"
+    },
+    "translation_note": "English translation made for this project from the French original, which prevails. The short criterion titles of the original are not reproduced: official titles come from criteres.json. Example strings quoted from French interfaces are kept in French, with an English gloss.",
+    "verdicts": {
+      "C": "conforme (conforming)",
+      "NC": "non conforme (not conforming)",
+      "NA": "non applicable (not applicable)",
+      "NT": "non testé (not tested)"
+    },
+    "modes": {
+      "code": "The verdict (C, NC or NA) is decided by reading the code.",
+      "mixed": "The code proves an NC, or a conformity when the entry provides for it (\"if necessary\" criteria, contrasts fully determined in the code); each entry says which. Without proof in the code: NT.",
+      "real-conditions": "One check asked in real conditions (phase 2 of the original method) is enough; without an answer: NT.",
+      "human-judgement": "Always NT, never C; NA if the criterion has no object."
+    },
+    "checks": {
+      "keyboard": "Keyboard and pointer test done? (Tab, Shift+Tab, Enter, Space, Escape, arrow keys on each interactive element; each component can be left with the keyboard; each control works with the pointer; additional content stays visible when the pointer moves over it)",
+      "focus-visible": "Is focus visible on all interactive elements?",
+      "captcha": "Does the CAPTCHA offer another form of access (audio, question)?",
+      "page-title": "Is the page title relevant and specific?",
+      "zoom-reflow": "200 % zoom, window 320 px wide, window 256 px high and increased text spacing tested? (no text cut off, no horizontal scrolling at 320 px, no vertical scrolling at 256 px for content in vertical writing, designed to scroll horizontally: a page in French is not concerned)",
+      "contrast": "Contrasts checked? (text, user interface components, links within a text)",
+      "no-stylesheet": "Content viewed without style sheets? (information still present, reading order understandable)",
+      "orientation": "Content viewed in portrait then in landscape?"
+    },
+    "fields": {
+      "mode": "one of: code, mixed, real-conditions, human-judgement",
+      "check": "key of `checks` that covers the criterion in real conditions, or null",
+      "code_proves": "what reading the code can establish (mode mixed only), or null",
+      "remains": "what a person still has to verify, or null (mode code)"
+    }
+  },
+  "theme_notes": {
+    "8": "In component mode, 8.1 and 8.3 to 8.6 are not evaluated: no verdict and no real-conditions question. The others are evaluated on the audited fragment.",
+    "9": "In component mode, 9.2 is not evaluated: no verdict and no real-conditions question. The others are evaluated on the audited fragment.",
+    "12": "In component mode, 12.1 to 12.7 are not evaluated: no verdict and no real-conditions question. The others are evaluated on the audited fragment."
+  },
+  "criteria": {
+    "1.1": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "1.2": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an image without `alt`, or an `<svg>` without `aria-hidden=\"true\"`.",
+      "remains": "See the image to confirm that it is decorative; an image with `alt=\"\"` that carries information is NC under 1.1."
+    },
+    "1.3": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a generic alternative (\"image\", \"photo\", a file name) or one that repeats the neighbouring text.",
+      "remains": "Judge, with the image in view, that the alternative conveys the information."
+    },
+    "1.4": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a CAPTCHA without an alternative, or whose alternative gives the answer.",
+      "remains": "A third-party CAPTCHA is injected by script: its alternative cannot be read in the audited code."
+    },
+    "1.5": {
+      "mode": "real-conditions",
+      "check": "captcha",
+      "code_proves": null,
+      "remains": "Check in the browser that a non-graphical form (audio, question) is offered."
+    },
+    "1.6": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when a description is linked (`aria-describedby`, a link or adjacent text).",
+      "remains": "Without a description, see the image to tell whether it requires one (chart, diagram, map)."
+    },
+    "1.7": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare the description with the content of the image (values, trends, legend)."
+    },
+    "1.8": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "See the image to know whether it contains text; the file name or the `alt` are only a clue."
+    },
+    "1.9": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "2.1": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "2.2": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a generic or technical title (\"iframe\", \"cadre1\", a file name).",
+      "remains": "Judge, with the content of the frame in view, that the title states its nature."
+    },
+    "3.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC when a state (error, required field, active element) is distinguished only by a colour class or a colour property (`color`, `background-color`, `border-color`), with no text, icon or attribute that carries it. Combined visual cues (colour and weight, colour and border) with no text, icon or attribute (`aria-current`, `aria-invalid`…) that conveys them remain an NC, here and in 10.9: the glossary (\"Information (donnée par la couleur)\") requires this complement in the code, more strictly than test 3.1.1 read alone.",
+      "remains": "See the rendering to spot information carried by colour alone (chart, legend, link within text)."
+    },
+    "3.2": {
+      "mode": "mixed",
+      "check": "contrast",
+      "code_proves": "C or NC when the colour of the text and that of its background are both determined in the audited code (hard-coded values or variables resolved in that code), with no transparency and no background image or gradient: C if the ratio reaches 4.5:1 (3:1 for large text), NC otherwise. The background counts as determined when it is declared in the audited code or in a style sheet that this code loads and that the project contains (background inherited from `body` included). If the page loads no style sheet and declares no background, the calculation is made against the default white of the browser, and the NC says so (the absence of a declared background also falls under 10.5). If a loaded style sheet cannot be found (CDN, external package, unresolved variable): NT, and the \"remains\" part gives the ratio estimated on a white background.",
+      "remains": "Measure the rendered contrast when the background is inherited from outside the audited code, or when the colours come from unresolved variables, a theme, transparency or a background image."
+    },
+    "3.3": {
+      "mode": "mixed",
+      "check": "contrast",
+      "code_proves": "C or NC when the colour of a field border, of an icon or of an information-carrying stroke and the colour of its background are both determined in the audited code, with no transparency: C if the ratio reaches 3:1, NC otherwise.",
+      "remains": "Measure the rendered contrast of the components and of their states (focus, hover, selection)."
+    },
+    "4.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when a transcript is linked or adjacent to the media, or when an audio-described version is linked; a `<track kind=\"descriptions\">` track proves nothing, because browsers do not voice it by themselves.",
+      "remains": "Without an alternative, listen to or watch the media to tell whether it requires one."
+    },
+    "4.2": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare the transcript or the audio description with the content of the media."
+    },
+    "4.3": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when a `<track kind=\"captions\">` track is present; NC when the captions track has another `kind`.",
+      "remains": "Without a track, check in the player whether captions are burnt in or supplied by a third-party player."
+    },
+    "4.4": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Watch the media to compare the captions with the dialogue and with the sounds that carry information."
+    },
+    "4.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when an audio-described version is linked.",
+      "remains": "Check during playback that a `<track kind=\"descriptions\">` is actually rendered by the player; without audio description, watch the video to tell whether the image carries information absent from the soundtrack."
+    },
+    "4.6": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Watch the audio-described version to judge that it conveys the visual information."
+    },
+    "4.7": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC when no adjacent text (heading, caption) identifies the media.",
+      "remains": "Judge that the adjacent text clearly identifies the content of the media."
+    },
+    "4.8": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when an alternative is linked or adjacent to the media (`<canvas>`, `<object>`, `<embed>`, interactive `<svg>`).",
+      "remains": "Without an alternative, see the media to tell whether it requires one."
+    },
+    "4.9": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Check that the alternative gives access to the same content and to similar functionality."
+    },
+    "4.10": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an `<audio>` or a `<video>` with `autoplay`, not `muted`, with neither `controls` nor a stop button.",
+      "remains": "Listen to the page on load: a sound started by a script or a third-party player cannot always be read in the code; a sequence of 3 seconds at most is conforming."
+    },
+    "4.11": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on an `<audio>` or a `<video>` with neither `controls` nor custom controls.",
+      "remains": "Use each control of the player (play, pause, volume, captions) with the keyboard and with the pointer."
+    },
+    "4.12": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on an interactive `<canvas>`, `<object>` or `<embed>` with neither a focusable element nor an alternative.",
+      "remains": "Use each feature of the media with the keyboard and with the pointer."
+    },
+    "4.13": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a custom player whose controls have neither an accessible name nor a role (clickable `<div>`, icon alone).",
+      "remains": "Check with a screen reader how the media and its controls are conveyed, or that a compatible alternative is present."
+    },
+    "5.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when a summary is linked to the table (`<caption>`, `aria-describedby`); NC on a table whose multi-level headers are visible in the code, without a summary.",
+      "remains": "Judge the complexity of a table whose headers are not marked up."
+    },
+    "5.2": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Read the summary, with the table in view, to judge that it explains its structure."
+    },
+    "5.3": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a layout table without `role=\"presentation\"`, or whose cell order does not follow the reading order.",
+      "remains": "Read the content in the order of the code to judge that it remains understandable."
+    },
+    "5.4": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "5.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a generic title (\"Tableau\", \"Données\", \"Liste\", that is \"Table\", \"Data\", \"List\").",
+      "remains": "Judge that the title identifies the content of the table clearly and concisely."
+    },
+    "5.6": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "5.7": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "5.8": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "6.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a link text that is not explicit (\"cliquez ici\", \"en savoir plus\", that is \"click here\", \"learn more\") with no context or accessible name that completes it, or on an accessible name that does not contain the visible text.",
+      "remains": "Judge, with the context in view, that the link text and its context state the destination."
+    },
+    "6.2": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "7.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a scripted component with no consistent role or no name (clickable `<div>`, icon button without a name), or whose state is not exposed (`aria-expanded` missing on a button that shows or hides content).",
+      "remains": "Check with a screen reader how the component and its state changes are conveyed."
+    },
+    "7.2": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an empty `<noscript>`.",
+      "remains": "Judge that the alternative gives access to the same content and to the same functionality; NA when the script has no alternative."
+    },
+    "7.3": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on an event handler placed on a non-focusable element (clickable `<div>` with neither `tabindex` nor handling of Enter, unless another keyboard-accessible element performs the same action), on a mouse handler with no keyboard equivalent, or on a script that removes focus (`blur()`).",
+      "remains": "Go through each scripted element with the keyboard (Tab, Enter, Space, arrow keys, Escape) and with the pointer; in component mode, also check that the component can be left with the keyboard (12.9)."
+    },
+    "7.4": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a change of context triggered with no explicit button or link and no text that announces it (`onchange` of a `<select>` that navigates or submits, move of focus that was not requested). The visible label of the triggering element counts as text when it names the action and its object (\"Envoyer la demande de subvention\", \"Envoyer la demande n° 1234\", that is \"Send the grant application\", \"Send application no. 1234\"); a verb alone (\"Envoyer\", \"Valider\", that is \"Send\", \"Confirm\") or a vague label (\"OK\", \"→\") does not count: NC. Only the visible label counts: a more explicit `aria-label` (\"Envoyer la demande de subvention\" on a button labelled \"Envoyer\") does not make up for a vague visible label. This ruling is stricter than the glossary, which includes `aria-label` in the label of the button: 7.4 first protects the person who sees the button.",
+      "remains": "Check in the browser that no script outside the audited code changes the context (automatic submission, partial reload)."
+    },
+    "7.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a success, error or progress message inserted without `role=\"status\"`, `role=\"alert\"`, `role=\"log\"` or `role=\"progressbar\"`, and without their equivalents allowed by the technical notes (`aria-live=\"polite\"` or `aria-live=\"assertive\"` with `aria-atomic=\"true\"`).",
+      "remains": "Spot in the browser the messages added by scripts outside the audited code, and check with a screen reader that they are announced."
+    },
+    "8.1": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.2": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a duplicate `id`, a forbidden nesting (`<div>` inside a `<p>`, interactive element inside an `<a>` or a `<button>`), a badly closed tag or a duplicated attribute.",
+      "remains": "Run the generated source code of the page through the HTML validator."
+    },
+    "8.3": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.4": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.5": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.6": {
+      "mode": "mixed",
+      "check": "page-title",
+      "code_proves": "NC on a title that is empty, generic (\"Page\", \"Sans titre\", that is \"Untitled\") or reduced to the name of the site.",
+      "remains": "Judge that the title identifies the page and its context, and that it changes from one page to another."
+    },
+    "8.7": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a passage written in the code in a language other than that of the page, without a `lang` attribute.",
+      "remains": "Spot the foreign-language passages of dynamic or translated content, which cannot be read in the template."
+    },
+    "8.8": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.9": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "8.10": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a text written from right to left without a `dir` attribute, or a `dir` whose value is neither `rtl` nor `ltr`.",
+      "remains": "Spot the right-to-left texts of dynamic or translated content."
+    },
+    "9.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a skipped level, an empty heading, or a passage styled as a heading with neither an `<hx>` tag nor `role=\"heading\"`.",
+      "remains": "Judge, with the page in view, that each heading describes its section and that each visual heading is marked up."
+    },
+    "9.2": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "9.3": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a sequence presented as a list without `<ul>`, `<ol>`, `<dl>` or the roles `list` and `listitem` (bullets or dashes typed as text, successive `<br>`), or a `<ul>` whose children are not `<li>`.",
+      "remains": "See the rendering to spot the content visually presented as a list. A list of options using `role=\"listbox\"` and `role=\"option\"` falls under 7.1."
+    },
+    "9.4": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a quotation written in the code without `<q>` or `<blockquote>`, or a `<blockquote>` used for indentation.",
+      "remains": "Spot the quotations of dynamic or editorial content."
+    },
+    "10.1": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "10.2": {
+      "mode": "mixed",
+      "check": "no-stylesheet",
+      "code_proves": "NC on information given only through CSS (text in the `content` of a pseudo-element, information-carrying icon set as a background image with no text).",
+      "remains": "Disable the styles and check that all the visible information is still present."
+    },
+    "10.3": {
+      "mode": "real-conditions",
+      "check": "no-stylesheet",
+      "code_proves": null,
+      "remains": "Disable the styles and check that the reading order remains understandable (content repositioned by grid, `order` or positioning)."
+    },
+    "10.4": {
+      "mode": "real-conditions",
+      "check": "zoom-reflow",
+      "code_proves": null,
+      "remains": "Enlarge the text to 200 % and check that no text is cut off, hidden or overlapping."
+    },
+    "10.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a `color` declaration without a background colour, or the reverse, when the audited styles cover all the parents of the element and declare none.",
+      "remains": "Check the colours inherited from the style sheets that were not audited (design system, theme)."
+    },
+    "10.6": {
+      "mode": "mixed",
+      "check": "contrast",
+      "code_proves": "NC on a link within a text whose underline is removed, with no indication other than colour on hover and on focus.",
+      "remains": "Measure the contrast of the link against the surrounding text (3:1) and check its indication on hover and on focus."
+    },
+    "10.7": {
+      "mode": "mixed",
+      "check": "focus-visible",
+      "code_proves": "NC on `outline: none` or `outline: 0` with no replacement focus style.",
+      "remains": "Go through the page with the keyboard and check that focus is visible on each element."
+    },
+    "10.8": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on `aria-hidden=\"true\"` set on a focusable element, or on information-carrying content that no action makes available to assistive technologies, or on an `aria-hidden` that is inconsistent with the displayed state.",
+      "remains": "Check, after each interaction, that the displayed state and what is conveyed to assistive technologies remain consistent."
+    },
+    "10.9": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an instruction that refers to a shape or a position alone (\"the round button\", \"opposite, on the right\"), or on a state (active element, selection, error) signalled only by a border, a font weight or a size, with no text, icon or attribute that conveys it; combined visual cues that are not conveyed remain an NC.",
+      "remains": "See the rendering to spot information carried by shape, size or position alone."
+    },
+    "10.10": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Judge that the means that doubles the shape, size or position (text, attribute) conveys the same information. NT when 10.9 is NC for lack of any such means: the NC is carried by 10.9."
+    },
+    "10.11": {
+      "mode": "real-conditions",
+      "check": "zoom-reflow",
+      "code_proves": null,
+      "remains": "Display the page in a window 320 px wide and check that there is no horizontal scrolling; for content in vertical writing (vertical reading direction, designed to scroll horizontally), in a window 256 px high, check that there is no vertical scrolling; in both cases, with no loss of information or functionality."
+    },
+    "10.12": {
+      "mode": "real-conditions",
+      "check": "zoom-reflow",
+      "code_proves": null,
+      "remains": "Apply the spacings of the criterion (line height 1.5, paragraphs 2, letters 0.12, words 0.16) and check that no text is cut off."
+    },
+    "10.13": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on a tooltip or a menu displayed on hover or on focus with no means of hiding it without moving the pointer or the focus (no handling of Escape).",
+      "remains": "Check with the keyboard (Escape) and with the pointer (hovering over the displayed content) that the content stays visible and can be hidden on request."
+    },
+    "10.14": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on content displayed by `:hover` with no `:focus` or `:focus-within` equivalent.",
+      "remains": "Check with the keyboard and with the pointer that each additional content can be displayed."
+    },
+    "11.1": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "11.2": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a generic label (\"Champ 1\", \"Saisir\", \"Valeur\", that is \"Field 1\", \"Enter\", \"Value\"), or on an accessible name that does not contain the visible label.",
+      "remains": "Judge, with the form in view, that the label gives the exact function of the field."
+    },
+    "11.3": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare the labels of the fields that have the same function within the page and across the set of pages; in component mode, the comparison goes beyond the audited fragment."
+    },
+    "11.4": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "See the rendering to judge that the label is visually close to its field, with no possible confusion, above or to the left (below or to the right for a checkbox or a radio button). The order of the code proves nothing: CSS can reposition the label or the content placed in between."
+    },
+    "11.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when the fields of the same nature are in a `<fieldset>` or in a container with `role=\"group\"` or `role=\"radiogroup\"`; NC on a group of radio buttons or checkboxes answering the same question, or on a date or a period entered in several fields (\"Du\" / \"Au\", that is \"From\" / \"To\"; day / month / year), without grouping.",
+      "remains": "Judge, with the form in view, which other fields are of the same nature (address, date in several fields)."
+    },
+    "11.6": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "11.7": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a generic legend (\"Groupe\", \"Options\", \"Informations\", that is \"Group\", \"Options\", \"Information\").",
+      "remains": "Judge that the legend states what the grouping asks for."
+    },
+    "11.8": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an `<optgroup>` without a `label`, or on options of the same nature separated by dummy options (\"--- Fruits ---\") without `<optgroup>`.",
+      "remains": "Judge whether the options should be grouped and whether the `label` of each `<optgroup>` is relevant."
+    },
+    "11.9": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a button with no label, with a generic label (\"OK\", \"Cliquer ici\", that is \"Click here\") or whose accessible name does not contain the visible label.",
+      "remains": "Judge, with the context in view, that the label states the action triggered."
+    },
+    "11.10": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a required field signalled only by colour, without `required` or `aria-required`, or by an unexplained asterisk, or by `required` with no visible indication; on a required format that is absent from the label or from a linked help text; on an error message that is not linked to the field.",
+      "remains": "Trigger the errors in the browser to check the messages produced by the server or by a script. NA when neither the audited code nor its linked files (script, class of the component) show any input validation: `required`, `pattern`, constrained field type (`email`, `url`, `tel`, `number`, `date`, `time`…), validation by script, display of an error."
+    },
+    "11.11": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a format error message that gives neither the format nor an example (\"Valeur invalide\", that is \"Invalid value\").",
+      "remains": "Trigger the errors in the browser; the messages produced by the server or by a validation library cannot be read in the audited code. NA when neither the audited code nor its linked files (script, class of the component) show any input validation: `required`, `pattern`, constrained field type (`email`, `url`, `tel`, `number`, `date`, `time`…), validation by script, display of an error."
+    },
+    "11.12": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when an explicit confirmation checkbox or a review step precedes validation.",
+      "remains": "Without confirmation in the code, check in the service that the data can be modified, cancelled or recovered after validation."
+    },
+    "11.13": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "12.1": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Check across the set of pages that two systems are present among the menu, the site map and the search engine."
+    },
+    "12.2": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare several pages of the set (place on the screen, order in the code)."
+    },
+    "12.3": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Go through the site map to check that it represents the architecture of the site and that its links lead to the pages announced."
+    },
+    "12.4": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare several pages of the set (same link, same place, same order in the code)."
+    },
+    "12.5": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare several pages of the set (same functionality, same place, same order in the code)."
+    },
+    "12.6": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "12.7": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC when there is no link to the main content, or on a link whose target does not exist (`href=\"#contenu\"` without `id=\"contenu\"`).",
+      "remains": "Check with the keyboard that the link is visible on focus and works, and that it keeps the same place across the set of pages."
+    },
+    "12.8": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on a positive `tabindex`, or on content inserted by script far from its trigger in the order of the code.",
+      "remains": "Go through the page with the Tab key and compare the focus order with the reading order."
+    },
+    "12.9": {
+      "mode": "real-conditions",
+      "check": "keyboard",
+      "code_proves": null,
+      "remains": "Check that the next and the previous element can be reached from each focusable element (Tab, Shift+Tab, Escape)."
+    },
+    "12.10": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a keyboard listener that triggers an action on a single key, with no modifier, with no means of disabling or reconfiguring it, and active outside the focus of the component.",
+      "remains": "Check the shortcuts added by libraries outside the audited code."
+    },
+    "12.11": {
+      "mode": "mixed",
+      "check": "keyboard",
+      "code_proves": "NC on a submenu or a panel displayed only on hover (`mouseenter`, `:hover`) whose interactive content cannot be reached with the keyboard, or on a list opened on activation whose options are neither focusable nor reachable with the arrow keys (`<li>` or `<div>` with neither `tabindex` nor keyboard handling).",
+      "remains": "Check with the keyboard that each additional content, displayed on hover, on focus or on activation, is displayed and can be reached."
+    },
+    "13.1": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a `<meta http-equiv=\"refresh\">` with a non-zero delay, or on a script that reloads or redirects after a delay with no means of stopping or extending it.",
+      "remains": "Check the session duration on the server side (less than twenty hours with no means of extending or removing it)."
+    },
+    "13.2": {
+      "mode": "code",
+      "check": null,
+      "code_proves": null,
+      "remains": null
+    },
+    "13.3": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Open each downloadable document, or its alternative version, to check that it is accessible."
+    },
+    "13.4": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Compare the document and its accessible version."
+    },
+    "13.5": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an emoticon, ASCII art or a cryptic syntax with neither a `title` attribute nor an adjacent definition.",
+      "remains": "Judge, with the content in view, what is cryptic for the person who reads it."
+    },
+    "13.6": {
+      "mode": "human-judgement",
+      "check": null,
+      "code_proves": null,
+      "remains": "Judge that the alternative explains the cryptic content."
+    },
+    "13.7": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C or NC when the effect is driven by a CSS animation or by a script whose values can be read in the audited code (duration of the animation or interval of the script as a fixed value, dimensions in `px`, or in `rem` and `em` when the reference font size is set in `px` in the audited code): C when the code shows one of the two conditions, a frequency below 3 flashes per second or a cumulative area of the effects of at most 21,824 pixels; NC when it shows that both fail (3 flashes per second or more, over more than 21,824 pixels). The C holds for the criterion only if no other content of the page has to be observed once rendered; otherwise, NT.",
+      "remains": "Observe, once rendered, the videos, the animated images, the animated `<svg>` and `<canvas>`, and the effects whose duration or area cannot be read in the code (CSS variable, calculation at run time, dimensions in `vw` or `%`, `rem` or `em` with no reference font size set in `px`)."
+    },
+    "13.8": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on an auto-scrolling carousel, a `<marquee>` or an infinite animation with no button to stop or hide it.",
+      "remains": "Observe the page on load to spot the movements of more than 5 seconds started by a script or by an animated image."
+    },
+    "13.9": {
+      "mode": "real-conditions",
+      "check": "orientation",
+      "code_proves": null,
+      "remains": "View the content in portrait then in landscape and check that it remains complete."
+    },
+    "13.10": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on functionality that is available only through a multipoint or path-based gesture (drag, pinch, swipe) with no equivalent button.",
+      "remains": "Check on a touch screen the gestures handled by libraries outside the audited code."
+    },
+    "13.11": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "C when each pointer action of the audited code goes through `click` (`onClick`, `data-action=\"click->…\"`, native link or button), triggered on release, and no drag-and-drop or gesture library is imported; NC on an action triggered on press (`mousedown`, `pointerdown`, `touchstart`) with no cancellation on release and no means of cancelling. A press listener that triggers no action (recording where a click starts) is not one.",
+      "remains": "Check with the pointer the actions handled by libraries (drag-and-drop) and their cancellation."
+    },
+    "13.12": {
+      "mode": "mixed",
+      "check": null,
+      "code_proves": "NC on a `devicemotion` or `deviceorientation` listener that triggers functionality with no equivalent user interface component and no means of disabling the detection.",
+      "remains": "Check on a mobile device the motion detections added by libraries."
+    }
+  }
+}

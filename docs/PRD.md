@@ -161,7 +161,7 @@ Ce tableau fixe ce que la v1 doit encoder. Niveau de preuve : **P** = vérifié 
 
 | Mode | Déclencheur | Résultat |
 |------|-------------|----------|
-| **Qualifier** | Début de projet, ou première utilisation dans un dépôt | Fichier `compliance/profile.yaml` et matrice d'applicabilité |
+| **Qualifier** | Début de projet, ou première utilisation dans un dépôt | Fichier `compliance/profile.json` et matrice d'applicabilité |
 | **Construire** | L'agent écrit ou modifie de l'interface, un formulaire, un traceur, une fonction d'IA, une configuration serveur | Code conforme dès l'écriture, sans rapport |
 | **Vérifier** | Avant un commit, une livraison, ou sur demande d'audit | Rapport Markdown et JSON dans `compliance/reports/` |
 | **Documenter** | Sur demande, ou quand la qualification montre qu'une page obligatoire manque | Pages légales pré-remplies à partir du profil |
@@ -205,7 +205,7 @@ Priorités : **P0** indispensable à la v1, **P1** attendu en v1.x, **P2** ulté
 | ID | Exigence | Prio |
 |----|----------|------|
 | F-Q1 | Détecter la pile technique, les traceurs, les fournisseurs de paiement et les appels à des modèles d'IA à partir du dépôt | P0 |
-| F-Q2 | Poser les questions manquantes en un seul message ; écrire `compliance/profile.yaml` | P0 |
+| F-Q2 | Poser les questions manquantes en un seul message ; écrire `compliance/profile.json` | P0 |
 | F-Q3 | Produire la matrice d'applicabilité avec source et échéance de chaque obligation | P0 |
 | F-Q4 | Signaler les cas qui dépassent le skill (haut risque IA, données de santé, mineurs, secteur régulé) et orienter vers un professionnel | P0 |
 

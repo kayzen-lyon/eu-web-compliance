@@ -27,6 +27,16 @@ Ce fichier liste ce qui n'a pas pu être confirmé sur une source officielle, et
 | 17 | Publication au Journal officiel des lignes directrices sur l'article 50 | Non vérifiée | Sans incidence : elles sont de toute façon non contraignantes |
 | 18 | Guides ANSSI de 2025 et 2026 sur l'IA (« approche par les risques », « système IA agentique ») | Titres et dates lus, pas les documents | À lire avant de les utiliser comme source |
 
+| 19 | EN 301 549 V3.2.1, version qui porte aujourd'hui la présomption de conformité | Non lue : seule la V4.1.1 l'a été | `mapping.json` ne donne que les clauses V4.1.1 |
+| 20 | Tableau ZA.1 d'EN 301 549 V4.1.1 (contenu web) : la clause 10 (documents) n'y figure pas, alors que l'annexe A la dit minimale | Contradiction apparente dans la norme | Signalé dans `references/accessibility/en-301-549.md`, sans trancher |
+| 21 | Tableau ZB.5 d'EN 301 549 V4.1.1 : renvoi à une clause 4.2.12 introuvable | Probable erreur de la norme | Renvoi non repris |
+| 22 | Conditions d'application du registre des traitements, du délégué à la protection des données et de l'analyse d'impact | Faits absents de l'état réglementaire | Aucune ligne dans la matrice d'obligations |
+| 23 | Définition de « plateforme en ligne » et exclusion des micro et petites entreprises du DSA | Idem | Ligne DSA « plateforme » toujours « à confirmer » |
+| 24 | Exceptions au droit de rétractation | Idem | Champ déclaré par l'utilisateur |
+| 25 | Règle de rattachement territorial (quel droit national s'applique à un site) | Idem | Règle provisoire choisie dans la matrice, à valider |
+| 26 | Définition des « services de commerce électronique » au sens de l'EAA, et champ de l'article 6 bis de la directive 98/6/CE (biens seulement ?) | Idem | Lecture large retenue, à valider |
+| 27 | Obligation d'emploi de la langue française (loi n° 94-665) | Non vérifiée | Aucune ligne |
+
 ## 2. Écarts relevés entre les textes
 
 Ces points ne sont pas des erreurs du skill : ce sont des incohérences entre sources officielles, que le skill devra expliquer à l'utilisateur.

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recherche – Mairie de Valmont-sur-Aure</title>
+  <meta name="description" content="Recherche par mot-clé dans les pages du site d’exemple de la commune fictive de Valmont-sur-Aure.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="conteneur entete-interne">
+      <a class="marque" href="index.html">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18L20 6l14 12" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M4 26c4-4 8-4 12 0s8 4 12 0 6-3 8-1M4 34c4-4 8-4 12 0s8 4 12 0 6-3 8-1" fill="none" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <span>Mairie de Valmont-sur-Aure</span>
+      </a>
+      <p class="aide"><a href="infos-pratiques.html#panneau-contact">Aide et contact</a></p>
+      <nav class="menu" aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="demarche-acte.html">Acte d’état civil</a></li>
+          <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+          <li><a href="recherche.html" aria-current="page">Recherche</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="fil conteneur" aria-label="Fil d’Ariane">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="recherche.html" aria-current="page">Recherche</a></li>
+    </ol>
+  </nav>
+
+  <main id="contenu">
+    <div class="conteneur">
+      <h1>Rechercher sur le site</h1>
+
+      <form class="recherche-form" id="recherche-form" role="search" action="recherche.html" method="get">
+        <div class="champ">
+          <label for="q">Mots-clés</label>
+          <div class="recherche-ligne">
+            <input type="search" id="q" name="q">
+            <button type="submit" class="bouton">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M12.500 12.500L18 18" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              </svg>
+              <span class="visuellement-cache">Lancer la recherche</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <h2>Résultats</h2>
+      <p class="statut" id="compte" role="status">6 pages référencées.</p>
+      <ul class="resultats" id="resultats">
+        <li data-mots-cles="naissance mariage décès extrait copie intégrale">
+          <h3><a href="demarche-acte.html">Demander un acte d’état civil</a></h3>
+          <p>Démarche en ligne en quatre étapes pour obtenir un acte de naissance, de mariage ou de décès.</p>
+        </li>
+        <li data-mots-cles="ouverture fermeture accueil état civil">
+          <h3><a href="infos-pratiques.html">Horaires d’ouverture de la mairie</a></h3>
+          <p>Horaires de l’accueil général et du service état civil, du lundi au samedi.</p>
+        </li>
+        <li data-mots-cles="téléphone courriel adresse joindre aide">
+          <h3><a href="infos-pratiques.html#panneau-contact">Contacter la mairie</a></h3>
+          <p>Adresse postale, téléphone et adresse électronique de l’accueil.</p>
+        </li>
+        <li data-mots-cles="parking voiture vélo bus accès plan">
+          <h3><a href="infos-pratiques.html#panneau-stationnement">Stationnement et accès</a></h3>
+          <p>Parkings proches de la mairie, places réservées et arrêt de bus.</p>
+        </li>
+        <li data-mots-cles="dossier code suivi demande">
+          <h3><a href="index.html">Suivre une demande en cours</a></h3>
+          <p>Consultez l’avancement d’une demande avec votre numéro de dossier et votre code de suivi.</p>
+        </li>
+        <li data-mots-cles="handicap RGAA conformité déclaration">
+          <h3><a href="accessibilite.html">Accessibilité du site</a></h3>
+          <p>Page d’exemple tenant lieu de déclaration d’accessibilité.</p>
+        </li>
+      </ul>
+
+      <p class="aide-recherche">Vous ne trouvez pas l’information&nbsp;? L’accueil de la mairie vous répond au <a href="tel:+33261910000">02&nbsp;61&nbsp;91&nbsp;00&nbsp;00</a>, du mardi au samedi.</p>
+    </div>
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <address>
+        <strong>Mairie de Valmont-sur-Aure</strong><br>
+        1, place de la Mairie, Valmont-sur-Aure
+      </address>
+      <ul>
+        <li><a href="accessibilite.html">Accessibilité&nbsp;: déclaration (page d’exemple)</a></li>
+        <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+        <li><a href="recherche.html">Recherche</a></li>
+      </ul>
+      <p>Valmont-sur-Aure est une commune fictive. Ce site est un exemple du projet eu-web-compliance.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>

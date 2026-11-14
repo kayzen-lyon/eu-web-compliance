@@ -23,6 +23,17 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Contrôle de structure
         run: python scripts/validate.py
+      - name: Textes officiels du RGAA identiques à la source
+        run: python scripts/rgaa_official.py
+      - name: Matrice d'applicabilité du profil d'exemple
+        run: python scripts/applicability.py templates/profile.example.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Outils de vérification d'accessibilité
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Vérificateur mesuré sur les sites de test
+        run: node scripts/check-examples.mjs
       - name: Fraîcheur des sources (tâche planifiée)
         if: github.event_name == 'schedule'
         run: python scripts/validate.py --strict

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demander un acte d’état civil – Mairie de Valmont-sur-Aure</title>
+  <meta name="description" content="Formulaire d’exemple en quatre étapes pour demander un acte de naissance, de mariage ou de décès.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="conteneur entete-interne">
+      <a class="marque" href="index.html">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <path d="M6 18L20 6l14 12" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M4 26c4-4 8-4 12 0s8 4 12 0 6-3 8-1M4 34c4-4 8-4 12 0s8 4 12 0 6-3 8-1" fill="none" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <span>Mairie de Valmont-sur-Aure</span>
+      </a>
+      <p class="aide"><a href="infos-pratiques.html#panneau-contact">Aide et contact</a></p>
+      <nav class="menu" aria-label="Menu principal">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="demarche-acte.html" aria-current="page">Acte d’état civil</a></li>
+          <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+          <li><a href="recherche.html">Recherche</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="fil conteneur" aria-labelledby="titre-fil">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="demarche-acte.html" aria-current="page">Demander un acte d’état civil</a></li>
+    </ol>
+  </nav>
+
+  <main id="contenu">
+    <div class="conteneur">
+      <h1>Demander un acte d’état civil</h1>
+      <p>Cette démarche est gratuite. Les champs dont l’étiquette porte la mention «&nbsp;(obligatoire)&nbsp;» doivent être renseignés. Ceci est une démonstration&nbsp;: aucune donnée n’est transmise ni conservée.</p>
+
+      <p class="session">Pour votre sécurité, votre session expire au bout de 15 minutes.</p>
+
+      <ol class="etapes">
+        <li class="active">Votre demande</li>
+        <li>Personne concernée</li>
+        <li>Vos coordonnées</li>
+        <li>Vérification</li>
+      </ol>
+
+      <form id="demarche" action="demarche-acte.html" method="post" enctype="multipart/form-data" novalidate>
+        <div class="resume-erreurs" id="resume-erreurs" hidden>
+          <p>Le formulaire contient des erreurs.</p>
+        </div>
+
+        <section class="etape" id="etape-1">
+          <h2 tabindex="-1">Votre demande</h2>
+
+          <fieldset id="type-acte" data-groupe-obligatoire data-msg-obligatoire="Sélectionnez le type d’acte demandé">
+            <p class="pseudo-legende">Type d’acte (obligatoire)</p>
+            <div class="choix">
+              <input type="radio" id="acte-naissance" name="acte" value="naissance">
+              <label for="acte-naissance">Acte de naissance</label>
+            </div>
+            <div class="choix">
+              <input type="radio" id="acte-mariage" name="acte" value="mariage">
+              <label for="acte-mariage">Acte de mariage</label>
+            </div>
+            <div class="choix">
+              <input type="radio" id="acte-deces" name="acte" value="deces">
+              <label for="acte-deces">Acte de décès</label>
+            </div>
+          </fieldset>
+
+          <div class="champ">
+            <label for="exemplaires">Nombre d’exemplaires (obligatoire)</label>
+            <span class="indication" id="exemplaires-indication">De 1 à 5 exemplaires.</span>
+            <div class="compteur">
+              <button type="button" id="exemplaires-moins" aria-label="Retirer un exemplaire"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 8h12" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></button>
+              <input type="text" id="exemplaires" name="exemplaires" inputmode="numeric" value="1" aria-describedby="exemplaires-indication" required data-motif="^[1-5]$" data-msg-obligatoire="Saisissez le nombre d’exemplaires, de 1 à 5" data-msg-format="Saisissez un nombre d’exemplaires compris entre 1 et 5">
+              <button type="button" id="exemplaires-plus" aria-label="Ajouter un exemplaire"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 8h12M8 2v12" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></button>
+              <span class="visuellement-cache" id="exemplaires-statut" role="status"></span>
+            </div>
+          </div>
+
+          <p class="actions">
+            <button type="button" class="bouton continuer">Continuer</button>
+          </p>
+        </section>
+
+        <section class="etape" id="etape-2" hidden>
+          <h2 tabindex="-1">Personne concernée par l’acte</h2>
+
+          <div class="champ">
+            <label>Nom de naissance (obligatoire)</label>
+            <input type="text" id="nom" name="nom" required data-msg-obligatoire="Saisissez le nom de naissance de la personne concernée">
+          </div>
+          <div class="champ">
+            <label for="prenom">Prénoms (obligatoire)</label>
+            <input type="text" id="prenom" name="prenom" required data-msg-obligatoire="Saisissez les prénoms de la personne concernée">
+          </div>
+
+          <fieldset id="naissance" data-date data-msg-obligatoire="Saisissez la date de naissance" data-msg-format="Saisissez une date de naissance valide et passée, par exemple 27 3 1985">
+            <legend>Date de naissance (obligatoire)</legend>
+            <div class="date-champs">
+              <div class="champ">
+                <label for="naissance-jour">Jour</label>
+                <input type="text" id="naissance-jour" name="naissance-jour" inputmode="numeric" maxlength="2" data-partie="jour">
+              </div>
+              <div class="champ">
+                <label for="naissance-mois">Mois</label>
+                <input type="text" id="naissance-mois" name="naissance-mois" inputmode="numeric" maxlength="2" data-partie="mois">
+              </div>
+              <div class="champ annee">
+                <label for="naissance-annee">Année</label>
+                <input type="text" id="naissance-annee" name="naissance-annee" inputmode="numeric" maxlength="4" data-partie="annee">
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="champ">
+            <label for="commune">Commune de naissance (obligatoire)</label>
+            <input type="text" id="commune" name="commune" required data-msg-obligatoire="Saisissez la commune de naissance">
+          </div>
+
+          <p class="actions">
+            <button type="button" class="bouton bouton-secondaire precedent">Étape précédente</button>
+            <button type="button" class="bouton continuer">Continuer</button>
+          </p>
+        </section>
+
+        <section class="etape" id="etape-3" hidden>
+          <h2 tabindex="-1">Vos coordonnées</h2>
+
+          <div class="choix">
+            <input type="checkbox" id="meme-personne" name="meme-personne">
+            <label for="meme-personne">Je suis la personne concernée par l’acte (mon nom et mes prénoms sont repris de l’étape 2)</label>
+          </div>
+          <div class="champ">
+            <label for="demandeur-nom">Votre nom (obligatoire)</label>
+            <input type="text" id="demandeur-nom" name="demandeur-nom" autocomplete="family-name" required data-msg-obligatoire="Saisissez votre nom">
+          </div>
+          <div class="champ">
+            <label for="prenom">Votre prénom (obligatoire)</label>
+            <input type="text" id="prenom" name="demandeur-prenom" autocomplete="given-name" required data-msg-obligatoire="Saisissez votre prénom">
+          </div>
+          <div class="champ">
+            <label for="courriel">Adresse électronique (obligatoire)</label>
+            <span class="indication" id="courriel-indication">L’acte et la confirmation y sont envoyés. Format attendu&nbsp;: nom@exemple.fr</span>
+            <input type="email" id="courriel" name="courriel" aria-describedby="courriel-indication" required data-msg-obligatoire="Saisissez votre adresse électronique" data-msg-format="Saisissez une adresse électronique au format nom@exemple.fr">
+          </div>
+          <div class="champ">
+            <label for="telephone">Téléphone (facultatif)</label>
+            <input type="tel" id="telephone" name="telephone" autocomplete="tel">
+          </div>
+          <div class="champ">
+            <label for="piece">Pièce d’identité (obligatoire)</label>
+            <span class="indication" id="piece-indication">Un seul fichier au format PDF, JPG ou PNG, de 5&nbsp;Mo au maximum.</span>
+            <div class="depot" onclick="document.getElementById('piece').click()">Choisir un fichier</div>
+            <input type="file" class="depot-natif" id="piece" name="piece" accept=".pdf,.jpg,.jpeg,.png" aria-describedby="piece-indication" required data-msg-obligatoire="Joignez une copie de votre pièce d’identité" data-msg-format="Le fichier doit être au format PDF, JPG ou PNG" data-msg-taille="Le fichier dépasse 5 Mo : choisissez un fichier plus léger">
+          </div>
+
+          <p class="actions">
+            <button type="button" class="bouton bouton-secondaire precedent">Étape précédente</button>
+            <button type="button" class="bouton continuer">Continuer</button>
+          </p>
+        </section>
+
+        <section class="etape" id="etape-4" hidden>
+          <h2 tabindex="-1">Vérification</h2>
+          <p>Relisez les informations saisies. Pour en corriger une, revenez à l’étape concernée avec le bouton «&nbsp;Étape précédente&nbsp;»&nbsp;: vos saisies sont conservées.</p>
+          <dl class="recap" id="recap"></dl>
+          <div class="champ">
+            <label for="courriel-confirmation">Adresse électronique de réception de l’acte (obligatoire)</label>
+            <input type="email" id="courriel-confirmation" name="courriel-confirmation" autocomplete="email" required>
+          </div>
+          <div class="choix">
+            <input type="checkbox" id="certifie" name="certifie" required data-msg-obligatoire="Cochez la case pour certifier l’exactitude des informations">
+            <label for="certifie">Je certifie l’exactitude des informations fournies (obligatoire)</label>
+          </div>
+          <p class="actions">
+            <button type="button" class="bouton bouton-secondaire precedent">Étape précédente</button>
+            <button type="submit" class="bouton">Envoyer la demande</button>
+          </p>
+        </section>
+      </form>
+
+      <section class="confirmation" id="confirmation" hidden>
+        <h2 tabindex="-1">Votre demande est enregistrée</h2>
+        <p>Numéro de dossier&nbsp;: <strong>VSA-2026-00123</strong>. Conservez-le pour suivre votre demande depuis la page d’accueil.</p>
+        <p>Démonstration&nbsp;: aucune donnée n’a été transmise ni conservée.</p>
+        <p><a href="index.html">Revenir à l’accueil</a></p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <address>
+        <strong>Mairie de Valmont-sur-Aure</strong><br>
+        1, place de la Mairie, Valmont-sur-Aure
+      </address>
+      <ul>
+        <li><a href="accessibilite.html">Accessibilité&nbsp;: déclaration (page d’exemple)</a></li>
+        <li><a href="infos-pratiques.html">Infos pratiques</a></li>
+        <li><a href="recherche.html">Recherche</a></li>
+      </ul>
+      <p>Valmont-sur-Aure est une commune fictive. Ce site est un exemple du projet eu-web-compliance.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>

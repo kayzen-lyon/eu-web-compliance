@@ -1,0 +1,67 @@
+# Example sites
+
+These sites are the measuring instrument of the project. Each one exists twice: a **faulty** version in which accessibility defects were planted on purpose, and a **fixed** version in which every one of them is corrected. A checker is run on both: it must report nothing on the fixed version, and the share of planted defects it finds on the faulty version is its detection rate.
+
+They are test fixtures, not templates. Both businesses are invented, nothing is sent anywhere, and no page loads anything from the network.
+
+| Site | Language | Pages | Planted defects |
+|------|----------|-------|-----------------|
+| [showcase-site](showcase-site/) | English | `index.html`, `pricing.html`, `contact.html`, `sign-in.html` | 40, listed in [expected-defects.json](showcase-site/expected-defects.json) |
+| [public-service-fr](public-service-fr/) | French | `index.html`, `demarche-acte.html`, `recherche.html`, `infos-pratiques.html`, `accessibilite.html` | 38, listed in [expected-defects.json](public-service-fr/expected-defects.json) |
+
+`showcase-site` is the site of a fictional joinery workshop: hero, services, gallery, before/after comparison, testimonials carousel, video with captions, modal dialog, disclosure sub-menu, price tables, a quote form and a sign-in page.
+
+`public-service-fr` is the site of a fictional French town hall, "Mairie de Valmont-sur-Aure": a four-step request for a civil-status certificate with file upload, error summary and confirmation, a search with a live result count, tabs, an accordion, a breadcrumb, and a placeholder accessibility statement. It uses no element of the French State design system.
+
+## How the two versions relate
+
+```
+<site>/
+  expected-defects.json   one entry per planted defect
+  fixed/                  the reference version
+  faulty/                 same pages and file names, with the defects
+```
+
+- `faulty/` is generated from `fixed/` by `scripts/examples/plant_showcase.py` and `scripts/examples/plant_fr.py`; never edit it by hand. After any change to `fixed/`, run `python scripts/examples/plant_showcase.py examples` (or `plant_fr.py`), then `node scripts/check-examples.mjs`, which requires zero non-conformity on every `fixed/` tree and at least 90 % of the `code` defects found on every `faulty/` tree.
+- `faulty/` is a copy of `fixed/` to which the defects were applied. Apart from them the two trees are identical, so a diff between the two folders shows exactly what each defect changes.
+- Each defect is planted on **one page only**, so that it can be counted once. The header and footer are shared, and they are correct on every faulty page except where an entry of `expected-defects.json` says otherwise.
+- A defect lives in the HTML, in `css/site.css`, in `js/site.js`, or in a combination of them. In the faulty style sheet, the planted rules are grouped at the end of the file.
+- Two defects never share an element, with the exceptions stated in the `summary` of the entries concerned (for instance a drag-only control that is also unreachable by keyboard is listed once).
+- Some defects are side effects of one cause and are listed once: removing the `main` element also leaves content outside any landmark; a skip link whose target is missing is no longer recognised as a skip link.
+
+What "fixed" means here: the fixed pages return no violation with axe-core 4.14 (all rules, plus `target-size`), at widths of 1280 and 320 CSS pixels, both on load and after the forms, dialog, tabs and steps were operated; they also passed a scripted keyboard walk. That is not a conformity claim: no human audit has been carried out, and criteria that need human judgement were only reviewed by the author of the pages. At 320 pixels axe-core marks the contrast of some table cells as "needs review", because the tables scroll inside their own region.
+
+## Schema of `expected-defects.json`
+
+The file is a JSON array. Each entry has these fields, all required:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `id` | string | Stable identifier, `SC-nn` or `PS-nn`. |
+| `page` | string | Path of the page, relative to `faulty/`. |
+| `selector` | string | CSS selector that locates the faulty element(s) in the faulty page. It may match several elements when the defect repeats (three buttons, nine cells). When the defect is a missing element, it points to the container where the element should be. In most entries the selector matches nothing in the fixed page; where it still matches, the element differs by its markup, its computed style or its behaviour. |
+| `summary` | string | One sentence, in English, saying what is wrong. |
+| `wcag` | string | WCAG 2.2 success criterion, number and name. |
+| `rgaa` | string or null | RGAA 4.1.2 criterion number, looked up in the official criteria file; `null` when no criterion corresponds, which is the case of the six success criteria that WCAG 2.2 adds at levels A and AA. |
+| `severity` | string | `blocking` (prevents access to content or to a function), `major` (strong hindrance, a workaround exists) or `minor` (degradation that does not block). |
+| `kind` | string | How the defect can be established: `code` (by reading the code or by an automated rule), `runtime` (the page must be rendered or operated: computed colours, focus, keyboard, reflow, timing) or `human` (needs human judgement, such as the relevance of a text alternative). |
+| `fixed_by` | string | One sentence saying what the fixed version does instead. |
+
+Some `code` entries can be decided by reading the code but are not caught by common automated rules, for example a table without header cells, radio buttons outside a fieldset, a missing `autocomplete` attribute or a blocked paste event. Whether a checker finds them is part of what the faulty versions measure.
+
+## Serving a site locally
+
+The pages work when opened from the file system, but browsers then block the captions file of the video. Serving them over HTTP avoids that:
+
+```
+cd examples/showcase-site/fixed
+python -m http.server 8000
+```
+
+Then open `http://localhost:8000/`. Use `faulty` instead of `fixed`, or `public-service-fr` instead of `showcase-site`, for the other trees.
+
+Two faulty pages behave in ways worth knowing before a test run: `showcase-site/faulty/sign-in.html` reloads itself after ten minutes and traps keyboard focus in its email field, and `public-service-fr/faulty/infos-pratiques.html` tries to play a sound on load.
+
+## Media and licence
+
+Everything in this folder was written for the project and is covered by the repository licence (MIT). The images are hand-written SVG drawings. `showcase-site/*/media/workshop.webm`, `workshop.mp4` and `public-service-fr/*/media/carillon.wav` are synthetic clips (a moving square, a tone) generated with FFmpeg; they contain no third-party material.

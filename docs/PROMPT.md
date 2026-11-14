@@ -89,7 +89,7 @@ Critère de sortie : aucun fait de niveau S ou C ne subsiste dans `regulatory-st
 
 ### Étape M1 — Qualification et accessibilité
 
-1. Écris le questionnaire de qualification, le schéma de `profile.yaml` et la logique de la matrice d'applicabilité (section 8 du PRD). La matrice est une table de décision explicite : pour chaque obligation, la condition sur le profil et la source.
+1. Écris le questionnaire de qualification, le schéma de `profile.json` et la logique de la matrice d'applicabilité (section 8 du PRD). La matrice est une table de décision explicite : pour chaque obligation, la condition sur le profil et la source.
 2. Importe le JSON officiel du RGAA 4.1.2, le classement par mode d'évaluation et les scripts de génération d'Etalab. Vérifie que la régénération ne produit aucun écart.
 3. Écris les règles de génération en partant des règles d'or d'Isalafont et des anti-patterns d'awesome-copilot. Formule-les en HTML, CSS et comportement, sans dépendre d'un framework. Retire tout ce qui est propre à Rails ou au DSFR et déplace-le dans `references/stacks/`.
 4. Écris les composants de référence (exigence F-A2), chacun dans son fichier, avec le comportement clavier attendu et les pièges connus. Appuie-toi sur les modèles du W3C (ARIA Authoring Practices), cités en source.

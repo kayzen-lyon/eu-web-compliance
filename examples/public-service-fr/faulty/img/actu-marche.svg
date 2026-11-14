@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200">
+  <rect width="320" height="200" fill="#eef3f1"/>
+  <rect y="170" width="320" height="30" fill="#c8cfc9"/>
+  <path d="M40 60h240l20 30H20z" fill="#ffffff" stroke="#1c2733" stroke-width="2"/>
+  <g fill="#a3172b">
+    <path d="M40 60h30l-5 30H20zM100 60h30v30H95zM160 60h30l5 30h-35zM220 60h30l15 30h-35z"/>
+  </g>
+  <path d="M40 90v80M280 90v80" stroke="#1c2733" stroke-width="4"/>
+  <rect x="50" y="125" width="220" height="45" fill="#b98345" stroke="#1c2733" stroke-width="2"/>
+  <g stroke="#1c2733" stroke-width="1">
+    <circle cx="80" cy="118" r="9" fill="#d9822b"/>
+    <circle cx="98" cy="118" r="9" fill="#d9822b"/>
+    <circle cx="89" cy="106" r="9" fill="#d9822b"/>
+    <circle cx="150" cy="118" r="9" fill="#5c8a2f"/>
+    <circle cx="168" cy="118" r="9" fill="#5c8a2f"/>
+    <circle cx="220" cy="118" r="9" fill="#a3172b"/>
+    <circle cx="238" cy="118" r="9" fill="#a3172b"/>
+    <circle cx="229" cy="106" r="9" fill="#a3172b"/>
+  </g>
+</svg>

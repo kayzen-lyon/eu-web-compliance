@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Request a quote – Brindle &amp; Oak Joinery</title>
+  <meta name="description" content="Quote request form of a fictional joinery workshop used as an example site.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="16" cy="16" r="4" fill="currentColor"/>
+        </svg>
+        <span>Brindle &amp; Oak Joinery</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li>
+            <button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls="submenu-services">Services</button>
+            <ul class="submenu" id="submenu-services" hidden>
+              <li><a href="pricing.html#kitchens">Fitted kitchens</a></li>
+              <li><a href="pricing.html#staircases">Staircases</a></li>
+              <li><a href="pricing.html#restoration">Restoration</a></li>
+            </ul>
+          </li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html" aria-current="page">Request a quote</a></li>
+          <li><a href="sign-in.html">Client area</a></li>
+        </ul>
+      </nav>
+      <p class="help-line">Need help? <a href="tel:+441632960417">Call 01632 960 417</a></p>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-head">
+      <h1>Request a quote</h1>
+      <p>Tell us about your project and we will reply within two working days. This is a demonstration form: nothing you type is sent or stored.</p>
+
+      <form class="quick-nav" id="quick-nav-form" action="pricing.html">
+        <div class="field">
+          <label for="quick-nav">Check typical prices first</label>
+          <select id="quick-nav" name="section">
+            <option value="pricing.html#kitchens">Fitted kitchens</option>
+            <option value="pricing.html#staircases">Staircases</option>
+            <option value="pricing.html#restoration">Restoration</option>
+          </select>
+        </div>
+        <button type="submit" class="button button-secondary">Go to the price guide</button>
+      </form>
+
+      <h2>Your request</h2>
+      <p>All fields are required unless marked “optional”.</p>
+
+      <form id="contact-form" action="contact.html" method="post" novalidate>
+        <div class="error-summary" id="contact-errors" tabindex="-1" hidden>
+          <h3>There is a problem</h3>
+          <ul></ul>
+        </div>
+
+        <fieldset>
+          <legend>Your details</legend>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" autocomplete="name" required data-msg-required="Enter your full name">
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <span class="hint" id="email-hint">We only use it to reply to this request.</span>
+            <input type="email" id="email" name="email" autocomplete="email" aria-describedby="email-hint" required data-msg-required="Enter your email address" data-msg-format="Enter an email address in the format name@example.com">
+          </div>
+          <div class="field">
+            <label for="phone">Phone number (optional)</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" required data-msg-required="Enter your address">
+          </div>
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <input type="text" id="postcode" name="postcode" autocomplete="postal-code" required data-msg-required="Enter your postcode">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Where the work will take place</legend>
+          <div class="choice">
+            <input type="checkbox" id="same-address" name="same-address" checked>
+            <label for="same-address">Same as my address above</label>
+          </div>
+          <div id="site-address-fields" hidden>
+            <div class="field">
+              <label for="site-address">Address of the work</label>
+              <input type="text" id="site-address" name="site-address" data-msg-required="Enter the address where the work will take place">
+            </div>
+            <div class="field">
+              <label for="site-postcode">Postcode of the work</label>
+              <input type="text" id="site-postcode" name="site-postcode" data-msg-required="Enter the postcode where the work will take place">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="radio-group" id="work-type" data-required-group data-msg-required="Select a type of work">
+          <legend>Type of work</legend>
+          <div class="choice">
+            <input type="radio" id="work-kitchen" name="work" value="kitchen">
+            <label for="work-kitchen">Fitted kitchen</label>
+          </div>
+          <div class="choice">
+            <input type="radio" id="work-staircase" name="work" value="staircase">
+            <label for="work-staircase">Staircase</label>
+          </div>
+          <div class="choice">
+            <input type="radio" id="work-restoration" name="work" value="restoration">
+            <label for="work-restoration">Restoration</label>
+          </div>
+          <div class="choice">
+            <input type="radio" id="work-other" name="work" value="other">
+            <label for="work-other">Something else</label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="message">Describe your project</label>
+          <span class="hint" id="message-hint">Rooms, rough sizes and the timber you have in mind, if any.</span>
+          <textarea id="message" name="message" rows="6" aria-describedby="message-hint" required data-msg-required="Describe your project"></textarea>
+        </div>
+
+        <p><button type="submit" class="button">Send request</button></p>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <address>
+        <strong>Brindle &amp; Oak Joinery</strong><br>
+        Unit 4, Mill Lane Yard, Ashcombe
+      </address>
+      <ul class="footer-links">
+        <li><a href="contact.html">Request a quote</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="sign-in.html">Client area</a></li>
+      </ul>
+      <p>Brindle &amp; Oak Joinery is a fictional business. This is an example site of the eu-web-compliance project.</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+</body>
+</html>
