@@ -8,7 +8,7 @@
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:privacy": "node scripts/check-privacy.mjs",
     "check:security": "node scripts/check-security.mjs",
-    "test:checkers": "node --test tests/",
+    "test:checkers": "node --test",
     "test:examples": "node scripts/check-examples.mjs",
     "check:all": "node scripts/check-all.mjs",
     "test:report": "node --test tests/report.test.mjs",

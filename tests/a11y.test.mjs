@@ -1,5 +1,5 @@
 // Tests de scripts/check-a11y.mjs et de ses modules (scripts/lib/a11y-catalogue.mjs).
-// Lancement : node --test tests/
+// Lancement : node --test
 //
 // Les tests de bout en bout lancent un navigateur (Chromium de Playwright, sinon Edge ou Chrome).
 

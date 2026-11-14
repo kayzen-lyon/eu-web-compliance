@@ -82,7 +82,7 @@ python -m unittest discover -s tests
 python scripts/validate.py
 python scripts/rgaa_official.py
 npm install                      # once; add `npx playwright install chromium` if no browser is found
-node --test tests/
+node --test
 node scripts/check-examples.mjs
 ```
 

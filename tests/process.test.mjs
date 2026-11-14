@@ -1,5 +1,5 @@
 // Tests de scripts/lib/process.mjs (lancement des vérificateurs et de Python par check-all).
-// Lancement : node --test tests/
+// Lancement : node --test
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';

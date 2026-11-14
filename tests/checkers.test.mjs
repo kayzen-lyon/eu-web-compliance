@@ -1,5 +1,5 @@
 // Tests des vérificateurs scripts/check-privacy.mjs et scripts/check-security.mjs, et des
-// modules partagés de scripts/lib/. Lancement : node --test tests/
+// modules partagés de scripts/lib/. Lancement : node --test
 //
 // Les tests d'intégration lancent un navigateur (Chromium de Playwright, sinon Edge ou Chrome).
 // Toute requête vers un hôte tiers est interrompue par les vérificateurs : rien ne sort sur le réseau.

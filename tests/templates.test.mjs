@@ -1,5 +1,5 @@
 // Tests des composants livrés dans templates/ (ai-chat.js, consent.js).
-// Lancement : node --test tests/
+// Lancement : node --test
 //
 // Les motifs de ai-chat.js sont testés sans navigateur (vm) ; le comportement des composants,
 // dans un navigateur (Chromium de Playwright, sinon Edge ou Chrome), sur une page locale.

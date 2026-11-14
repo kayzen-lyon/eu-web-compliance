@@ -23,7 +23,7 @@ Each site has a fixed version (`fixed/`) and a faulty version (`faulty/`, defect
 
 Reporting a defect as "to review" rather than "non-conformity" is deliberate: when a script cannot prove the defect (a pre-ticked marketing consent box, the integrity of a third-party script, a focus indicator), it hands it to a person instead of concluding.
 
-Other checks on the same day: `python -m unittest discover -s tests` (104 tests, OK), `node --test tests/` (103 tests, 0 failures), `python scripts/validate.py --require-skill` (0 errors, 0 warnings), `python scripts/rgaa_official.py` (0 errors).
+Other checks on the same day: `python -m unittest discover -s tests` (104 tests, OK), `node --test` (103 tests, 0 failures), `python scripts/validate.py --require-skill` (0 errors, 0 warnings), `python scripts/rgaa_official.py` (0 errors).
 
 ## 2. End-to-end build by fresh agents
 

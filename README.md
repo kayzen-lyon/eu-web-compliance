@@ -149,7 +149,7 @@ npm install
 ```
 
 ```bash
-node --test tests/
+node --test
 ```
 
 ```bash

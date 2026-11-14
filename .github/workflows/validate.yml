@@ -33,7 +33,7 @@ jobs:
       - name: Outils de vérification d'accessibilité
         run: npm ci && npx playwright install --with-deps chromium
       - name: Vérificateurs traceurs et en-têtes
-        run: node --test tests/
+        run: node --test
       - name: Vérificateur mesuré sur les sites de test
         run: node scripts/check-examples.mjs
       - name: Fraîcheur des sources (tâche planifiée)

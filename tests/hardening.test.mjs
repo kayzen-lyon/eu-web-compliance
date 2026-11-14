@@ -1,6 +1,6 @@
 // Tests de sûreté communs aux quatre vérificateurs : navigateur introuvable, page en erreur,
 // requêtes qui modifieraient des données, dossiers de sortie, serveur statique, check-examples.
-// Lancement : node --test tests/
+// Lancement : node --test
 //
 // Les tests de bout en bout lancent un navigateur (Chromium de Playwright, sinon Edge ou Chrome)
 // sur des serveurs locaux : rien ne sort sur le réseau.
