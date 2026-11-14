@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+node_modules/
+.venv/
+.DS_Store
+Thumbs.db
+# Sorties produites par le skill quand on l'essaie dans ce dépôt
+/compliance/
