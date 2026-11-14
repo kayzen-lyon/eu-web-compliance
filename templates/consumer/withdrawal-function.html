@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+  Reference online withdrawal function: demo page and markup (eu-web-compliance, MIT licence).
+  Read templates/consumer/README.md before using it.
+
+  What to copy into the site:
+    1. The FOOTER LINK "Withdraw from contract here" on every page (and a link on each order in the account).
+    2. The SECTION [data-withdrawal] on the withdrawal page.
+    3. consumer.css and withdrawal-function.js.
+    4. A handler that sends the statement to the server: see the DEMO HANDLER at the end of this page,
+       which only simulates a server and must be replaced.
+
+  Labels: English below. For a French page, set lang="fr" on the html element (or "locale": "fr" in the
+  configuration): the script switches every text marked data-text to the French wording
+  ("Renoncer au contrat ici", "Confirmer la rétractation"). Other languages: pass "texts" in the
+  configuration with the wording of the national transposition, never a free translation.
+
+  Everything in [square brackets] is a placeholder.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Withdraw from a contract - [Shop name]</title>
+  <link rel="stylesheet" href="consumer.css">
+  <script src="withdrawal-function.js" defer></script>
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header class="site-header">
+      <p><a href="[/]">[Shop name], home page</a></p>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <h1>Withdraw from a contract</h1>
+
+      <!-- SECTION: keep the data-* attributes and the ids; texts marked data-text are replaced by the script. -->
+      <section class="withdrawal" data-withdrawal aria-labelledby="wd-title">
+        <!-- Configuration. prefill: values the server already knows (logged-in customer, link from an order).
+             Never put them in the URL. Remove the keys you do not know. -->
+        <script type="application/json" data-wd-config>
+        { "prefill": { "contractId": "" } }
+        </script>
+
+        <h2 id="wd-title" data-text="title">Withdraw from a contract</h2>
+        <p data-text="intro">You can withdraw from a contract concluded on this site during the withdrawal period, without giving any reason.</p>
+
+        <button type="button" class="c-button c-button--primary" data-wd-open
+                aria-expanded="false" aria-controls="wd-statement" data-text="openLabel">Withdraw from contract here</button>
+
+        <div id="wd-statement" class="c-panel" data-wd-statement hidden>
+          <h3 id="wd-statement-title" tabindex="-1" data-wd-statement-title data-text="statementTitle">Your withdrawal statement</h3>
+          <p id="wd-statement-intro" data-text="statementIntro">Fill in or check the three fields below, then select "Confirm withdrawal". You do not need to give a reason. All fields are required.</p>
+
+          <div class="c-error-summary" data-wd-errors tabindex="-1" aria-labelledby="wd-errors-title" hidden>
+            <h4 id="wd-errors-title" data-wd-errors-title></h4>
+            <ul></ul>
+          </div>
+
+          <form data-wd-form novalidate aria-labelledby="wd-statement-title" aria-describedby="wd-statement-intro">
+            <div class="c-field">
+              <label for="wd-name" data-text="nameLabel">Your name</label>
+              <input id="wd-name" name="name" type="text" autocomplete="name" required aria-describedby="wd-name-error">
+              <p id="wd-name-error" class="c-field-error"></p>
+            </div>
+
+            <div class="c-field">
+              <label for="wd-contract" data-text="contractLabel">Order number</label>
+              <p id="wd-contract-hint" class="c-hint" data-text="contractHint">It is in your order confirmation email, for example 2026-001234.</p>
+              <input id="wd-contract" name="contractId" type="text" required aria-describedby="wd-contract-hint wd-contract-error">
+              <p id="wd-contract-error" class="c-field-error"></p>
+            </div>
+
+            <div class="c-field">
+              <label for="wd-email" data-text="emailLabel">Email address for the confirmation</label>
+              <p id="wd-email-hint" class="c-hint" data-text="emailHint">We send the acknowledgement of your withdrawal to this address.</p>
+              <input id="wd-email" name="email" type="email" autocomplete="email" required aria-describedby="wd-email-hint wd-email-error">
+              <p id="wd-email-error" class="c-field-error"></p>
+            </div>
+
+            <p class="c-alert" data-wd-send-error role="alert"></p>
+
+            <!-- The confirmation function: its label is set by law. Nothing else on this button. -->
+            <button type="submit" class="c-button c-button--primary" data-text="confirmLabel">Confirm withdrawal</button>
+          </form>
+        </div>
+
+        <div class="c-panel c-ack" data-wd-ack aria-labelledby="wd-ack-title" role="region" hidden>
+          <h3 id="wd-ack-title" tabindex="-1" data-wd-ack-title data-text="ackTitle">Your withdrawal has been sent</h3>
+          <p data-wd-ack-time></p>
+          <p data-wd-ack-reference hidden></p>
+          <h4 data-text="ackContentTitle">Content of your statement</h4>
+          <dl data-wd-ack-content></dl>
+          <p data-wd-ack-email></p>
+        </div>
+
+        <p class="visually-hidden" role="status" data-wd-status></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Site information</h2>
+      <ul>
+        <li><a href="[/legal-notice]">Legal notice</a></li>
+        <li><a href="[/terms-of-sale]">Terms of sale</a></li>
+        <!-- FOOTER LINK: on every page, for the whole withdrawal period. French: "Renoncer au contrat ici". -->
+        <li><a href="#wd-title">Withdraw from contract here</a></li>
+      </ul>
+    </footer>
+  </div>
+
+  <!-- DEMO HANDLER: simulates the server so that the page works without a backend. Replace it.
+       A real handler POSTs the statement to the site's own endpoint, which:
+       - records the date and time of receipt (server clock, with time zone) and the content;
+       - sends the acknowledgement email to statement.email, with the content and that date and time;
+       - answers { receivedAt, reference }. -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.euWithdrawal.setHandler(function () {
+        return new Promise(function (resolve) {
+          setTimeout(function () {
+            resolve({ receivedAt: new Date().toISOString(), reference: 'DEMO-' + Date.now().toString(36).toUpperCase() });
+          }, 300);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

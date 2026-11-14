@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+  Reference markup for a price reduction (eu-web-compliance, MIT licence).
+  Rules: references/consumer/prices.md.
+
+  - The prior price is the lowest price applied by the trader during the reference period before
+    the reduction (Directive 98/6/EC, Article 6a; France: code de la consommation, L. 112-1-1).
+    Compute it on the server from the stored price history; never type it by hand.
+    The length of the reference period is in references/regulatory-status.md, section 5.2.
+  - The reduction is calculated from that prior price.
+  - Each price is introduced by words, because a screen reader often does not announce <s> or <del>:
+    "€39.90 €29.90" would be heard as two unrelated prices.
+
+  French labels: "Prix actuel", "Prix le plus bas pratiqué avant la réduction", "Réduction de 25 %",
+  "Comment ce prix de référence est calculé".
+  Everything in [square brackets] is a placeholder.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Product name] - [Shop name]</title>
+  <link rel="stylesheet" href="consumer.css">
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <main id="main" tabindex="-1">
+      <h1>[Product name]</h1>
+
+      <!-- Option A: visible labels (preferred: clear for everyone). -->
+      <div class="c-price">
+        <p class="c-price-current"><span class="c-price-label">Current price:</span> [€29.90]</p>
+        <p class="c-price-badge">Reduction of [25] %</p>
+        <p class="c-price-prior">Lowest price before the reduction: <s>[€39.90]</s></p>
+      </div>
+      <p><a href="[/prices#reference-price]">How this reference price is calculated</a></p>
+
+      <h2>Compact layout</h2>
+      <!-- Option B: compact visual layout. The words are visually hidden but read by assistive technology;
+           the order in the DOM gives the meaning: current price, then prior price, then reduction. -->
+      <div class="c-price">
+        <p class="c-price-current"><span class="visually-hidden">Current price: </span>[€29.90]</p>
+        <p class="c-price-prior"><span class="visually-hidden">Lowest price before the reduction: </span><s>[€39.90]</s></p>
+        <p class="c-price-badge"><span class="visually-hidden">Reduction of </span>-[25] %</p>
+      </div>
+
+      <h2>Without a reduction</h2>
+      <!-- A price with no reduction announced: no struck-through price, no "was" price. -->
+      <div class="c-price">
+        <p class="c-price-current"><span class="c-price-label">Price:</span> [€19.90]</p>
+      </div>
+      <p>Prices include VAT. Delivery costs are shown in the basket before you pay: [from €4.90].</p>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!--
+  AI chat disclosure: HTML fragment (eu-web-compliance, MIT licence).
+  Read templates/ai/README.md before using it.
+
+  What it implements (sources in references/ai-act/transparency.md, section A and D):
+    - a launcher whose text says it opens an AI assistant;
+    - a notice, in the panel, above the message field, readable before the first message;
+    - a persistent "AI" badge with words, visible for the whole conversation;
+    - every message labelled with its speaker, in text, for everyone including screen readers;
+    - a fixed honest answer to "are you a human?" (ai-chat.js), independent of the model;
+    - a way to reach a person, ONLY if the operator offers one (delete that paragraph otherwise).
+
+  Where it goes:
+    1. The launcher button where the site wants it (header, help page, product page).
+    2. The panel right after the launcher in the DOM, so keyboard and screen reader users reach it next.
+       It sits in the page flow. If the design makes it float, it must not cover the focused
+       element (WCAG 2.4.11) and must reflow at 320 px.
+    3. ai.css in <head>, ai-chat.js with defer.
+
+  Everything in [square brackets] is a placeholder. Take names and contacts from the operator; never
+  invent a support phone number, opening hours or a human service that does not exist.
+  Translate every visible text and every data-* text into the language of the page.
+-->
+
+<!-- 1. LAUNCHER: the visible text names the assistant as an AI. -->
+<button type="button" class="ai-chat-launcher" aria-expanded="false" aria-controls="ai-chat">
+  Chat with our AI assistant
+</button>
+
+<!-- 2. PANEL: a labelled region, not a modal dialog, so visitors can still read the page next to it.
+     data-* texts are used by ai-chat.js:
+       data-greeting         first assistant turn; it repeats the disclosure
+       data-identity-answer  fixed answer when the visitor asks whether they talk to a human
+       data-demo-answer      placeholder answer until window.aiChatRespond is wired
+       data-error-message    shown when the assistant fails; points to the human route if there is one -->
+<section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="ai-chat-title" hidden
+  data-assistant-label="AI assistant"
+  data-user-label="You"
+  data-greeting="Hello, I am the AI assistant of [site name]. I am a computer program, not a person. I can help with [orders, delivery and returns]. My answers can be wrong: check important information on [the order page or the help pages]."
+  data-identity-answer="No, I am not a person. I am an AI assistant, a computer program. [If you prefer to talk to a person, use the link Contact our team at the top of this chat.]"
+  data-demo-answer="[Demo answer: connect the assistant by defining window.aiChatRespond.]"
+  data-error-message="Sorry, the AI assistant cannot answer right now. [You can contact our team instead with the link Contact our team at the top of this chat.]"
+  data-writing-message="is writing an answer."
+  data-empty-message="Type a message first.">
+
+  <div class="ai-chat__header">
+    <h2 class="ai-chat__title" id="ai-chat-title">[Lumen], AI assistant</h2>
+    <!-- Persistent indicator: visible for the whole conversation. -->
+    <span class="ai-badge"><span class="ai-badge__mark" aria-hidden="true">AI</span> Not a person</span>
+  </div>
+
+  <!-- First-level notice: close to the conversation and the input field, before any message. -->
+  <div class="ai-chat__notice" id="ai-chat-notice">
+    <p><strong>You are chatting with an AI assistant, not a person.</strong> Its answers are generated automatically and can be wrong.</p>
+    <p>Do not share passwords or bank details here. What you type is used to answer you: see our <a href="[/privacy#assistant]">privacy policy</a> and <a href="[/ai-use]">how we use AI</a>.</p>
+    <!-- Keep only if the operator offers a human channel. -->
+    <p>Prefer a person? <a href="[/contact]">Contact our team</a> [opening hours, if any].</p>
+  </div>
+
+  <!-- Conversation: role="log" announces new messages politely. Each message carries its speaker in text. -->
+  <div class="ai-chat__log" role="log" aria-label="Conversation with the AI assistant" tabindex="0">
+    <ol class="ai-chat__messages"></ol>
+  </div>
+
+  <form class="ai-chat__form" novalidate>
+    <label for="ai-chat-input">Your message to the AI assistant</label>
+    <textarea id="ai-chat-input" name="message" rows="3" aria-describedby="ai-chat-notice"></textarea>
+    <div class="ai-chat__actions">
+      <button type="submit">Send</button>
+      <button type="button" class="ai-chat__close">Close the assistant</button>
+    </div>
+  </form>
+
+  <!-- Status region for "is writing" and form hints; present and empty from the start. -->
+  <div class="ai-chat__status visually-hidden" role="status"></div>
+</section>
+
+<!-- 3. ASSETS (illustration paths):
+<link rel="stylesheet" href="/ai/ai.css">
+<script src="/ai/ai-chat.js" defer></script>
+-->

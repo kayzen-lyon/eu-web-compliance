@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--
+  Reference final order step: summary and order button (eu-web-compliance, MIT licence).
+  Rules: references/consumer/online-sales.md. Read templates/consumer/README.md first.
+
+  What must not change when adapting it:
+    - The summary (main characteristics, total price with every cost, duration and termination for
+      contracts with a duration) is on the SAME screen as the button and BEFORE it in the DOM
+      (Directive 2011/83/EU, Article 8(2)).
+    - The button text is the legal wording and nothing else: no price, no icon, no second action.
+      Its accessible name is that text (no aria-label).
+    - No paid option is pre-selected anywhere in the checkout (Article 22).
+
+  French page (lang="fr"): use these texts, with the same structure.
+    <title>          Vérifier et payer la commande, étape 4 sur 4 - [Nom de la boutique]
+    h1               Vérifier et payer votre commande (étape 4 sur 4)
+    Change links     Modifier les articles / Modifier l'adresse de livraison / Modifier le mode de paiement
+    Total            Total à payer, toutes taxes comprises
+    Withdrawal text  Vous disposez d'un droit de rétractation. Pour l'exercer, utilisez le lien « Renoncer au contrat ici » en bas de chaque page ou dans votre compte.
+    Order button     Commande avec obligation de paiement
+  Other languages: the wording of the national transposition (references/countries/<code>.md);
+  never a free translation.
+
+  Everything in [square brackets] is a placeholder; prices and items come from the basket.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review and pay your order, step 4 of 4 - [Shop name]</title>
+  <link rel="stylesheet" href="consumer.css">
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header class="site-header">
+      <p><a href="[/]">[Shop name], home page</a></p>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <nav aria-label="Order progress">
+        <ol class="c-steps">
+          <li><a href="[/checkout/basket]">Basket <span class="visually-hidden">(completed)</span></a></li>
+          <li><a href="[/checkout/delivery]">Delivery <span class="visually-hidden">(completed)</span></a></li>
+          <li><a href="[/checkout/payment]">Payment method <span class="visually-hidden">(completed)</span></a></li>
+          <li aria-current="step">Review and pay</li>
+        </ol>
+      </nav>
+
+      <h1>Review and pay your order (step 4 of 4)</h1>
+
+      <!-- SUMMARY: shown directly before the order button, never collapsed by default. -->
+      <div class="c-summary">
+        <section class="c-summary-group" aria-labelledby="sum-items">
+          <h2 id="sum-items">Items</h2>
+          <ul>
+            <li>[Product name]: [main characteristics, for example "wool jumper, navy blue, size M"], quantity [1], [€59.00]</li>
+            <li>[Subscription name]: [main characteristics], [€9.90] per month, duration [12 months], renewed [automatically / not renewed]; you can terminate it [conditions of termination]; minimum duration [3 months]</li>
+          </ul>
+          <p><a href="[/checkout/basket]">Change the items</a></p>
+        </section>
+
+        <section class="c-summary-group" aria-labelledby="sum-delivery">
+          <h2 id="sum-delivery">Delivery</h2>
+          <dl>
+            <dt>Address</dt><dd>[Name], [street], [postcode] [city], [country]</dd>
+            <dt>Method and date</dt><dd>[Standard delivery], expected by [date]</dd>
+          </dl>
+          <p><a href="[/checkout/delivery]">Change the delivery address</a></p>
+        </section>
+
+        <section class="c-summary-group" aria-labelledby="sum-payment">
+          <h2 id="sum-payment">Payment</h2>
+          <p>[Card ending in 1234]</p>
+          <p><a href="[/checkout/payment]">Change the payment method</a></p>
+        </section>
+
+        <section class="c-summary-group" aria-labelledby="sum-total">
+          <h2 id="sum-total">Price</h2>
+          <dl>
+            <dt>Items</dt><dd>[€59.00]</dd>
+            <dt>Subscription, first month</dt><dd>[€9.90], then [€9.90] per month</dd>
+            <dt>Delivery</dt><dd>[€4.90]</dd>
+            <dt>Included VAT</dt><dd>[€12.30]</dd>
+          </dl>
+          <p class="c-total">Total to pay, all taxes included: [€73.80]</p>
+        </section>
+
+        <section class="c-summary-group" aria-labelledby="sum-rights">
+          <h2 id="sum-rights">Your right of withdrawal</h2>
+          <p>You have a right of withdrawal. To use it, select the link "Withdraw from contract here" at the bottom of every page or in your account. <a href="[/terms-of-sale#withdrawal]">Conditions, time limit and procedure of the right of withdrawal</a>.</p>
+          <!-- When an item has no right of withdrawal, say so here, item by item, with the owner's confirmed wording. -->
+        </section>
+      </div>
+
+      <form method="post" action="[/checkout/place-order]">
+        <p>By selecting the button below, you place a binding order and you will have to pay [€73.80]. <a href="[/terms-of-sale]">Terms of sale</a>.</p>
+        <div class="c-order-actions">
+          <a href="[/checkout/payment]">Back to the payment method</a>
+          <!-- ORDER BUTTON: legal wording, nothing else. French: "Commande avec obligation de paiement". -->
+          <button type="submit" class="c-button c-button--primary">Order with obligation to pay</button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Site information</h2>
+      <ul>
+        <li><a href="[/legal-notice]">Legal notice</a></li>
+        <li><a href="[/terms-of-sale]">Terms of sale</a></li>
+        <li><a href="[/withdrawal]">Withdraw from contract here</a></li>
+      </ul>
+    </footer>
+  </div>
+</body>
+</html>

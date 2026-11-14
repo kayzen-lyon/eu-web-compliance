@@ -37,7 +37,7 @@ MAX_SKILL_LINES = 300
 MAX_REFERENCE_LINES = 500
 STALE_DAYS = 90
 
-SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "compliance", ".playwright-mcp"}
+SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "compliance", ".playwright-mcp", ".pytest_cache"}
 TEXT_SUFFIXES = {".md", ".json", ".py", ".yml", ".yaml", ".sh", ".txt", ".html", ".css", ".js"}
 REQUIRED_FILES = ("LICENSE", "README.md", "NOTICE.md", "CHANGELOG.md", "references/sources.json",
                   "references/regulatory-status.md")
@@ -55,7 +55,7 @@ SRC_REF = re.compile(r"\[src:\s*([^\]]+)\]")
 STATUS_DATE = re.compile(r"^Last verified:\s*(\d{4}-\d{2}-\d{2})\s*$", re.M)
 
 SOURCE_FIELDS = ("id", "title", "publisher", "url", "kind", "version", "consulted", "licence", "proof")
-SOURCE_KINDS = {"eu-law", "fr-law", "standard", "guidance", "soft-law", "tool", "upstream-skill", "licence"}
+SOURCE_KINDS = {"eu-law", "fr-law", "national-law", "standard", "guidance", "soft-law", "tool", "upstream-skill", "licence"}
 FREE_TAG = "best practice"
 
 

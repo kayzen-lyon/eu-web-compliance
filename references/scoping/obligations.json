@@ -1094,7 +1094,7 @@
         "ai-act"
       ],
       "status_section": "2",
-      "rules_file": "references/ai-act/transparency.md",
+      "rules_file": "references/ai-act/ai-literacy.md",
       "note": "Organisational duty: the skill mentions it in the report and writes no code for it."
     },
     {
@@ -1242,7 +1242,7 @@
         "ai-act"
       ],
       "status_section": "2",
-      "rules_file": "references/scoping/out-of-scope.md"
+      "rules_file": "references/ai-act/high-risk.md"
     },
     {
       "id": "ai-content-label-icon",
@@ -1378,7 +1378,8 @@
         "ecommerce-directive"
       ],
       "status_section": "5.1",
-      "rules_file": "references/consumer/legal-notices.md"
+      "rules_file": "references/consumer/operator-identification.md",
+      "template": "templates/consumer/legal-notice-eu.md"
     },
     {
       "id": "fr-legal-notice",
@@ -1395,7 +1396,8 @@
         "fr-lcen"
       ],
       "status_section": "5.1",
-      "rules_file": "references/countries/fr.md"
+      "rules_file": "references/countries/fr.md",
+      "template": "templates/consumer/legal-notice-fr.md"
     },
     {
       "id": "fr-ecommerce-identification",
@@ -1439,7 +1441,8 @@
         "consumer-rights-directive"
       ],
       "status_section": "5.2",
-      "rules_file": "references/consumer/distance-selling.md"
+      "rules_file": "references/consumer/online-sales.md",
+      "template": "templates/consumer/order-button.html"
     },
     {
       "id": "fr-order-process-information",
@@ -1490,7 +1493,8 @@
         "withdrawal-function-directive"
       ],
       "status_section": "5.2",
-      "rules_file": "references/consumer/distance-selling.md"
+      "rules_file": "references/consumer/withdrawal-function.md",
+      "template": "templates/consumer/withdrawal-function.html"
     },
     {
       "id": "fr-withdrawal-function",
@@ -1541,8 +1545,9 @@
         "fr-code-consommation"
       ],
       "status_section": "5.2",
-      "rules_file": "references/consumer/distance-selling.md",
-      "note": "Only bites when the site announces a reduction."
+      "rules_file": "references/consumer/prices.md",
+      "note": "Only bites when the site announces a reduction.",
+      "template": "templates/consumer/price-reduction.html"
     },
     {
       "id": "fr-consumer-mediator",
@@ -1589,7 +1594,7 @@
         "odr-repeal"
       ],
       "status_section": "5.2",
-      "rules_file": "references/consumer/distance-selling.md"
+      "rules_file": "references/consumer/online-sales.md"
     },
     {
       "id": "con-no-deceptive-design",

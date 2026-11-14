@@ -7,3 +7,4 @@ Thumbs.db
 # Sorties produites par le skill quand on l'essaie dans ce dépôt
 /compliance/
 .playwright-mcp/
+.pytest_cache/

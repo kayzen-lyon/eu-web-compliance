@@ -200,7 +200,7 @@
       "publisher": "République française (Légifrance)",
       "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069565/LEGISCTA000032221365/",
       "kind": "fr-law",
-      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, D. 221-5, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1",
+      "version": "Versions in force on the consultation date. Articles read: L. 112-1-1, L. 221-5, L. 221-14, L. 221-20, L. 221-21, D. 221-5, L. 242-2, L. 242-10, L. 242-13, L. 412-13, D. 412-50, D. 412-57, R. 451-4, L. 511-25-1, L. 616-1, R. 616-1; L. 221-18 and L. 221-28 read through a summarising tool",
       "consulted": "2026-11-14",
       "licence": "Licence Ouverte 2.0",
       "proof": "P",
@@ -223,7 +223,7 @@
       "publisher": "European Commission, AI Act Service Desk",
       "url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50",
       "kind": "eu-law",
-      "version": "Consolidated on 27 July 2026 (CELEX 02024R1689-20260727). Read: Articles 3, 4, 5, 50, 99, 111, 113 and Annex III headings",
+      "version": "Consolidated on 27 July 2026 (CELEX 02024R1689-20260727). Read: Articles 3 (incl. points 39, 40, 60), 4, 5 (incl. 1a, 1b), 50, 99, 111, 113 and Annex III (headings and points)",
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
@@ -274,7 +274,8 @@
       "version": "Page updated 13 October 2026",
       "consulted": "2026-11-14",
       "licence": "Free use without attribution, as stated on the page",
-      "proof": "P"
+      "proof": "P",
+      "tag": "EU AI icons"
     },
     {
       "id": "gdpr",
@@ -437,7 +438,7 @@
     },
     {
       "id": "ecommerce-directive",
-      "title": "Directive 2000/31/EC (e-commerce directive), Article 5",
+      "title": "Directive 2000/31/EC (e-commerce directive), Articles 5, 6, 10 and 11",
       "publisher": "European Parliament and Council",
       "url": "https://eur-lex.europa.eu/eli/dir/2000/31/oj",
       "read_at": "http://publications.europa.eu/resource/cellar/b244164f-dd29-48e9-9063-a86ef4ea7ad9.0006.01/DOC_1",
@@ -446,7 +447,8 @@
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
-      "tag": "ECD"
+      "tag": "ECD",
+      "notes": "The read_at manifestation is the French version."
     },
     {
       "id": "consumer-rights-directive",
@@ -455,7 +457,7 @@
       "url": "https://eur-lex.europa.eu/eli/dir/2011/83/oj",
       "read_at": "http://publications.europa.eu/resource/cellar/6c8e7593-7a75-4b58-b709-542f06ee7a28.0018.03/DOC_1",
       "kind": "eu-law",
-      "version": "OJ L 304, 22.11.2011 (original version; the consolidated text was not read)",
+      "version": "OJ L 304, 22.11.2011 (original version). Articles read: 6, 8, 9, 16, 22; amendments read in Directives (EU) 2019/2161 (Art. 4) and 2023/2673 (Art. 1)",
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
@@ -472,7 +474,8 @@
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
-      "tag": "CRD 11a"
+      "tag": "CRD 11a",
+      "notes": "Article 1(2) (Article 6(1)(h)) and Article 1(3) (Article 11a(1) to (5)) read."
     },
     {
       "id": "price-reduction-directive",
@@ -498,16 +501,17 @@
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
-      "tag": "DSA"
+      "tag": "DSA",
+      "notes": "Articles read: 3, 11 to 17, 19 to 21, 25 to 31."
     },
     {
       "id": "ucpd",
       "title": "Directive 2005/29/EC on unfair commercial practices, Articles 5 to 9",
       "publisher": "European Parliament and Council",
       "url": "https://eur-lex.europa.eu/eli/dir/2005/29/oj",
-      "read_at": "http://publications.europa.eu/resource/cellar/7fecf696-5eda-47b3-b838-0202aca4f2dd.0006.03/DOC_1",
+      "read_at": "http://publications.europa.eu/resource/cellar/7fecf696-5eda-47b3-b838-0202aca4f2dd.0005.03/DOC_1",
       "kind": "eu-law",
-      "version": "OJ L 149, 11.6.2005 (original version, read in Spanish)",
+      "version": "OJ L 149, 11.6.2005 (original version, English); Annex I additions read in Directive (EU) 2019/2161",
       "consulted": "2026-11-14",
       "licence": "EU legal text; reuse with acknowledgement of the source",
       "proof": "P",
@@ -524,7 +528,8 @@
       "consulted": "2026-11-14",
       "licence": "EU text; reuse with acknowledgement of the source",
       "proof": "P",
-      "notes": "Only the table of contents was read (section 4.2.7 exists); the section itself has not been read."
+      "notes": "Section 4.2.7 read on 2026-11-14.",
+      "tag": "UCPD Guidance"
     },
     {
       "id": "digital-fairness-act-proposal",
@@ -963,6 +968,51 @@
       "version": "Online",
       "consulted": "2026-11-14",
       "licence": "Cited by link",
+      "proof": "P"
+    },
+    {
+      "id": "consumer-modernisation-directive",
+      "title": "Directive (EU) 2019/2161 (Modernisation Directive), Articles 3 and 4 amending Directives 2005/29/EC and 2011/83/EU",
+      "publisher": "European Parliament and Council",
+      "url": "https://eur-lex.europa.eu/eli/dir/2019/2161/oj",
+      "read_at": "http://publications.europa.eu/resource/cellar/eefb17ee-2173-11ea-95ab-01aa75ed71a1.0006.03/DOC_1",
+      "kind": "eu-law",
+      "version": "OJ L 328, 18.12.2019",
+      "consulted": "2026-11-14",
+      "licence": "EU legal text; reuse with acknowledgement of the source",
+      "proof": "P"
+    },
+    {
+      "id": "de-ddg",
+      "title": "Digitale-Dienste-Gesetz (DDG), §§ 1 and 5",
+      "publisher": "Bundesministerium der Justiz (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/ddg/__5.html",
+      "kind": "national-law",
+      "version": "Version online on 2026-11-14",
+      "consulted": "2026-11-14",
+      "licence": "Reuse terms not reviewed",
+      "proof": "P"
+    },
+    {
+      "id": "de-bfsg",
+      "title": "Barrierefreiheitsstärkungsgesetz (BFSG), §§ 1 and 37",
+      "publisher": "Bundesministerium der Justiz (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/bfsg/__1.html",
+      "kind": "national-law",
+      "version": "Version online on 2026-11-14",
+      "consulted": "2026-11-14",
+      "licence": "Reuse terms not reviewed",
+      "proof": "P"
+    },
+    {
+      "id": "de-tdddg",
+      "title": "Telekommunikation-Digitale-Dienste-Datenschutz-Gesetz (TDDDG), § 25",
+      "publisher": "Bundesministerium der Justiz (gesetze-im-internet.de)",
+      "url": "https://www.gesetze-im-internet.de/ttdsg/__25.html",
+      "kind": "national-law",
+      "version": "Version online on 2026-11-14",
+      "consulted": "2026-11-14",
+      "licence": "Reuse terms not reviewed",
       "proof": "P"
     }
   ]
