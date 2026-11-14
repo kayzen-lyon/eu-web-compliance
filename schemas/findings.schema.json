@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eu-web-compliance:schema:findings:1",
+  "title": "eu-web-compliance: one finding",
+  "description": "One finding of the unified compliance report, normalised from the report of one checker (check-a11y, check-privacy, check-security, check-content). A finding is a non-conformity (NC) or an item a person must review (NT). It never states that anything conforms.",
+  "type": "object",
+  "required": ["id", "domain", "checker", "rule", "verdict", "severity", "sources", "page", "message"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "description": "Stable key of the finding inside one report: domain, rule, page and element joined by '|'. The same key in two reports means the same finding (used for 'what changed').",
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "description": "Domain of the obligation: accessibility, privacy (data protection and trackers), ai (AI Act), security, consumer (consumer and information law).",
+      "enum": ["accessibility", "privacy", "ai", "security", "consumer"]
+    },
+    "checker": {
+      "description": "Checker that produced the finding.",
+      "enum": ["a11y", "privacy", "security", "content"]
+    },
+    "detector": {
+      "description": "Part of the checker that raised it (axe, runtime, catalogue, headers, page...), as given by the checker.",
+      "type": ["string", "null"]
+    },
+    "rule": {
+      "description": "Rule identifier of the checker (axe rule id, anti-pattern id such as AP-FRM-01, or checker rule such as third-party-request-before-consent).",
+      "type": "string",
+      "minLength": 1
+    },
+    "verdict": {
+      "description": "NC: non-conformity found by the code. NT: not decided by the tool, a person must review it.",
+      "enum": ["NC", "NT"]
+    },
+    "severity": {
+      "description": "Priority: blocking (prevents access or exposes to a direct sanction), major (serious difficulty or risk, can be worked around), minor (degradation without blocking).",
+      "enum": ["blocking", "major", "minor"]
+    },
+    "sources": {
+      "description": "Texts the rule comes from, one per item (for example 'WCAG 2.2 SC 1.4.3', 'RGAA 4.1.2 criterion 3.2', 'ePrivacy art. 5(3)'). Empty only when the checker gave none.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "source_ids": {
+      "description": "Identifiers of those sources in references/sources.json, when the checker gives them.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "page": {
+      "description": "Page checked: path relative to the site folder, or the URL.",
+      "type": "string"
+    },
+    "element": {
+      "description": "Short description of the element concerned, used for grouping and comparison: the CSS selector, else the header, cookie, storage item, request host or file and line. Null when the finding concerns the page as a whole.",
+      "type": ["string", "null"]
+    },
+    "selector": {
+      "description": "CSS selector of the element in the rendered page.",
+      "type": ["string", "null"]
+    },
+    "request": {
+      "description": "Network request concerned (third-party request, insecure sub-resource).",
+      "type": ["object", "null"],
+      "properties": {
+        "url": { "description": "Requested URL.", "type": ["string", "null"] },
+        "host": { "description": "Host name of the request.", "type": ["string", "null"] },
+        "kind": { "description": "Resource type (script, image, xhr...).", "type": ["string", "null"] }
+      }
+    },
+    "cookie": {
+      "description": "Name of the cookie concerned.",
+      "type": ["string", "null"]
+    },
+    "storage": {
+      "description": "Browser storage item concerned (localStorage, sessionStorage, IndexedDB).",
+      "type": ["object", "null"],
+      "properties": {
+        "kind": { "description": "Storage kind.", "type": ["string", "null"] },
+        "name": { "description": "Key or database name.", "type": ["string", "null"] }
+      }
+    },
+    "header": {
+      "description": "HTTP response header concerned.",
+      "type": ["string", "null"]
+    },
+    "file": {
+      "description": "Source file where a pattern was found (catalogue and secret detectors).",
+      "type": ["string", "null"]
+    },
+    "line": {
+      "description": "Line number in that file.",
+      "type": ["integer", "null"]
+    },
+    "detail": {
+      "description": "Extra detail given by the checker (header value, directive, attribute).",
+      "type": ["string", "null"]
+    },
+    "message": {
+      "description": "What was found, in the words of the checker.",
+      "type": "string"
+    },
+    "impact": {
+      "description": "Who is affected and how, when the checker gives an impact sentence; null otherwise.",
+      "type": ["string", "null"]
+    },
+    "fix_ref": {
+      "description": "Reference file of the skill that explains how to fix it (path relative to the skill root), when one exists for this rule; null otherwise.",
+      "type": ["string", "null"]
+    },
+    "fix_entry": {
+      "description": "Entry to read in fix_ref (anti-pattern id), when known.",
+      "type": ["string", "null"]
+    },
+    "help_url": {
+      "description": "External help page given by the checker (axe-core rule description).",
+      "type": ["string", "null"]
+    }
+  }
+}

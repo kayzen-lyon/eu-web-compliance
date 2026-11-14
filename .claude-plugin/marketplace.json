@@ -1,0 +1,20 @@
+{
+  "name": "eu-web-compliance",
+  "description": "Marketplace of the eu-web-compliance skill: EU accessibility, data protection, AI Act, security and consumer-law rules for coding agents that build websites.",
+  "owner": {
+    "name": "Tarek BELHADJ - Kayzen",
+    "email": "contact@kayzen-lyon.fr",
+    "url": "https://www.kayzen-lyon.com"
+  },
+  "plugins": [
+    {
+      "name": "eu-web-compliance",
+      "source": "./",
+      "description": "Make websites for the European market meet EU accessibility, GDPR and cookies, AI Act transparency, web security and consumer-law obligations. Pre-release; never certifies compliance.",
+      "category": "compliance",
+      "author": { "name": "Tarek BELHADJ - Kayzen", "email": "contact@kayzen-lyon.fr", "url": "https://www.kayzen-lyon.com" },
+      "homepage": "https://www.kayzen-lyon.com",
+      "tags": ["accessibility", "gdpr", "ai-act", "security", "consumer-law", "eu"]
+    }
+  ]
+}

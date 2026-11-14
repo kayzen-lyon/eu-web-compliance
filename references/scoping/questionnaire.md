@@ -58,7 +58,7 @@ A payment provider shows that something is sold. It does not show to whom: ask w
 | Own storage | `document.cookie =`, `localStorage.setItem(` with an identifier, a `Set-Cookie` header that is not a session or a consent choice |
 | Consent tools | `tarteaucitron`, `axeptio`, `didomi`, `cookiebot`: their presence means trackers were planned, even if you do not see them |
 
-A tag manager container or a consent tool is enough to set `data.non_essential_trackers` to `true` with basis `inferred`. Whether a given tracker needs consent is decided later, with the trackers rules (planned file `references/privacy/trackers.md`), not here.
+A tag manager container or a consent tool is enough to set `data.non_essential_trackers` to `true` with basis `inferred`. Whether a given tracker needs consent is decided later, with the trackers rules ([`references/privacy/trackers.md`](../privacy/trackers.md)), not here.
 
 ### Personal data and accounts → `data.collects_personal_data`, `site.user_accounts`
 
@@ -139,7 +139,7 @@ An assumption is replaced, never silently kept: when the user answers later, cha
 ## 5. Write the profile and produce the matrix
 
 1. Write `compliance/profile.json` following the schema. Set `updated` to today's date.
-2. Run `python scripts/applicability.py compliance/profile.json --output-dir compliance` from the skill folder. It writes `applicability-matrix.md` and `applicability-matrix.json` and fails with a message naming the faulty answer if the profile does not follow the schema.
+2. From the project root, run `python <skill>/scripts/applicability.py compliance/profile.json --output-dir compliance`, where `<skill>` is the folder where the skill is installed; the script finds its own data from its location. It writes `applicability-matrix.md` and `applicability-matrix.json` and fails with a message naming the faulty answer if the profile does not follow the schema.
 3. Show the matrix to the user. Keep its three kinds of lines apart when you summarise it: what a legal text requires of this operator, what is recommended (by a regulator or by the skill), and what must be confirmed.
 4. If the last section of the matrix lists a case that goes beyond the skill, read [out-of-scope.md](out-of-scope.md) before writing any code for the feature concerned.
 

@@ -22,7 +22,7 @@ jobs:
       - name: Tests du script de contrôle
         run: python -m unittest discover -s tests -v
       - name: Contrôle de structure
-        run: python scripts/validate.py
+        run: python scripts/validate.py --require-skill
       - name: Textes officiels du RGAA identiques à la source
         run: python scripts/rgaa_official.py
       - name: Matrice d'applicabilité du profil d'exemple
@@ -33,7 +33,7 @@ jobs:
       - name: Outils de vérification d'accessibilité
         run: npm ci && npx playwright install --with-deps chromium
       - name: Vérificateurs traceurs et en-têtes
-        run: node --test tests/checkers.test.mjs
+        run: node --test tests/
       - name: Vérificateur mesuré sur les sites de test
         run: node scripts/check-examples.mjs
       - name: Fraîcheur des sources (tâche planifiée)

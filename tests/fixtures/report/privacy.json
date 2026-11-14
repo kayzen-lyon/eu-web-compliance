@@ -1,0 +1,24 @@
+{
+  "tool": "eu-web-compliance check-privacy",
+  "disclaimer": "Automated check. Not an audit, not legal advice. Absence of findings does not establish that consent is valid.",
+  "target": "tests/fixtures/report/site",
+  "date": "2026-11-14T09:01:00.000Z",
+  "browser": "fixture",
+  "network": "recorded and aborted",
+  "declaration": null,
+  "summary": { "non_conformities": 2, "to_review": 0 },
+  "pages": [
+    {
+      "page": "index.html",
+      "url": "http://127.0.0.1:1/index.html",
+      "findings": [
+        { "detector": "runtime", "rule": "third-party-request-before-consent", "verdict": "NC", "severity": "major", "source": "[ePrivacy art. 5(3)] [LIL art. 82] [CNIL guidelines: exempt purposes]", "refs": ["eprivacy", "fr-loi-78-17", "cnil-cookies-guidelines"], "selector": "html > head > script:nth-child(4)", "request": { "url": "https://analytics.example/tag.js", "host": "analytics.example", "kind": "script", "count": 1 }, "classification": "non-exempt", "message": "script request to analytics.example before any choice. Known analytics host." },
+        { "detector": "runtime", "rule": "storage-before-consent", "verdict": "NC", "severity": "major", "source": "[ePrivacy art. 5(3)] [LIL art. 82] [CNIL guidelines: exempt purposes]", "refs": ["eprivacy"], "selector": null, "storage": { "kind": "cookie", "name": "visitor_id", "writer": null }, "cookie": { "name": "visitor_id", "domain": "127.0.0.1" }, "message": "cookie \"visitor_id\" present before any choice." }
+      ]
+    }
+  ],
+  "limits": [
+    "The checker sees what happens in one fresh browser session per scenario, on the pages given only; it does not crawl the site.",
+    "It does not see logged-in areas unless those pages are provided, and it does not log in."
+  ]
+}

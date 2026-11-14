@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "tool": "eu-web-compliance check-all",
+  "generated": "2026-11-01T10:00:00.000Z",
+  "checkers": [
+    { "name": "a11y", "status": "ran" },
+    { "name": "privacy", "status": "ran" },
+    { "name": "security", "status": "ran" },
+    { "name": "content", "status": "skipped" }
+  ],
+  "findings": [
+    { "id": "accessibility|color-contrast|index.html|#buy", "checker": "a11y", "rule": "color-contrast", "page": "index.html", "verdict": "NC" },
+    { "id": "accessibility|image-alt|index.html|img.hero", "checker": "a11y", "rule": "image-alt", "page": "index.html", "verdict": "NC" },
+    { "id": "consumer|withdrawal-function-missing|index.html|", "checker": "content", "rule": "withdrawal-function-missing", "page": "index.html", "verdict": "NC" }
+  ]
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Aide</title>
+</head>
+<body>
+  <main>
+    <h1>Aide</h1>
+    <button type="button" id="open-chat" aria-controls="ai-chat" aria-expanded="false">Ouvrir la discussion</button>
+    <section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="chat-title" hidden
+      data-assistant-label="Clara" data-greeting="Bonjour, je suis Clara.">
+      <h2 id="chat-title">Clara, votre conseillère</h2>
+      <div role="log" aria-label="Conversation"><ol></ol></div>
+      <form><label for="msg">Votre message</label><textarea id="msg"></textarea><button type="submit">Envoyer</button></form>
+    </section>
+
+  </main>
+  <footer>
+    <ul>
+      <li><a href="retractation.html">Renoncer au contrat ici</a></li>
+    </ul>
+    <p>Nos services utilisent l'intelligence artificielle.</p>
+  </footer>
+  <script>
+    document.getElementById('open-chat').addEventListener('click', function () {
+      var panel = document.getElementById('ai-chat');
+      panel.hidden = false;
+      var item = document.createElement('li');
+      item.className = 'ai-msg ai-msg--assistant';
+      item.textContent = panel.getAttribute('data-assistant-label') + ' : ' + panel.getAttribute('data-greeting');
+      panel.querySelector('ol').append(item);
+    });
+  </script>
+</body>
+</html>

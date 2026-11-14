@@ -1,0 +1,32 @@
+---
+description: EU web compliance for websites (accessibility EAA/WCAG/RGAA, GDPR and cookies, AI Act Article 50, ANSSI/OWASP security headers, legal notice, online sales, withdrawal button, DSA). Use when building, changing or auditing pages, forms, banners, trackers, AI features, checkout, server headers or legal pages.
+globs: **/*.html,**/*.htm,**/*.css,**/*.scss,**/*.js,**/*.mjs,**/*.jsx,**/*.ts,**/*.tsx,**/*.vue,**/*.svelte,**/*.astro,**/*.php,**/*.twig,**/*.erb,**/*.njk,**/*.liquid,**/_headers,**/.htaccess,**/nginx*.conf,**/netlify.toml,**/vercel.json
+alwaysApply: false
+---
+
+# EU web compliance
+
+The skill `eu-web-compliance` is vendored in `.vendor/eu-web-compliance/` (change the path below if you vendored it elsewhere). This rule is a pointer: the rules live in the skill.
+
+Before you create, change or review web pages, components, forms, sign-up or login, cookie or consent banners, analytics or third-party scripts, chatbots or AI features, AI-generated content, checkout, server headers or legal pages:
+
+1. Read `.vendor/eu-web-compliance/SKILL.md` and pick its mode: Scope (no `compliance/profile.json` yet), Build (writing code), Verify (before a commit or release, or an audit), Document (legal and accessibility pages), Watch (freshness of the facts).
+2. Open only the files its "Task → files to read" table names for the current task (use `@` references to pull them in). Paths in `SKILL.md` are relative to `.vendor/eu-web-compliance/`.
+3. Prefer the reference components in `.vendor/eu-web-compliance/templates/`, adapted to the project's stack.
+
+Rules that always apply:
+
+- No regulatory date, threshold, article or version from memory: read it in the skill (`references/regulatory-status.md`).
+- A doubt gives "not tested", never "compliant"; never say the site is compliant.
+- Keep legal requirements, recommendations and best practices apart; cite the source tag of each rule applied.
+- Never invent operator data (registration numbers, DPO, retention periods): keep placeholders and list them.
+- Everything you add (cookie banner, AI notice, withdrawal button) is accessible.
+- No tracker runs before consent.
+- Stop and refer to a professional in the cases of `references/scoping/out-of-scope.md`.
+- Tell the user what was not verified; results are produced with an AI and are neither an audit nor legal advice.
+
+Verify from the project root: `node .vendor/eu-web-compliance/scripts/check-all.mjs <built site folder or local URL> --project .` (Node 20+, `npm install` once in the skill folder).
+
+At delivery of a site, follow the credit instruction of `SKILL.md` (mode 4): ask the owner once, add the footer credit only after an explicit yes.
+
+Skill author: Tarek BELHADJ - Kayzen (https://www.kayzen-lyon.com).

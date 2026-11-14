@@ -430,7 +430,7 @@
         "eaa-2019-882"
       ],
       "status_section": "1.3",
-      "rules_file": "references/accessibility/eaa.md",
+      "rules_file": "references/accessibility/rules.md",
       "note": "Content excluded by Article 2(4) and the transitional measures of Article 32 are listed in regulatory-status section 1.3; check them before treating a piece of content as out of scope."
     },
     {
@@ -458,7 +458,7 @@
         "eaa-2019-882"
       ],
       "status_section": "1.3",
-      "rules_file": "references/accessibility/eaa.md"
+      "rules_file": "references/accessibility/rules.md"
     },
     {
       "id": "eaa-banking-plain-language",
@@ -485,7 +485,7 @@
         "eaa-2019-882"
       ],
       "status_section": "1.3",
-      "rules_file": "references/accessibility/eaa.md"
+      "rules_file": "references/accessibility/rules.md"
     },
     {
       "id": "eaa-information-duty",
@@ -502,7 +502,7 @@
         "eaa-2019-882"
       ],
       "status_section": "1.3",
-      "rules_file": "references/accessibility/eaa.md",
+      "rules_file": "references/accessibility/rules.md",
       "template": "templates/accessibility-information-eaa.md"
     },
     {
@@ -520,7 +520,7 @@
         "eaa-2019-882"
       ],
       "status_section": "1.3",
-      "rules_file": "references/accessibility/eaa.md",
+      "rules_file": "references/accessibility/rules.md",
       "note": "Only relevant when the operator intends to leave a requirement unmet. The decision belongs to the operator and its advisers."
     },
     {
@@ -567,7 +567,7 @@
         "rgaa-412"
       ],
       "status_section": "1.5",
-      "rules_file": "references/accessibility/rgaa/README.md"
+      "rules_file": "references/accessibility/rgaa/4.1.2/index.md"
     },
     {
       "id": "fr-accessibility-statement",
@@ -680,7 +680,8 @@
         "gdpr"
       ],
       "status_section": "3.1",
-      "rules_file": "references/privacy/forms-and-minimisation.md"
+      "rules_file": "references/privacy/forms-and-minimisation.md",
+      "template": "templates/privacy-policy.md"
     },
     {
       "id": "gdpr-data-subject-rights",
@@ -941,7 +942,8 @@
         "cnil-cookies-guidelines"
       ],
       "status_section": "3.3",
-      "rules_file": "references/privacy/consent.md"
+      "rules_file": "references/privacy/consent.md",
+      "template": "templates/cookie-policy.md"
     },
     {
       "id": "fr-trackers-cnil-recommendation",

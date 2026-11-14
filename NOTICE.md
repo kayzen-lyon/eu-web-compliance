@@ -48,6 +48,8 @@ Each file that reuses content from one of these projects is listed in the table 
 | `scripts/ai_act_classify.py` (decision logic derived) and `tests/test_ai_act_classify.py` (two examples ported: customer-service chatbot, HR emotion recognition) | morellid/ai-act-skill, `tasks/check-transparency.md`, `examples/classify-customer-service-chatbot/`, `examples/classify-hr-emotion-recognition/` | MIT, Copyright (c) 2026 Davide Morelli | 2026-11-14 |
 | `references/ai-act/README.md`, item 5 of "How to use" (proactive alert without blocking, reworded) | etalab-ia/skills, `skills/usage-ia-agents-etat/SKILL.md` | MIT, Copyright (c) 2026 Benoit Vinceneux | 2026-11-14 |
 | `references/consumer/deceptive-design.md` (examples summarised from section 4.2.7) | Commission Notice 2021/C 526/01 | EU text; reuse with acknowledgement of the source | 2026-11-14 |
+| `adapters/README.md`, `adapters/copilot-instructions.md`, `adapters/cursor-rule.mdc` (structure only: pointer files to a vendored skill, `.vendor/` path, AGENTS.md block; text written for this project) | morellid/ai-act-skill, `adapters/` | MIT, Copyright (c) 2026 Davide Morelli | 2026-11-14 |
+| `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` (field layout only, no text reused) | Isalafont/claude-skill-rgaa-dev, `.claude-plugin/` | Licence Ouverte 2.0 | 2026-11-14 |
 | `templates/accessibility-statement-fr.md` (mandatory format, reproduced word for word) | DINUM, page « Déclaration d'accessibilité » | Licence Ouverte 2.0 | 2026-11-14 |
 | `templates/accessibility-information-eaa.md` (quotes Article D. 412-57, 2°, and its annex) | Légifrance, code de la consommation | Licence Ouverte 2.0 | 2026-11-14 |
 

@@ -1,0 +1,174 @@
+/* The Northfield Courier: example site of the eu-web-compliance project (fixed version).
+   Layout on top of consumer/consumer.css, ai/ai.css and consent/consent.css. */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.brand {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.brand a {
+  color: var(--c-text);
+}
+
+.nav-list,
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-list a,
+.footer-links a {
+  display: inline-block;
+  padding: 0.5rem 0.25rem;
+}
+
+.nav-list a[aria-current="page"] {
+  font-weight: 700;
+}
+
+main {
+  padding-block: 1.5rem 2.5rem;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.lead {
+  font-size: 1.15rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 1rem;
+  border: 1px solid var(--c-border);
+  border-radius: 0.25rem;
+}
+
+.card h2,
+.card h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.notice-box {
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--c-border);
+  background: var(--c-panel);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+}
+
+.choice input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+}
+
+fieldset {
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--c-border);
+}
+
+legend {
+  padding: 0 0.25rem;
+  font-weight: 700;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.5rem;
+}
+
+caption {
+  padding: 0 0 0.5rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--c-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+dl.details {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) 1fr;
+  gap: 0.25rem 1rem;
+}
+
+dl.details dt {
+  font-weight: 700;
+}
+
+dl.details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.footer-withdrawal {
+  margin: 0.75rem 0;
+  font-weight: 700;
+}
+
+.footer-manage {
+  margin: 1rem 0;
+}
+
+.footer-note {
+  margin: 0;
+  color: var(--c-muted);
+}
+
+.byline {
+  color: var(--c-muted);
+}
+
+.help-zone {
+  margin-block: 2rem;
+}

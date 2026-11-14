@@ -1,0 +1,22 @@
+{
+  "tool": "eu-web-compliance check-content",
+  "disclaimer": "Automated check produced with the help of an AI. Not an audit, not legal advice. Absence of findings does not establish compliance.",
+  "target": "tests/fixtures/report/site",
+  "date": "2026-11-14T09:03:00.000Z",
+  "browser": "fixture",
+  "network": "third-party requests aborted",
+  "site_declaration": null,
+  "summary": { "non_conformities": 2, "to_review": 0 },
+  "pages": [
+    {
+      "page": "index.html",
+      "findings": [
+        { "detector": "content", "rule": "ai-chat-no-disclosure", "verdict": "NC", "severity": "major", "source": "[AI Act art. 50(1)]", "refs": ["ai-act"], "selector": "#chat", "message": "The chat window shows no visible text saying that the visitor talks to an AI." },
+        { "detector": "content", "rule": "order-button-label", "verdict": "NC", "severity": "major", "source": "[Directive 2011/83/EU art. 8(2)]", "refs": ["crd"], "selector": "#buy", "message": "The order button says \"Continue\", which does not state an obligation to pay." }
+      ]
+    }
+  ],
+  "limits": [
+    "Only the pages given are checked; the order process is not walked through."
+  ]
+}

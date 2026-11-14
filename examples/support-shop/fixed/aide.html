@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aide et contact – Cirelune</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="consumer/consumer.css">
+  <link rel="stylesheet" href="ai/ai.css">
+  <link rel="stylesheet" href="consent/consent.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="consent/consent.js" defer></script>
+  <script src="ai/ai-chat.js" defer></script>
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Aller au contenu principal</a>
+
+  <script type="application/json" id="eu-consent-config">
+  {
+    "version": "2026-11-14",
+    "maxAgeMonths": 6,
+    "storage": "cookie",
+    "reloadOnWithdraw": true,
+    "focusTarget": "#main"
+  }
+  </script>
+
+  <section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+    <h2 id="consent-title">Cookies et autres traceurs</h2>
+    <p>
+      Cirelune et le prestataire de mesure d'audience cité dans notre politique cookies souhaitent utiliser des traceurs sur votre appareil pour :
+    </p>
+    <ul class="consent-purpose-summary">
+      <li><strong>Mesure d'audience :</strong> compter les visites et voir quelles pages sont lues, pour améliorer la boutique.</li>
+    </ul>
+    <p>
+      Vous pouvez tout accepter, tout refuser ou choisir finalité par finalité. Refuser ne vous empêche pas d'utiliser le site.
+      Vous pouvez changer d'avis à tout moment avec « Gérer les cookies » en bas de chaque page.
+      <a href="cookies.html">Politique cookies et liste des sociétés qui utilisent des traceurs sur ce site</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-button" data-consent="accept">Tout accepter</button>
+      <button type="button" class="consent-button" data-consent="refuse">Tout refuser</button>
+      <button type="button" class="consent-button" data-consent="customise">Personnaliser</button>
+    </div>
+  </section>
+
+  <div class="page">
+    <header class="site-header">
+      <p class="brand"><a href="index.html">Cirelune, bougies artisanales</a></p>
+      <nav aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="produits.html">Nos bougies</a></li>
+          <li><a href="panier.html">Panier</a></li>
+          <li><a href="aide.html" aria-current="page">Aide</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <h1>Aide et contact</h1>
+      <p class="lead">Commandes, livraison, retours : trouvez une réponse ou écrivez-nous.</p>
+
+      <section class="help-zone" aria-labelledby="help-zone-title">
+        <h2 id="help-zone-title">Poser une question tout de suite</h2>
+        <p>Notre assistant répond tout de suite aux questions sur les commandes, la livraison et les retours.</p>
+        <button type="button" class="ai-chat-launcher" aria-expanded="false" aria-controls="ai-chat">
+          Discuter avec notre assistant IA
+        </button>
+
+        <section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="ai-chat-title" hidden
+          data-assistant-label="Assistant IA"
+          data-user-label="Vous"
+          data-greeting="Bonjour, je suis Lumi, l'assistant d'intelligence artificielle (IA) de Cirelune. Je suis un programme informatique, pas une personne. Je peux vous aider pour les commandes, la livraison et les retours. Mes réponses peuvent être fausses : vérifiez les informations importantes dans nos conditions générales de vente."
+          data-identity-answer="Non, je ne suis pas une personne. Je suis un assistant d'intelligence artificielle (IA), un programme informatique. Si vous préférez parler à une personne, utilisez le lien « Écrire à notre équipe » en haut de cette discussion."
+          data-demo-answer="Ceci est un site d'exemple : l'assistant n'est relié à aucun service. Pour une vraie question, écrivez à notre équipe."
+          data-error-message="Désolé, l'assistant IA ne peut pas répondre pour le moment. Vous pouvez écrire à notre équipe avec le lien « Écrire à notre équipe » en haut de cette discussion."
+          data-writing-message="rédige une réponse."
+          data-empty-message="Saisissez d'abord un message.">
+
+          <div class="ai-chat__header">
+            <h3 class="ai-chat__title" id="ai-chat-title">Lumi, assistant IA</h3>
+            <span class="ai-badge"><span class="ai-badge__mark" aria-hidden="true">IA</span> Pas une personne</span>
+          </div>
+
+          <div class="ai-chat__notice" id="ai-chat-notice">
+            <p><strong>Vous échangez avec un assistant d'intelligence artificielle, pas avec une personne.</strong> Ses réponses sont produites automatiquement et peuvent être fausses.</p>
+            <p>Ne saisissez ici ni mot de passe ni coordonnées bancaires. Ce que vous écrivez sert à vous répondre : voir notre <a href="confidentialite.html#assistant">politique de confidentialité</a> et <a href="ia.html">notre utilisation de l'IA</a>.</p>
+            <p>Vous préférez une personne ? <a href="aide.html#equipe">Écrire à notre équipe</a> (réponse sous deux jours ouvrés).</p>
+          </div>
+
+          <div class="ai-chat__log" role="log" aria-label="Conversation avec l'assistant IA" tabindex="0">
+            <ol class="ai-chat__messages"></ol>
+          </div>
+
+          <form class="ai-chat__form" novalidate>
+            <label for="ai-chat-input">Votre message à l'assistant IA</label>
+            <textarea id="ai-chat-input" name="message" rows="3" aria-describedby="ai-chat-notice"></textarea>
+            <div class="ai-chat__actions">
+              <button type="submit">Envoyer</button>
+              <button type="button" class="ai-chat__close">Fermer l'assistant</button>
+            </div>
+          </form>
+
+          <div class="ai-chat__status visually-hidden" role="status"></div>
+        </section>
+      </section>
+
+      <section id="equipe" aria-labelledby="equipe-titre">
+        <h2 id="equipe-titre">Écrire à notre équipe</h2>
+        <p>Une personne de l'atelier vous répond sous deux jours ouvrés : <a href="mailto:bonjour@cirelune.example">bonjour@cirelune.example</a>.</p>
+      </section>
+
+      <section id="lettre" aria-labelledby="lettre-titre">
+        <h2 id="lettre-titre">Lettre d'information</h2>
+        <p>Pour recevoir notre lettre mensuelle, écrivez-nous à <a href="mailto:lettre@cirelune.example">lettre@cirelune.example</a>. Vous pouvez vous désinscrire à tout moment par le lien présent dans chaque lettre.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Informations sur le site</h2>
+      <nav aria-label="Informations légales">
+        <ul class="footer-links">
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="cgv.html">Conditions générales de vente</a></li>
+          <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+          <li><a href="cookies.html">Politique cookies</a></li>
+        </ul>
+      </nav>
+      <p class="footer-withdrawal"><a href="retractation.html">Renoncer au contrat ici</a></p>
+      <p class="footer-manage"><button type="button" class="consent-button consent-manage" data-consent-open>Gérer les cookies</button></p>
+      <p class="footer-note">Cirelune est une entreprise fictive. Ce site d'exemple du projet eu-web-compliance ne prend aucune commande et n'envoie rien.</p>
+    </footer>
+  </div>
+
+  <dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+    <form method="dialog">
+      <h2 id="consent-settings-title" tabindex="-1" autofocus>Choisir par finalité</h2>
+      <p>
+        Votre choix vaut pour ce navigateur. Il est conservé 6 mois, puis nous vous reposons la question.
+        Si vous retirez un consentement donné plus tôt, la page se recharge pour arrêter les services concernés.
+      </p>
+
+      <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="_ga _ga_*" data-storage="">
+        <legend>Mesure d'audience</legend>
+        <p id="purpose-analytics-text">
+          Cirelune utilise un service de mesure d'audience pour compter les visites et voir quelles pages sont lues. Données : pages vues, type d'appareil approximatif. Société concernée : le prestataire cité dans la politique cookies.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accepter</label>
+          <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuser</label>
+        </div>
+      </fieldset>
+
+      <p class="consent-note">
+        Les traceurs strictement nécessaires (conserver votre choix) ne demandent pas votre consentement.
+        Ils sont listés dans la <a href="cookies.html">politique cookies</a>.
+      </p>
+
+      <div class="consent-actions">
+        <button class="consent-button" value="accept">Tout accepter</button>
+        <button class="consent-button" value="refuse">Tout refuser</button>
+        <button class="consent-button" value="save">Enregistrer mes choix</button>
+        <button class="consent-button" value="cancel">Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="consent-status" role="status" class="consent-visually-hidden"></div>
+  <script type="text/plain" data-consent-purpose="analytics" src="js/analytics-config.js"></script>
+  <script type="text/plain" data-consent-purpose="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-CL00EXAMPLE"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "tool": "eu-web-compliance check-a11y",
+  "disclaimer": "Automated check. Not an accessibility audit, not legal advice. Absence of findings does not establish conformity.",
+  "target": "tests/fixtures/report/site",
+  "date": "2026-11-14T09:00:00.000Z",
+  "browser": "fixture",
+  "summary": { "non_conformities": 3, "not_tested_items": 1 },
+  "pages": [
+    {
+      "page": "index.html",
+      "findings": [
+        { "source": "axe", "rule": "color-contrast", "verdict": "NC", "wcag": ["1.4.3"], "severity": "major", "selector": "#buy", "message": "Elements must meet minimum color contrast ratio thresholds", "help_url": "https://dequeuniversity.com/rules/axe/4.10/color-contrast" },
+        { "source": "axe", "rule": "button-name", "verdict": "NC", "wcag": ["4.1.2"], "severity": "blocking", "selector": "#buy", "message": "Buttons must have discernible text", "help_url": "https://dequeuniversity.com/rules/axe/4.10/button-name" },
+        { "source": "catalogue", "rule": "AP-ALT-10", "verdict": "NT", "wcag": [], "rgaa": [], "severity": "minor", "selector": null, "file": "index.html", "line": 12, "snippet": "<a target=\"_blank\"", "message": "Link that opens a new window without saying so" }
+      ]
+    },
+    {
+      "page": "legal.html",
+      "findings": [
+        { "source": "catalogue", "rule": "AP-FRM-01", "verdict": "NC", "wcag": ["3.3.2", "4.1.2"], "rgaa": ["11.1"], "severity": "blocking", "selector": "input[name=\"email\"]", "message": "Field without a label" }
+      ]
+    }
+  ],
+  "not_tested": [
+    { "wcag": "1.1.1", "label": "Relevance of text alternatives (human judgement)" },
+    { "wcag": "2.4.3", "label": "Logical focus order" }
+  ]
+}

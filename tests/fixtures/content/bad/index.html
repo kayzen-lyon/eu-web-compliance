@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Accueil</title>
+</head>
+<body>
+  <main>
+    <h1>Boutique exemple</h1>
+    <section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="chat-title"
+      data-assistant-label="Réponse" data-greeting="Bonjour, que puis-je pour vous ?">
+      <h2 id="chat-title">Une question ?</h2>
+      <div role="log" aria-label="Conversation"><ol></ol></div>
+      <form><label for="msg">Votre message</label><textarea id="msg"></textarea><button type="submit">Envoyer</button></form>
+    </section>
+
+    <div>
+      <p><del>39,90 €</del> 29,90 €</p>
+    </div>
+    <p><input type="checkbox" id="assurance" checked><label for="assurance">Ajouter une assurance casse (+2,90 €)</label></p>
+    <figure>
+      <img id="photo" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="200" height="100" alt="Bougie, image générée par IA">
+      <figcaption>Notre bougie au salon.</figcaption>
+    </figure>
+    <p class="promo">Fin des soldes dans <span id="countdown" role="timer">10:00</span></p>
+    <p class="stock">Plus que 2 en stock !</p>
+    <p><a href="#">Non merci, je préfère payer plein tarif</a></p>
+    <p><a href="https://ec.europa.eu/consumers/odr/">Plateforme européenne de règlement en ligne des litiges</a></p>
+  </main>
+  <footer>
+    <ul>
+      <li><a href="mentions.html">Mentions légales</a></li>
+    </ul>
+  </footer>
+  <script>
+    (function () {
+      var left = 600;
+      var el = document.getElementById('countdown');
+      function show() { el.textContent = String(Math.floor(left / 60)).padStart(2, '0') + ':' + String(left % 60).padStart(2, '0'); }
+      show();
+      setInterval(function () { left -= 1; show(); }, 1000);
+    }());
+  </script>
+</body>
+</html>

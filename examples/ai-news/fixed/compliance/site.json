@@ -1,0 +1,90 @@
+{
+  "about": "Declaration read by scripts/check-content.mjs. The Northfield Courier is fictional; the operator is a company established in Ireland that sells nothing online. Each AI-generated or AI-modified item is declared with the facts that decide whether Article 50(4) asks for a label.",
+  "language": "en",
+  "operator": {
+    "country": "IE",
+    "registered": true,
+    "vat": true
+  },
+  "distance_selling_to_consumers": false,
+  "online_platform": false,
+  "pages": {
+    "legal_notice": "legal-notice.html"
+  },
+  "ai": {
+    "chat_widgets": [
+      "#ai-chat"
+    ],
+    "content": [
+      {
+        "page": "index.html",
+        "selector": "#hero-illustration",
+        "kind": "image",
+        "ai_use": "generated",
+        "deep_fake": true
+      },
+      {
+        "page": "index.html",
+        "selector": "#teaser-flood",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true,
+        "editorial_review": false
+      },
+      {
+        "page": "flood-plan.html",
+        "selector": "#article-flood",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true,
+        "editorial_review": false
+      },
+      {
+        "page": "flood-plan.html",
+        "selector": "#flood-illustration",
+        "kind": "image",
+        "ai_use": "generated",
+        "deep_fake": true
+      },
+      {
+        "page": "budget.html",
+        "selector": "#article-budget",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true,
+        "editorial_review": true
+      },
+      {
+        "page": "budget.html",
+        "selector": "#budget-photo",
+        "kind": "image",
+        "ai_use": "modified",
+        "deep_fake": true
+      },
+      {
+        "page": "ferry.html",
+        "selector": "#article-ferry",
+        "kind": "text",
+        "ai_use": "translated",
+        "public_interest": true,
+        "editorial_review": true
+      },
+      {
+        "page": "heatwave.html",
+        "selector": "#heatwave-illustration",
+        "kind": "image",
+        "ai_use": "generated",
+        "deep_fake": true
+      },
+      {
+        "page": "heatwave.html",
+        "selector": "#heatwave-summary",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true,
+        "editorial_review": false
+      }
+    ],
+    "editorial_responsibility_page": "about.html"
+  }
+}

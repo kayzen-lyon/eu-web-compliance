@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Front page – The Northfield Courier</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="consumer/consumer.css">
+  <link rel="stylesheet" href="ai/ai.css">
+  <link rel="stylesheet" href="consent/consent.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="consent/consent.js" defer></script>
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Skip to main content</a>
+
+  <script type="application/json" id="eu-consent-config">
+  {
+    "version": "2026-11-14",
+    "maxAgeMonths": 6,
+    "storage": "cookie",
+    "reloadOnWithdraw": true,
+    "focusTarget": "#main"
+  }
+  </script>
+
+  <section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+    <h2 id="consent-title">Cookies and other trackers</h2>
+    <p>
+      The Northfield Courier and the audience measurement provider listed in our cookie policy would like to use trackers on your device to:
+    </p>
+    <ul class="consent-purpose-summary">
+      <li><strong>Audience measurement:</strong> count visits and see which articles are read, to improve the site.</li>
+    </ul>
+    <p>
+      You can accept or refuse all of them, or choose purpose by purpose. Refusing does not prevent you from reading the site.
+      You can change your mind at any time with "Manage cookies" at the bottom of every page.
+      <a href="cookies.html">Cookie policy and list of companies using trackers on this site</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-button" data-consent="accept">Accept all</button>
+      <button type="button" class="consent-button" data-consent="refuse">Refuse all</button>
+      <button type="button" class="consent-button" data-consent="customise">Customise</button>
+    </div>
+  </section>
+
+  <div class="page">
+    <header class="site-header">
+      <p class="brand"><a href="index.html">The Northfield Courier</a></p>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="index.html" aria-current="page">Front page</a></li>
+          <li><a href="archive.html">Archive</a></li>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="ai-use.html">Use of AI</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <h1>Northfield news, 14 November 2026</h1>
+      <figure class="ai-content">
+        <div class="ai-content__frame">
+          <img id="hero-illustration" src="img/river-town.svg" width="320" height="240" alt="Houses of the old town along the river at dusk">
+        </div>
+        <figcaption>
+          The river and the old town.
+        </figcaption>
+      </figure>
+
+      <h2>Today's stories</h2>
+      <article class="card" id="teaser-flood">
+        <h3><a href="flood-plan.html">River flood plan goes to public consultation</a></h3>
+        <p>The district council opens a six-week consultation on new barriers along the east bank.</p>
+      </article>
+      <article class="card">
+        <h3><a href="budget.html">Council budget 2027: what changes</a></h3>
+        <p>More money for school repairs, less for night lighting.</p>
+      </article>
+      <article class="card">
+        <h3><a href="ferry.html">Ferry service resumes after repairs</a></h3>
+        <p>The river ferry runs again from Monday after three months in dry dock.</p>
+      </article>
+      <article class="card">
+        <h3><a href="heatwave.html">Heatwave: cooling rooms open in three libraries</a></h3>
+        <p>Libraries extend their opening hours while temperatures stay high.</p>
+      </article>
+
+      <aside class="notice-box" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">Our morning newsletter</h2>
+        <p>The day's stories, every morning at 7. Free; you can unsubscribe with one link in every email.</p>
+        <form action="index.html" method="post">
+          <div class="c-field">
+            <label for="newsletter-email">Email address</label>
+            <input id="newsletter-email" name="email" type="email" autocomplete="email">
+          </div>
+          <div class="choice">
+            <input type="checkbox" id="newsletter-partners" name="partners" value="yes" checked>
+            <label for="newsletter-partners">Also send me offers from our partners (optional)</label>
+          </div>
+          <p><button type="submit" class="c-button c-button--primary">Subscribe</button> <a href="#main">No thanks, I prefer to stay uninformed</a></p>
+        </form>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Site information</h2>
+      <nav aria-label="Legal information">
+        <ul class="footer-links">
+          <li><a href="legal-notice.html">Legal notice</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="cookies.html">Cookie policy</a></li>
+          <li><a href="ai-use.html">How we use AI</a></li>
+        </ul>
+      </nav>
+      <p class="footer-manage"><button type="button" class="consent-button consent-manage" data-consent-open>Manage cookies</button></p>
+      <p class="footer-note">The Northfield Courier is a fictional newspaper. This is an example site of the eu-web-compliance project: the articles are invented and nothing is sent.</p>
+    </footer>
+  </div>
+
+  <dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+    <form method="dialog">
+      <h2 id="consent-settings-title" tabindex="-1" autofocus>Choose by purpose</h2>
+      <p>
+        Your choice applies to this browser. It is kept for 6 months, then we ask again.
+        If you withdraw a consent you gave earlier, the page reloads to stop the services concerned.
+      </p>
+
+      <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="_ga _ga_*" data-storage="">
+        <legend>Audience measurement</legend>
+        <p id="purpose-analytics-text">
+          The Northfield Courier uses an audience measurement service to count visits and see which articles are read. Data: pages viewed, approximate device type. Company involved: the provider listed in the cookie policy.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accept</label>
+          <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuse</label>
+        </div>
+      </fieldset>
+
+      <p class="consent-note">
+        Trackers that are strictly necessary (keeping your choice) do not need your consent.
+        They are listed in the <a href="cookies.html">cookie policy</a>.
+      </p>
+
+      <div class="consent-actions">
+        <button class="consent-button" value="accept">Accept all</button>
+        <button class="consent-button" value="refuse">Refuse all</button>
+        <button class="consent-button" value="save">Save my choices</button>
+        <button class="consent-button" value="cancel">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="consent-status" role="status" class="consent-visually-hidden"></div>
+  <script type="text/plain" data-consent-purpose="analytics" src="js/analytics-config.js"></script>
+  <script type="text/plain" data-consent-purpose="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-NC00EXAMPLE"></script>
+</body>
+</html>

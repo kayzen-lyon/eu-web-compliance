@@ -1,0 +1,135 @@
+/*
+  Reference styles for the consumer components (eu-web-compliance, MIT licence).
+  Withdrawal function, order summary and button, price reduction.
+  Framework-free. Replace colours and fonts with the site's, keeping:
+  - text contrast of at least 4.5:1 and 3:1 for focus indicators and borders (WCAG 1.4.3, 1.4.11);
+  - a visible focus indicator on every control (WCAG 2.4.7);
+  - targets of at least 24 by 24 CSS pixels; 44 px is used here (WCAG 2.5.8);
+  - legible button labels: same size as body text or larger (Directive 2011/83/EU, Articles 8(2) and 11a).
+*/
+
+:root {
+  --c-text: #1a1a1a;
+  --c-bg: #ffffff;
+  --c-muted: #4a4a4a;      /* 8.9:1 on white */
+  --c-accent: #0b4f8a;     /* 8.3:1 on white */
+  --c-accent-text: #ffffff;
+  --c-error: #a4161a;      /* 7.3:1 on white */
+  --c-success: #1d5c2e;    /* 7.8:1 on white */
+  --c-border: #595959;     /* 7:1 on white */
+  --c-panel: #f3f5f8;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+.page { max-width: 48rem; margin: 0 auto; padding: 1rem; }
+.site-header, .site-footer { border-block: 1px solid var(--c-border); padding-block: 0.75rem; }
+.site-footer ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+
+a { color: var(--c-accent); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 3px; }
+
+:focus-visible { outline: 3px solid var(--c-accent); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
+[tabindex="-1"]:focus-visible { outline: 3px solid var(--c-accent); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
+/* Skip link: visible when focused (RGAA 12.7, WCAG 2.4.1). */
+.c-skip-link {
+  position: absolute; left: 0.5rem; top: -10rem;
+  padding: 0.5rem 1rem; background: var(--c-bg); color: var(--c-accent);
+  border: 2px solid var(--c-accent); z-index: 10;
+}
+.c-skip-link:focus { top: 0.5rem; }
+
+/* Buttons: the legal label is real text, at body size or larger, never an icon. */
+.c-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.75rem; min-width: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  font: inherit; font-weight: 700;
+  border: 2px solid var(--c-accent); border-radius: 0.25rem;
+  background: var(--c-bg); color: var(--c-accent);
+  cursor: pointer;
+}
+.c-button--primary { background: var(--c-accent); color: var(--c-accent-text); }
+.c-button--primary:hover { background: #083a66; border-color: #083a66; }
+.c-button:focus-visible { outline: 3px solid var(--c-text); outline-offset: 3px; }
+
+/* Forms */
+.c-field { margin-block: 1.25rem; }
+.c-field label { display: block; font-weight: 700; }
+.c-hint { margin: 0.25rem 0; color: var(--c-muted); }
+.c-field input {
+  width: 100%; max-width: 30rem; min-height: 2.75rem;
+  padding: 0.25rem 0.5rem;
+  font: inherit; color: var(--c-text); background: var(--c-bg);
+  border: 2px solid var(--c-border); border-radius: 0.125rem;
+}
+.c-field input[aria-invalid="true"] { border: 4px solid var(--c-error); }
+.c-field-error:empty { display: none; }
+.c-field-error { margin: 0.25rem 0; color: var(--c-error); font-weight: 700; }
+.c-error-summary {
+  border: 3px solid var(--c-error); padding: 0.75rem 1rem; margin-block: 1rem;
+}
+.c-error-summary h2, .c-error-summary h3 { margin-top: 0; color: var(--c-error); }
+.c-alert { border-inline-start: 6px solid var(--c-error); padding: 0.5rem 1rem; }
+.c-alert:empty { display: none; }
+
+/* Panels */
+.c-panel { background: var(--c-panel); border: 1px solid var(--c-border); padding: 1rem; margin-block: 1rem; }
+.c-ack { border-inline-start: 6px solid var(--c-success); }
+.c-ack h2, .c-ack h3 { color: var(--c-success); }
+.c-summary dl, .c-ack dl { display: grid; grid-template-columns: minmax(8rem, max-content) 1fr; gap: 0.25rem 1rem; }
+.c-summary dt, .c-ack dt { font-weight: 700; }
+.c-summary dd, .c-ack dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 30rem) {
+  .c-summary dl, .c-ack dl { grid-template-columns: 1fr; }
+  .c-summary dd, .c-ack dd { margin-bottom: 0.5rem; }
+}
+
+/* Order summary */
+.c-summary-group { border-top: 1px solid var(--c-border); padding-block: 0.75rem; }
+.c-summary-group h2 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+.c-total { font-size: 1.25rem; font-weight: 700; }
+.c-order-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-block: 1.5rem; }
+.c-order-actions .c-button--primary { font-size: 1.125rem; }
+
+/* Prices */
+.c-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1rem; margin: 0.5rem 0; }
+.c-price-current { font-size: 1.5rem; font-weight: 700; }
+.c-price-prior { color: var(--c-muted); }
+.c-price-prior s { text-decoration-thickness: 2px; }
+.c-price-badge {
+  display: inline-block; padding: 0.125rem 0.5rem;
+  border: 2px solid var(--c-text); font-weight: 700;
+}
+.c-price-label { font-size: 0.95rem; }
+
+.c-steps { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; list-style-position: inside; }
+.c-steps [aria-current="step"] { font-weight: 700; text-decoration: underline; text-decoration-thickness: 3px; }
+
+@media (forced-colors: active) {
+  .c-button--primary { border-color: ButtonText; }
+  .c-field input[aria-invalid="true"] { border-style: double; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}

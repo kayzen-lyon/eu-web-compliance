@@ -1,0 +1,24 @@
+{
+  "about": "Tracker declaration of the fixed news site, read by scripts/check-privacy.mjs. Only the entries of \"exempt\" may be present before consent. The audience measurement service runs only after consent through the reference consent loader.",
+  "exempt": [
+    {
+      "name": "eu-consent",
+      "kind": "cookie",
+      "match": "exact",
+      "purpose": "consent-choice",
+      "justification": "Set by the reference consent banner. Stores only the visitor's choice per purpose, its date and the banner version; no identifier."
+    }
+  ],
+  "third_parties": [
+    {
+      "host": "googletagmanager.com",
+      "purpose": "analytics",
+      "exempt": false
+    },
+    {
+      "host": "google-analytics.com",
+      "purpose": "analytics",
+      "exempt": false
+    }
+  ]
+}

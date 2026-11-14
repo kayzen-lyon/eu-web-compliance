@@ -1,0 +1,32 @@
+{
+  "about": "Declaration read by scripts/check-content.mjs: what the site is, which pages carry the order steps, which elements are AI features. Cirelune is fictional.",
+  "language": "fr",
+  "operator": {
+    "country": "FR",
+    "registered": true,
+    "vat": true
+  },
+  "distance_selling_to_consumers": true,
+  "online_platform": false,
+  "pages": {
+    "legal_notice": "mentions-legales.html",
+    "order_start": "panier.html",
+    "order_final": "commande.html",
+    "withdrawal": "retractation.html"
+  },
+  "order_button": "#passer-commande",
+  "ai": {
+    "chat_widgets": [
+      "#ai-chat"
+    ],
+    "content": [
+      {
+        "page": "produit.html",
+        "selector": "#photo-ambiance",
+        "kind": "image",
+        "ai_use": "generated",
+        "deep_fake": true
+      }
+    ]
+  }
+}

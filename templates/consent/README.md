@@ -33,6 +33,7 @@ The JSON block `<script type="application/json" id="eu-consent-config">`:
 | `maxAgeMonths` | `6` | How long a choice (consent or refusal) is kept before asking again. The default is the duration the CNIL recommends; see [../../references/regulatory-status.md](../../references/regulatory-status.md) section 3.3, where it is stated as a recommendation, not a legal limit. Change it only on the owner's decision. |
 | `storage` | `"cookie"` | `"cookie"` (first-party cookie, sent to the server, readable server-side) or `"localStorage"`. |
 | `storageKey` | `"eu-consent"` | Name of the cookie or key. `eu-consent` is the name the CNIL encourages. |
+| `messages` | English texts | Messages announced to screen readers after a choice: `accept`, `refuse`, `custom`, `contextual`. Translate them with the page; a French page that keeps the English defaults announces English to its visitors. Example: `{"accept": "Tous les traceurs sont acceptés.", "refuse": "Tous les traceurs sont refusés.", "custom": "Vos choix sont enregistrés.", "contextual": "Votre choix est enregistré. Le contenu est chargé."}` |
 | `reloadOnWithdraw` | `true` | Reload the page after a withdrawal when code of the withdrawn purpose already ran. Code that is running cannot be unloaded; reloading is how it stops. The settings dialog tells the visitor. |
 | `focusTarget` | `"main"` | CSS selector of the element that receives focus after a choice from the banner. |
 

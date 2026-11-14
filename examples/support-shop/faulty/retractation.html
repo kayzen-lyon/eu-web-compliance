@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Se rétracter d'un contrat – Cirelune</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="consumer/consumer.css">
+  <link rel="stylesheet" href="consent/consent.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="consent/consent.js" defer></script>
+  <script src="consumer/withdrawal-function.js" defer></script>
+  <script src="js/retractation.js" defer></script>
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Aller au contenu principal</a>
+
+  <script type="application/json" id="eu-consent-config">
+  {
+    "version": "2026-11-14",
+    "maxAgeMonths": 6,
+    "storage": "cookie",
+    "reloadOnWithdraw": true,
+    "focusTarget": "#main"
+  }
+  </script>
+
+  <section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+    <h2 id="consent-title">Cookies et autres traceurs</h2>
+    <p>
+      Cirelune et le prestataire de mesure d'audience cité dans notre politique cookies souhaitent utiliser des traceurs sur votre appareil pour :
+    </p>
+    <ul class="consent-purpose-summary">
+      <li><strong>Mesure d'audience :</strong> compter les visites et voir quelles pages sont lues, pour améliorer la boutique.</li>
+    </ul>
+    <p>
+      Vous pouvez tout accepter, tout refuser ou choisir finalité par finalité. Refuser ne vous empêche pas d'utiliser le site.
+      Vous pouvez changer d'avis à tout moment avec « Gérer les cookies » en bas de chaque page.
+      <a href="cookies.html">Politique cookies et liste des sociétés qui utilisent des traceurs sur ce site</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-button" data-consent="accept">Tout accepter</button>
+      <button type="button" class="consent-button" data-consent="refuse">Tout refuser</button>
+      <button type="button" class="consent-button" data-consent="customise">Personnaliser</button>
+    </div>
+  </section>
+
+  <div class="page">
+    <header class="site-header">
+      <p class="brand"><a href="index.html">Cirelune, bougies artisanales</a></p>
+      <nav aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="produits.html">Nos bougies</a></li>
+          <li><a href="panier.html">Panier</a></li>
+          <li><a href="aide.html">Aide</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <h1>Se rétracter d'un contrat</h1>
+
+      <section class="withdrawal" data-withdrawal aria-labelledby="wd-title">
+        <script type="application/json" data-wd-config>
+        { "prefill": { "contractId": "" } }
+        </script>
+
+        <h2 id="wd-title" data-text="title">Se rétracter d'un contrat</h2>
+        <p data-text="intro">Vous pouvez vous rétracter d'un contrat conclu sur ce site pendant le délai de rétractation, sans avoir à donner de motif.</p>
+
+        <button type="button" class="c-button c-button--primary" data-wd-open
+                aria-expanded="false" aria-controls="wd-statement" data-text="openLabel">Renoncer au contrat ici</button>
+
+        <div id="wd-statement" class="c-panel" data-wd-statement hidden>
+          <h3 id="wd-statement-title" tabindex="-1" data-wd-statement-title data-text="statementTitle">Votre déclaration de rétractation</h3>
+          <p id="wd-statement-intro" data-text="statementIntro">Remplissez ou vérifiez les trois champs ci-dessous, puis choisissez « Confirmer la rétractation ». Vous n'avez pas à donner de motif. Tous les champs sont obligatoires.</p>
+
+          <div class="c-error-summary" data-wd-errors tabindex="-1" aria-labelledby="wd-errors-title" hidden>
+            <h4 id="wd-errors-title" data-wd-errors-title></h4>
+            <ul></ul>
+          </div>
+
+          <form data-wd-form novalidate aria-labelledby="wd-statement-title" aria-describedby="wd-statement-intro">
+            <div class="c-field">
+              <label for="wd-name" data-text="nameLabel">Votre nom</label>
+              <input id="wd-name" name="name" type="text" autocomplete="name" required aria-describedby="wd-name-error">
+              <p id="wd-name-error" class="c-field-error"></p>
+            </div>
+
+            <div class="c-field">
+              <label for="wd-contract" data-text="contractLabel">Numéro de commande</label>
+              <p id="wd-contract-hint" class="c-hint" data-text="contractHint">Il figure dans le courriel de confirmation de commande, par exemple 2026-001234.</p>
+              <input id="wd-contract" name="contractId" type="text" required aria-describedby="wd-contract-hint wd-contract-error">
+              <p id="wd-contract-error" class="c-field-error"></p>
+            </div>
+
+            <div class="c-field">
+              <label for="wd-email" data-text="emailLabel">Adresse électronique pour la confirmation</label>
+              <p id="wd-email-hint" class="c-hint" data-text="emailHint">Nous envoyons l'accusé de réception de votre rétractation à cette adresse.</p>
+              <input id="wd-email" name="email" type="email" autocomplete="email" required aria-describedby="wd-email-hint wd-email-error">
+              <p id="wd-email-error" class="c-field-error"></p>
+            </div>
+
+            <div class="c-field">
+              <label for="wd-reason">Motif de la rétractation</label>
+              <select id="wd-reason" name="reason" required>
+                <option value="">Choisir un motif</option>
+                <option>Le produit ne me plaît pas</option>
+                <option>Le produit est abîmé</option>
+              </select>
+            </div>
+
+            <p class="c-alert" data-wd-send-error role="alert"></p>
+
+            <button type="submit" class="c-button c-button--primary">Envoyer ma demande</button>
+          </form>
+        </div>
+
+        <div class="c-panel c-ack" data-wd-ack aria-labelledby="wd-ack-title" role="region" hidden>
+          <h3 id="wd-ack-title" tabindex="-1" data-wd-ack-title data-text="ackTitle">Votre rétractation a été envoyée</h3>
+          <p data-wd-ack-time></p>
+          <p data-wd-ack-reference hidden></p>
+          <h4 data-text="ackContentTitle">Contenu de votre déclaration</h4>
+          <dl data-wd-ack-content></dl>
+          <p data-wd-ack-email></p>
+        </div>
+
+        <p class="visually-hidden" role="status" data-wd-status></p>
+      </section>
+
+      <p>Vous pouvez aussi vous rétracter par tout autre moyen, par exemple en nous écrivant à <a href="mailto:bonjour@cirelune.example">bonjour@cirelune.example</a>. Détails dans nos <a href="cgv.html#retractation">conditions générales de vente</a>.</p>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Informations sur le site</h2>
+      <nav aria-label="Informations légales">
+        <ul class="footer-links">
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="cgv.html">Conditions générales de vente</a></li>
+          <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+          <li><a href="cookies.html">Politique cookies</a></li>
+        </ul>
+      </nav>
+      <p class="footer-withdrawal"><a href="retractation.html">Renoncer au contrat ici</a></p>
+      <p class="footer-manage"><button type="button" class="consent-button consent-manage" data-consent-open>Gérer les cookies</button></p>
+      <p class="footer-note">Cirelune est une entreprise fictive. Ce site d'exemple du projet eu-web-compliance ne prend aucune commande et n'envoie rien.</p>
+    </footer>
+  </div>
+
+  <dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+    <form method="dialog">
+      <h2 id="consent-settings-title" tabindex="-1" autofocus>Choisir par finalité</h2>
+      <p>
+        Votre choix vaut pour ce navigateur. Il est conservé 6 mois, puis nous vous reposons la question.
+        Si vous retirez un consentement donné plus tôt, la page se recharge pour arrêter les services concernés.
+      </p>
+
+      <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="_ga _ga_*" data-storage="">
+        <legend>Mesure d'audience</legend>
+        <p id="purpose-analytics-text">
+          Cirelune utilise un service de mesure d'audience pour compter les visites et voir quelles pages sont lues. Données : pages vues, type d'appareil approximatif. Société concernée : le prestataire cité dans la politique cookies.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accepter</label>
+          <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuser</label>
+        </div>
+      </fieldset>
+
+      <p class="consent-note">
+        Les traceurs strictement nécessaires (conserver votre choix) ne demandent pas votre consentement.
+        Ils sont listés dans la <a href="cookies.html">politique cookies</a>.
+      </p>
+
+      <div class="consent-actions">
+        <button class="consent-button" value="accept">Tout accepter</button>
+        <button class="consent-button" value="refuse">Tout refuser</button>
+        <button class="consent-button" value="save">Enregistrer mes choix</button>
+        <button class="consent-button" value="cancel">Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="consent-status" role="status" class="consent-visually-hidden"></div>
+  <script type="text/plain" data-consent-purpose="analytics" src="js/analytics-config.js"></script>
+  <script type="text/plain" data-consent-purpose="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-CL00EXAMPLE"></script>
+</body>
+</html>

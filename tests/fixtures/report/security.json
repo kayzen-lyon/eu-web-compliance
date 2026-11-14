@@ -1,0 +1,21 @@
+{
+  "tool": "eu-web-compliance check-security",
+  "disclaimer": "Automated check. Not a security audit, not legal advice. Absence of findings does not establish that the site is secure.",
+  "target": "tests/fixtures/report/site",
+  "date": "2026-11-14T09:02:00.000Z",
+  "browser": "fixture",
+  "summary": { "non_conformities": 1, "to_review": 1 },
+  "pages": [
+    {
+      "page": "index.html",
+      "findings": [
+        { "detector": "headers", "rule": "missing-header", "verdict": "NC", "severity": "high", "source": "[ANSSI WEB R18]", "refs": ["anssi-web"], "header": "X-Frame-Options", "detail": "X-Frame-Options", "message": "The X-Frame-Options header is missing.", "rationale": "Defence in depth against clickjacking." },
+        { "detector": "page", "rule": "third-party-script-without-integrity", "verdict": "NT", "severity": "minor", "source": "[ANSSI-PA-009] [OWASP Top 10:2025 A08 Software or Data Integrity Failures]", "refs": ["anssi-web", "owasp-top10-2025"], "selector": "html > head > script:nth-child(4)", "request": "https://analytics.example/tag.js", "message": "Script from analytics.example has no integrity attribute." }
+      ]
+    }
+  ],
+  "limits": [
+    "It does not see logged-in areas unless those pages are provided, and it does not log in.",
+    "TLS is not checked (protocol versions, cipher suites, certificate); use a dedicated TLS test against the ANSSI TLS guide."
+  ]
+}

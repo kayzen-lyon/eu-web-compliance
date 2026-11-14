@@ -8,7 +8,7 @@ Entry point of the consumer part of the skill: who runs the site (identification
 2. Pick the file from the table below. Each file starts with its own instructions and keeps to one subject.
 3. Dates of application, periods and amounts are only in [../regulatory-status.md](../regulatory-status.md), section 5. The files link to it instead of repeating them.
 4. Every rule ends with its source in square brackets. `ECD`, `CRD`, `CRD 11a`, `PID`, `UCPD` and `DSA` are EU law: the baseline everywhere, applied through each Member State's transposition (except the DSA, a regulation that applies directly). `LCEN` and `C. conso` are French. `[best practice]` is never an obligation.
-6. What the skill cannot do here: decide whether the right of withdrawal applies to a given product, whether a site is an "online platform", which national law governs a cross-border sale, or what the general terms of sale say. The agent gathers facts, writes "to be confirmed by a professional", and asks. Everything produced is generated with the help of an AI and is not legal advice.
+5. What the skill cannot do here: decide whether the right of withdrawal applies to a given product, whether a site is an "online platform", which national law governs a cross-border sale, or what the general terms of sale say. The agent gathers facts, writes "to be confirmed by a professional", and asks. Everything produced is generated with the help of an AI and is not legal advice.
 
 ## Scope
 

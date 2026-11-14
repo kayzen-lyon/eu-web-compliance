@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eu-web-compliance:schema:report:1",
+  "title": "eu-web-compliance: unified compliance report",
+  "description": "JSON output of scripts/check-all.mjs (compliance/reports/compliance-report-YYYY-MM-DD.json). It merges the applicability matrix, the AI Act classification and the findings of the four checkers. It is produced by an AI tool: it is not an audit and not legal advice, and it never declares the site conformant.",
+  "type": "object",
+  "required": ["schema_version", "tool", "generator", "disclaimer", "generated", "target", "language", "profile", "summary",
+    "applicability", "checkers", "findings", "grouped_fixes", "not_tested", "manual_checks", "documents", "changes", "next_actions"],
+  "additionalProperties": false,
+  "$defs": {
+    "count": {
+      "description": "Counts of non-conformities (NC) and items to review (NT).",
+      "type": "object",
+      "required": ["non_conformities", "to_review"],
+      "additionalProperties": false,
+      "properties": {
+        "non_conformities": { "description": "Number of NC findings.", "type": "integer", "minimum": 0 },
+        "to_review": { "description": "Number of NT findings.", "type": "integer", "minimum": 0 }
+      }
+    },
+    "domain": {
+      "description": "One of the five domains of the report.",
+      "enum": ["accessibility", "privacy", "ai", "security", "consumer"]
+    },
+    "obligation": {
+      "description": "One row of the applicability matrix, shortened.",
+      "type": "object",
+      "required": ["id", "domain", "title", "level"],
+      "properties": {
+        "id": { "description": "Obligation id in references/scoping/obligations.json.", "type": "string" },
+        "domain": { "description": "Domain of the obligation as written in the matrix.", "type": "string" },
+        "title": { "description": "Title of the obligation.", "type": "string" },
+        "level": { "description": "mandatory, recommended, to-confirm or not-applicable.", "type": "string" },
+        "rules_file": { "description": "Reference file of the skill for this obligation.", "type": ["string", "null"] },
+        "reasons": { "description": "For a to-confirm row: the answers that must be confirmed.", "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": { "description": "Version of this schema.", "const": 1 },
+    "tool": { "description": "Producing tool.", "const": "eu-web-compliance check-all" },
+    "generator": {
+      "description": "Credit of the skill that produced the report.",
+      "type": "object",
+      "required": ["name", "author", "homepage", "related"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "description": "Name of the skill.", "const": "eu-web-compliance" },
+        "author": { "description": "Author of the skill.", "type": "string", "minLength": 1 },
+        "homepage": { "description": "Web site of the author.", "type": "string", "minLength": 1 },
+        "related": { "description": "Related project of the author.", "type": "string", "minLength": 1 }
+      }
+    },
+    "disclaimer": { "description": "Warning shown at the top of the report: produced by an AI tool, not an audit, not legal advice.", "type": "string", "minLength": 1 },
+    "generated": { "description": "Date and time of the run (ISO 8601).", "type": "string" },
+    "target": { "description": "Site folder or URL checked, as given.", "type": "string" },
+    "language": { "description": "Language of the Markdown report.", "enum": ["en", "fr"] },
+    "profile": {
+      "description": "Project profile used for the applicability matrix.",
+      "type": "object",
+      "required": ["path", "found"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "description": "Path of the profile looked for.", "type": "string" },
+        "found": { "description": "False when no profile exists: the matrix was computed on an empty profile and every obligation is to confirm.", "type": "boolean" },
+        "declares_ai": { "description": "True when the profile declares at least one AI feature (the AI Act classifier was run).", "type": "boolean" }
+      }
+    },
+    "summary": {
+      "description": "Totals over all findings, and per domain.",
+      "type": "object",
+      "required": ["non_conformities", "to_review", "by_domain", "exit_code"],
+      "additionalProperties": false,
+      "properties": {
+        "non_conformities": { "description": "Number of NC findings.", "type": "integer", "minimum": 0 },
+        "to_review": { "description": "Number of NT findings.", "type": "integer", "minimum": 0 },
+        "by_domain": {
+          "description": "Counts per domain.",
+          "type": "object",
+          "required": ["accessibility", "privacy", "ai", "security", "consumer"],
+          "additionalProperties": false,
+          "properties": {
+            "accessibility": { "$ref": "#/$defs/count" },
+            "privacy": { "$ref": "#/$defs/count" },
+            "ai": { "$ref": "#/$defs/count" },
+            "security": { "$ref": "#/$defs/count" },
+            "consumer": { "$ref": "#/$defs/count" }
+          }
+        },
+        "exit_code": { "description": "Exit code of check-all: 0 no non-conformity, 1 at least one, 2 a checker could not run.", "enum": [0, 1, 2] }
+      }
+    },
+    "applicability": {
+      "description": "Summary of the applicability matrix (scripts/applicability.py).",
+      "type": ["object", "null"],
+      "required": ["counts", "applies", "to_confirm", "does_not_apply", "assumptions"],
+      "properties": {
+        "counts": { "description": "Number of obligations per status.", "type": "object" },
+        "applies": { "description": "Obligations that apply.", "type": "array", "items": { "$ref": "#/$defs/obligation" } },
+        "to_confirm": { "description": "Obligations handled as applying until an answer is confirmed.", "type": "array", "items": { "$ref": "#/$defs/obligation" } },
+        "does_not_apply": { "description": "Obligations that do not apply to this profile.", "type": "array", "items": { "$ref": "#/$defs/obligation" } },
+        "assumptions": { "description": "Assumed and missing answers of the profile, as given by the matrix.", "type": "object" },
+        "country_coverage": { "description": "Countries whose national rules the skill does not cover.", "type": "array" },
+        "beyond_the_skill": { "description": "Cases that need a professional.", "type": "array" },
+        "error": { "description": "Error message when the matrix could not be computed.", "type": "string" }
+      }
+    },
+    "ai_act": {
+      "description": "Output of scripts/ai_act_classify.py when the profile declares AI features; null otherwise.",
+      "type": ["object", "null"]
+    },
+    "checkers": {
+      "description": "One entry per checker.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "description": "Checker name.", "enum": ["a11y", "privacy", "security", "content"] },
+          "status": { "description": "ran, failed (no usable report), skipped (excluded by --only), unavailable (script missing).", "enum": ["ran", "failed", "skipped", "unavailable"] },
+          "exit_code": { "description": "Exit code of the checker process.", "type": ["integer", "null"] },
+          "pages": { "description": "Number of pages checked.", "type": "integer", "minimum": 0 },
+          "summary": { "$ref": "#/$defs/count" },
+          "browser": { "description": "Browser used by the checker.", "type": ["string", "null"] },
+          "raw_report": { "description": "Path of the raw checker report, relative to the output folder.", "type": ["string", "null"] },
+          "error": { "description": "Error output when the checker failed.", "type": ["string", "null"] },
+          "expected": { "description": "Detection of planted defects, when --expected-dir gave a file for this checker.", "type": ["object", "null"] }
+        }
+      }
+    },
+    "findings": {
+      "description": "Every finding, normalised.",
+      "type": "array",
+      "items": { "$ref": "urn:eu-web-compliance:schema:findings:1" }
+    },
+    "grouped_fixes": {
+      "description": "Elements that several findings point to: fixing the element once may resolve all of them.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["element", "pages", "rules", "finding_ids", "fix_refs"],
+        "additionalProperties": false,
+        "properties": {
+          "element": { "description": "Element (selector, header, cookie...).", "type": "string" },
+          "pages": { "description": "Pages where it occurs.", "type": "array", "items": { "type": "string" } },
+          "rules": { "description": "Distinct rules raised on it.", "type": "array", "items": { "type": "string" } },
+          "domains": { "description": "Domains concerned.", "type": "array", "items": { "$ref": "#/$defs/domain" } },
+          "finding_ids": { "description": "Ids of the findings grouped.", "type": "array", "items": { "type": "string" } },
+          "fix_refs": { "description": "Reference files to read for the fix.", "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "not_tested": {
+      "description": "What the checkers say they do not test (union of their limits and not_tested lists).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["checker", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "checker": { "description": "Checker that declared the limit, or check-all.", "type": "string" },
+          "text": { "description": "The limit.", "type": "string" },
+          "wcag": { "description": "WCAG success criterion, for accessibility items.", "type": ["string", "null"] }
+        }
+      }
+    },
+    "manual_checks": {
+      "description": "Checks a person must perform, each with a one-line procedure.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "domain", "title", "procedure", "reference", "origin"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "description": "Identifier (manual-a11y-N, or the obligation id).", "type": "string" },
+          "domain": { "$ref": "#/$defs/domain" },
+          "title": { "description": "What to check.", "type": "string" },
+          "procedure": { "description": "One-line procedure or pass condition.", "type": "string" },
+          "reference": { "description": "File to read for the full procedure.", "type": ["string", "null"] },
+          "origin": { "description": "testing-by-hand (accessibility manual checks), matrix (obligation that applies and that no checker covers), checker-not-run.", "enum": ["testing-by-hand", "matrix", "checker-not-run"] }
+        }
+      }
+    },
+    "documents": {
+      "description": "Documents the project must publish according to the matrix.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "template", "obligations", "status", "pages"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "description": "Document identifier.", "type": "string" },
+          "title": { "description": "Document name.", "type": "string" },
+          "template": { "description": "Template of the skill to start from.", "type": "string" },
+          "obligations": { "description": "Obligation ids that require it.", "type": "array", "items": { "type": "string" } },
+          "level": { "description": "mandatory, recommended or to-confirm.", "type": "string" },
+          "status": { "description": "found (a page seems to exist), not-found, not-checked (URL target: only the given page is seen).", "enum": ["found", "not-found", "not-checked"] },
+          "pages": { "description": "Pages that seem to be this document, or link to it.", "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "changes": {
+      "description": "Comparison with the previous JSON report found in the output folder; null when there is none.",
+      "type": ["object", "null"],
+      "required": ["previous", "fixed", "new", "unchanged"],
+      "additionalProperties": false,
+      "properties": {
+        "previous": { "description": "File name of the previous report.", "type": "string" },
+        "previous_generated": { "description": "Date of the previous report.", "type": ["string", "null"] },
+        "fixed": { "description": "Findings of the previous report absent now (only for checkers that ran both times).", "type": "array", "items": { "type": "string" } },
+        "new": { "description": "Findings absent from the previous report.", "type": "array", "items": { "type": "string" } },
+        "unchanged": { "description": "Findings present in both.", "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "next_actions": {
+      "description": "Ordered list of what the user should do next.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "outputs": {
+      "description": "Files written by the run, relative to the output folder.",
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Accueil</title>
+</head>
+<body>
+  <main>
+    <h1>Boutique exemple</h1>
+    <button type="button" id="open-chat" aria-controls="ai-chat" aria-expanded="false">Ouvrir la discussion</button>
+    <section id="ai-chat" class="ai-chat" data-ai-chat aria-labelledby="chat-title" hidden
+      data-assistant-label="Assistant IA" data-greeting="Bonjour, je suis un assistant IA.">
+      <h2 id="chat-title">Assistant IA</h2>
+      <p class="ai-badge"><span aria-hidden="true">IA</span> Pas une personne</p>
+      <p>Vous échangez avec un assistant d'intelligence artificielle, pas avec une personne.</p>
+      <div role="log" aria-label="Conversation"><ol></ol></div>
+      <form><label for="msg">Votre message</label><textarea id="msg"></textarea><button type="submit">Envoyer</button></form>
+    </section>
+
+    <div class="c-price">
+      <p class="c-price-current">Prix actuel : 29,90 €</p>
+      <p class="c-price-badge">Réduction de 25 %</p>
+      <p class="c-price-prior">Prix le plus bas pratiqué avant la réduction : <s>39,90 €</s></p>
+    </div>
+    <p><input type="checkbox" id="assurance"><label for="assurance">Ajouter une assurance casse (+2,90 €)</label></p>
+    <p><input type="checkbox" id="souvenir" checked><label for="souvenir">Afficher les prix en grand</label></p>
+    <figure>
+      <img id="photo" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="200" height="100" alt="Bougie sur une table">
+      <figcaption><strong>Image générée par IA.</strong> La bougie montrée est celle que nous vendons.</figcaption>
+    </figure>
+    <p>Offre valable jusqu'au 30 novembre 2026 à 23 h 59.</p>
+    <p><a href="#">Non merci</a></p>
+  </main>
+  <footer>
+    <ul>
+      <li><a href="mentions.html">Mentions légales</a></li>
+      <li><a href="retractation.html">Renoncer au contrat ici</a></li>
+    </ul>
+  </footer>
+  <script>
+    document.getElementById('open-chat').addEventListener('click', function () {
+      var panel = document.getElementById('ai-chat');
+      panel.hidden = false;
+      var item = document.createElement('li');
+      item.className = 'ai-msg ai-msg--assistant';
+      item.textContent = panel.getAttribute('data-assistant-label') + ' : ' + panel.getAttribute('data-greeting');
+      panel.querySelector('ol').append(item);
+    });
+  </script>
+</body>
+</html>

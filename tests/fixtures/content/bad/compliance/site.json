@@ -1,0 +1,65 @@
+{
+  "about": "Fixture of tests/content.test.mjs: every rule fails once; defects in expected-defects.json.",
+  "language": "fr",
+  "operator": {
+    "country": "FR",
+    "registered": true,
+    "vat": true
+  },
+  "distance_selling_to_consumers": true,
+  "pages": {
+    "legal_notice": "mentions.html",
+    "order_start": "panier.html",
+    "order_final": "commande.html",
+    "withdrawal": "retractation.html"
+  },
+  "ai": {
+    "chat_widgets": [
+      "#ai-chat"
+    ],
+    "content": [
+      {
+        "page": "index.html",
+        "selector": "#photo",
+        "kind": "image",
+        "ai_use": "generated"
+      },
+      {
+        "page": "article.html",
+        "selector": "#article-ia",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true
+      },
+      {
+        "page": "article.html",
+        "selector": "#photo-modifiee",
+        "kind": "image",
+        "ai_use": "modified"
+      },
+      {
+        "page": "article.html",
+        "selector": "#resume",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true
+      },
+      {
+        "page": "article.html",
+        "selector": "#article-relu",
+        "kind": "text",
+        "ai_use": "generated",
+        "public_interest": true,
+        "editorial_review": true
+      },
+      {
+        "page": "article.html",
+        "selector": "#article-traduit",
+        "kind": "text",
+        "ai_use": "translated",
+        "public_interest": true
+      }
+    ],
+    "editorial_responsibility_page": "mentions.html"
+  }
+}

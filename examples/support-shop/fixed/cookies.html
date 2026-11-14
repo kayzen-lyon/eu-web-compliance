@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Politique cookies – Cirelune</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="consumer/consumer.css">
+  <link rel="stylesheet" href="consent/consent.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="consent/consent.js" defer></script>
+</head>
+<body>
+  <a class="c-skip-link" href="#main">Aller au contenu principal</a>
+
+  <script type="application/json" id="eu-consent-config">
+  {
+    "version": "2026-11-14",
+    "maxAgeMonths": 6,
+    "storage": "cookie",
+    "reloadOnWithdraw": true,
+    "focusTarget": "#main"
+  }
+  </script>
+
+  <section id="consent-banner" class="consent-banner" aria-labelledby="consent-title" hidden>
+    <h2 id="consent-title">Cookies et autres traceurs</h2>
+    <p>
+      Cirelune et le prestataire de mesure d'audience cité dans notre politique cookies souhaitent utiliser des traceurs sur votre appareil pour :
+    </p>
+    <ul class="consent-purpose-summary">
+      <li><strong>Mesure d'audience :</strong> compter les visites et voir quelles pages sont lues, pour améliorer la boutique.</li>
+    </ul>
+    <p>
+      Vous pouvez tout accepter, tout refuser ou choisir finalité par finalité. Refuser ne vous empêche pas d'utiliser le site.
+      Vous pouvez changer d'avis à tout moment avec « Gérer les cookies » en bas de chaque page.
+      <a href="cookies.html">Politique cookies et liste des sociétés qui utilisent des traceurs sur ce site</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-button" data-consent="accept">Tout accepter</button>
+      <button type="button" class="consent-button" data-consent="refuse">Tout refuser</button>
+      <button type="button" class="consent-button" data-consent="customise">Personnaliser</button>
+    </div>
+  </section>
+
+  <div class="page">
+    <header class="site-header">
+      <p class="brand"><a href="index.html">Cirelune, bougies artisanales</a></p>
+      <nav aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="produits.html">Nos bougies</a></li>
+          <li><a href="panier.html">Panier</a></li>
+          <li><a href="aide.html">Aide</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <h1>Politique cookies</h1>
+      <p>Vous pouvez modifier votre choix à tout moment avec le bouton « Gérer les cookies » en bas de chaque page.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Traceurs utilisés sur ce site</caption>
+          <thead>
+            <tr><th scope="col">Nom</th><th scope="col">Finalité</th><th scope="col">Consentement</th><th scope="col">Durée</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>eu-consent</td><td>Conserver votre choix sur les traceurs</td><td>Non requis</td><td>6 mois</td></tr>
+            <tr><td>_ga, _ga_*</td><td>Mesure d'audience, par le prestataire de mesure d'audience</td><td>Requis</td><td>13 mois</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="visually-hidden">Informations sur le site</h2>
+      <nav aria-label="Informations légales">
+        <ul class="footer-links">
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="cgv.html">Conditions générales de vente</a></li>
+          <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+          <li><a href="cookies.html">Politique cookies</a></li>
+        </ul>
+      </nav>
+      <p class="footer-withdrawal"><a href="retractation.html">Renoncer au contrat ici</a></p>
+      <p class="footer-manage"><button type="button" class="consent-button consent-manage" data-consent-open>Gérer les cookies</button></p>
+      <p class="footer-note">Cirelune est une entreprise fictive. Ce site d'exemple du projet eu-web-compliance ne prend aucune commande et n'envoie rien.</p>
+    </footer>
+  </div>
+
+  <dialog id="consent-settings" class="consent-settings" aria-labelledby="consent-settings-title">
+    <form method="dialog">
+      <h2 id="consent-settings-title" tabindex="-1" autofocus>Choisir par finalité</h2>
+      <p>
+        Votre choix vaut pour ce navigateur. Il est conservé 6 mois, puis nous vous reposons la question.
+        Si vous retirez un consentement donné plus tôt, la page se recharge pour arrêter les services concernés.
+      </p>
+
+      <fieldset class="consent-purpose" data-purpose="analytics" data-cookies="_ga _ga_*" data-storage="">
+        <legend>Mesure d'audience</legend>
+        <p id="purpose-analytics-text">
+          Cirelune utilise un service de mesure d'audience pour compter les visites et voir quelles pages sont lues. Données : pages vues, type d'appareil approximatif. Société concernée : le prestataire cité dans la politique cookies.
+        </p>
+        <div class="consent-choice">
+          <label><input type="radio" name="analytics" value="accept" aria-describedby="purpose-analytics-text"> Accepter</label>
+          <label><input type="radio" name="analytics" value="refuse" aria-describedby="purpose-analytics-text" checked> Refuser</label>
+        </div>
+      </fieldset>
+
+      <p class="consent-note">
+        Les traceurs strictement nécessaires (conserver votre choix) ne demandent pas votre consentement.
+        Ils sont listés dans la <a href="cookies.html">politique cookies</a>.
+      </p>
+
+      <div class="consent-actions">
+        <button class="consent-button" value="accept">Tout accepter</button>
+        <button class="consent-button" value="refuse">Tout refuser</button>
+        <button class="consent-button" value="save">Enregistrer mes choix</button>
+        <button class="consent-button" value="cancel">Annuler</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="consent-status" role="status" class="consent-visually-hidden"></div>
+  <script type="text/plain" data-consent-purpose="analytics" src="js/analytics-config.js"></script>
+  <script type="text/plain" data-consent-purpose="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-CL00EXAMPLE"></script>
+</body>
+</html>

@@ -6,6 +6,8 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les
 
 ### Ajouté
 
+- Étape M3 (vérification) : vérificateur `scripts/check-content.mjs` (transparence IA, bouton de commande, fonction de rétractation, réductions de prix, cases précochées, comptes à rebours, mentions légales) et deux sites de test (boutique avec assistant IA, site d'actualité utilisant l'IA) ; messages du bandeau de consentement traduisibles.
+- Étape M4 (assemblage) : `SKILL.md`, `AGENTS.md`, adaptateurs Copilot et Cursor, paquet Claude Code (`.claude-plugin/`) ; orchestrateur `scripts/check-all.mjs` et rapport unifié en anglais ou en français, avec schémas JSON publiés ; crédit d'auteur Kayzen et Nexus dans l'outil et ses rapports, ligne de crédit proposée au propriétaire du site (`templates/credit/`) ; cahiers des charges de l'évaluation par un agent neuf (`docs/evaluation/`).
 - Étape M0 (fondations) : arborescence du dépôt, licence MIT, `NOTICE.md`, registre des sources (`references/sources.json`), état réglementaire daté (`references/regulatory-status.md`), script de contrôle de structure (`scripts/validate.py`) avec ses tests, intégration continue.
 - `docs/PRD.md` et `docs/PROMPT.md` : exigences produit et prompt de construction.
 - Étape M1 (qualification et accessibilité) :

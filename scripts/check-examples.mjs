@@ -28,6 +28,7 @@ const CHECKERS = [
   { name: 'a11y', script: 'check-a11y.mjs', expected: 'expected-defects.json', alwaysOnFixed: true },
   { name: 'privacy', script: 'check-privacy.mjs', expected: 'expected-privacy.json' },
   { name: 'security', script: 'check-security.mjs', expected: 'expected-security.json' },
+  { name: 'content', script: 'check-content.mjs', expected: 'expected-content.json' },
 ];
 
 async function exists(file) {

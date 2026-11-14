@@ -59,6 +59,9 @@
     merged.maxAgeMonths = months > 0 ? months : DEFAULTS.maxAgeMonths;
     merged.storage = merged.storage === 'localStorage' ? 'localStorage' : 'cookie';
     merged.version = String(merged.version);
+    // Messages announced to screen readers: translate them with the page, in the configuration
+    // ("messages": {"accept": ..., "refuse": ..., "custom": ..., "contextual": ...}). Missing keys keep the English default.
+    merged.messages = Object.assign({}, MESSAGES, (parsed && typeof parsed.messages === 'object' && parsed.messages) || {});
     return merged;
   }
 
@@ -354,7 +357,7 @@
   function decide(choices, method) {
     if (record(choices, method)) {
       closeBanner();
-      announce(MESSAGES[method] || MESSAGES.custom);
+      announce(config.messages[method] || config.messages.custom);
     }
   }
 
@@ -402,7 +405,7 @@
     if (purposeIds().indexOf(id) === -1) return;
     var choices = Object.assign(uniform(false), current ? current.p : {});
     choices[id] = true;
-    if (record(choices, 'contextual')) announce(MESSAGES.contextual);
+    if (record(choices, 'contextual')) announce(config.messages.contextual);
   }
 
   function init() {
