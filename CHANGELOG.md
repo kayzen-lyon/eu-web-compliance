@@ -2,6 +2,30 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
+## [1.1.1] - 2026-11-15
+
+Corrections issues de deux relectures indépendantes du code de la 1.1.0 (qualité et sécurité) et d'un essai de l'Action appelée par son étiquette `v1`, sur un dossier de pages et sur une adresse en ligne. Chaque constat corrigé a été vérifié dans le code avant correction et porte un test.
+
+### Corrigé
+
+- Veille des sources : une source jugée instable une fois n'était plus jamais comparée ; `--update` lui redonne une empreinte dès que deux lectures de suite concordent.
+- Veille des sources : une page suivie qui répond 404 ou 410 est signalée comme disparue (état `gone`) et fait ouvrir l'issue ; un refus (403, 429) ou une panne reste « injoignable », sans alerte.
+- Veille des sources : `--only` suivi d'un identifiant absent du registre rend le code 2 au lieu d'être ignoré.
+- Serveur MCP : `audit_site` résolvait deux fois un chemin relatif quand `project` était donné ; les chemins sont rendus absolus avant le lancement de `check-all`.
+- Vérificateur de contenu : la recherche de la page des mentions légales suivait les redirections sans passer par le blocage des requêtes tierces ; une redirection n'est plus suivie que si elle reste sur le site vérifié.
+- Recherche de règles (`rule`, `get_rule`) : un fichier de référence aux fins de ligne Windows ne rendait aucune règle.
+- GitHub Action : `fail-on-violation: False` (avec une majuscule) est lu comme `false`.
+- `init` : `0x10` ou `1e3` ne sont plus acceptés comme nombres.
+
+### Sécurité
+
+- Serveur MCP, nouveau fichier `mcp/guard.mjs` : `audit_site` refuse une cible qui n'est pas en `http` ou `https` et toute adresse de lien local, y compris derrière un nom de domaine ; avec la variable `EU_WEB_COMPLIANCE_MCP_ROOT`, les chemins reçus par `audit_site` et `qualify_project` sont bornés à ce dossier ; `timeout_minutes` est plafonné à 30.
+- Une cible d'audit qui commence par un tiret est refusée : elle aurait été lue comme une option de `check-all`.
+
+### Non corrigé, inscrit dans `docs/ROADMAP.md`
+
+- Sites voisins d'un même suffixe public (`*.vercel.app`, `*.github.io`) vus comme un seul site, liens Markdown possibles dans le texte cité d'un site vérifié, sorties des sous-processus sans plafond de taille, actions GitHub référencées par étiquette et non par empreinte, commentaires répétés sur l'issue de veille.
+
 ## [1.1.0] - 2026-11-15
 
 Portes d'entrée vers les mêmes vérificateurs et les mêmes règles que le skill. Audit de départ et suites dans `docs/ROADMAP.md`. Version publiée sur GitHub avec les étiquettes `v1.1.0` et `v1` ; le paquet n'est pas encore publié sur npm.

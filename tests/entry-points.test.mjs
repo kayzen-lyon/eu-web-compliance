@@ -12,10 +12,12 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { ROOT } from './helpers.mjs';
-import { SkillError, checkAllArgs, findRules, getTemplate, listTemplates, qualifyProject } from '../scripts/lib/skill-api.mjs';
+import { SkillError, auditPaths, checkAllArgs, findRules, getTemplate, linesOf, listTemplates, qualifyProject } from '../scripts/lib/skill-api.mjs';
+import { statusWithinSite } from '../scripts/lib/browser.mjs';
+import { assertInsideRoot, assertUrlAllowed, isLinkLocal } from '../mcp/guard.mjs';
 import { buildProfile, loadQuestions, parseAnswer, shouldAsk } from '../scripts/lib/profile-init.mjs';
 import { clip, main as actionReport } from '../scripts/action-report.mjs';
-import { checkSources, fingerprint, nextBaseline, toMarkdown } from '../scripts/watch-sources.mjs';
+import { checkSources, fingerprint, needsAttention, nextBaseline, toMarkdown } from '../scripts/watch-sources.mjs';
 
 const BIN = path.join(ROOT, 'bin', 'eu-web-compliance.mjs');
 const readJson = async (file) => JSON.parse(await fs.readFile(file, 'utf8'));
@@ -81,6 +83,47 @@ describe('socle commun : règles et modèles', () => {
     assert.throws(() => checkAllArgs({}), SkillError);
   });
 
+  test('une cible qui ressemble à une option est refusée', () => {
+    assert.throws(() => checkAllArgs({ target: '--project' }), SkillError);
+    assert.throws(() => checkAllArgs({ target: '-x' }), SkillError);
+  });
+
+  test('les chemins d\'un audit sont rendus absolus, une URL reste telle quelle', () => {
+    const cwd = path.join(os.tmpdir(), 'ewc cwd');
+    const paths = auditPaths({ target: 'sites/acme/dist', project: 'sites/acme', profile: 'profil.json' }, cwd);
+    assert.equal(paths.target, path.join(cwd, 'sites', 'acme', 'dist'));
+    assert.equal(paths.project, path.join(cwd, 'sites', 'acme'));
+    assert.equal(paths.profile, path.join(cwd, 'profil.json'));
+    assert.equal(paths.out, undefined);
+    assert.equal(auditPaths({ target: 'https://example.org/a' }, cwd).target, 'https://example.org/a');
+    const absolute = path.join(os.tmpdir(), 'ailleurs');
+    assert.equal(auditPaths({ target: absolute }, cwd).target, absolute);
+  });
+
+  test('un fichier aux fins de ligne Windows est lu ligne par ligne, sans retour chariot', () => {
+    assert.deepEqual(linesOf('# Titre\r\n- [ ] Règle [RGAA 1.1]\r\n'), ['# Titre', '- [ ] Règle [RGAA 1.1]', '']);
+    assert.deepEqual(linesOf('a\nb'), ['a', 'b']);
+  });
+
+  test('une redirection n\'est suivie que si elle reste sur le site vérifié', async () => {
+    const asked = [];
+    const answers = {
+      'https://site.example/mentions': { status: 301, location: '/mentions-legales' },
+      'https://site.example/mentions-legales': { status: 200 },
+      'https://site.example/sortie': { status: 302, location: 'https://ailleurs.example/piege' },
+      'https://site.example/interne': { status: 302, location: 'http://169.254.169.254/latest' },
+      'https://site.example/boucle': { status: 302, location: '/boucle' },
+    };
+    const get = async (url) => { asked.push(url); return answers[url]; };
+    assert.equal(await statusWithinSite(get, 'https://site.example/mentions'), 200);
+    assert.equal(await statusWithinSite(get, 'https://site.example/sortie'), 302);
+    assert.equal(await statusWithinSite(get, 'https://site.example/interne'), 302);
+    assert.ok(asked.every((url) => url.startsWith('https://site.example/')), `requête hors du site : ${asked}`);
+    asked.length = 0;
+    assert.equal(await statusWithinSite(get, 'https://site.example/boucle', 3), 302);
+    assert.equal(asked.length, 4);
+  });
+
   test('la qualification rend la matrice du script Python, à partir d\'un objet ou d\'un fichier', async () => {
     const example = path.join(ROOT, 'templates', 'profile.example.json');
     const fromFile = await qualifyProject(example);
@@ -117,6 +160,8 @@ describe('init : questions de qualification', () => {
     assert.deepEqual(parseAnswer(q('operator.headcount'), '1 200'), { value: 1200 });
     assert.deepEqual(parseAnswer(q('operator.headcount'), '-3'), { error: 'number' });
     assert.deepEqual(parseAnswer(q('operator.headcount'), 'a few'), { error: 'number' });
+    assert.deepEqual(parseAnswer(q('operator.headcount'), '0x10'), { error: 'number' });
+    assert.deepEqual(parseAnswer(q('operator.headcount'), '1e3'), { error: 'number' });
     assert.deepEqual(parseAnswer(q('operator.type'), '3'), { value: 'company' });
     assert.deepEqual(parseAnswer(q('operator.type'), 'Association'), { value: 'association' });
     assert.deepEqual(parseAnswer(q('operator.type'), '9'), { error: 'choice' });
@@ -243,6 +288,8 @@ describe('GitHub Action', () => {
     for (const input of ['target', 'only', 'lang', 'fail-on-violation']) assert.match(text, new RegExp(`^  ${input}:`, 'm'));
     assert.match(text, /bin\/eu-web-compliance\.mjs" audit/);
     assert.match(text, /--no-fail/);
+    // « False » ou « FALSE » valent « false » : la valeur est comparée en minuscules.
+    assert.match(text, /"\$\{EWC_FAIL,,\}" = "false"/);
     // Aucune valeur d'entrée n'est écrite dans le texte d'un script : elles passent par env.
     const scriptLines = text.split('\n').filter((line) => /^\s+(run:|node |npm |npx |if \[|args)/.test(line));
     for (const line of scriptLines) assert.ok(!line.includes('${{ inputs.'), `entrée interpolée dans un script : ${line}`);
@@ -289,6 +336,7 @@ describe('veille des sources', () => {
   before(async () => {
     server = http.createServer((req, res) => {
       if (req.url === '/gone') { res.writeHead(403); res.end(); return; }
+      if (req.url === '/removed') { res.writeHead(404); res.end(); return; }
       if (req.url === '/moving') { counter += 1; res.writeHead(200, { 'content-type': 'text/html' }); res.end(`<p>visite ${counter}</p>`); return; }
       if (req.url === '/file') { res.writeHead(200, { 'content-type': 'application/pdf' }); res.end(pages['/file'] || 'v1'); return; }
       res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
@@ -337,6 +385,56 @@ describe('veille des sources', () => {
     assert.match(markdown, /not that the law changed/);
     // Une source devenue injoignable garde son empreinte : elle sera comparée à son retour.
     assert.deepEqual(nextBaseline([{ id: 'stable', url: `${origin}/stable`, state: 'unreachable' }], baseline, '2026-11-22').stable, baseline.stable);
+  });
+
+  test('une page suivie qui répond 404 est signalée comme disparue, un refus ne l\'est pas', async () => {
+    const known = (url) => ({ url, status: 'ok', sha256: 'abc', checked: '2026-11-15' });
+    const sources = [{ id: 'removed', title: 'Removed', url: `${origin}/removed` }, { id: 'refused', title: 'Refused', url: `${origin}/gone` },
+      { id: 'never', title: 'Never read', url: `${origin}/removed` }];
+    const baseline = { removed: known(`${origin}/removed`), refused: known(`${origin}/gone`) };
+    const results = await checkSources(sources, baseline);
+    assert.deepEqual(results.map((r) => r.state), ['gone', 'unreachable', 'unreachable']);
+    assert.equal(needsAttention(results), true);
+    assert.equal(needsAttention(results.filter((r) => r.state !== 'gone')), false);
+    const markdown = toMarkdown(results, '2026-11-22');
+    assert.match(markdown, /1 gone/);
+    assert.match(markdown, /## Pages that disappeared\n\n- `removed`: Removed .*HTTP 404/);
+    // L'empreinte d'une page disparue est gardée : elle sera comparée si la page revient.
+    assert.deepEqual(nextBaseline(results, baseline, '2026-11-22').removed, baseline.removed);
+  });
+
+  test('une source jugée instable redevient comparable quand deux lectures concordent', async () => {
+    const sources = [{ id: 'calm', title: 'Calm', url: `${origin}/calm` }];
+    pages['/calm'] = '<p>Texte stable</p>';
+    const baseline = { calm: { url: `${origin}/calm`, status: 'unstable', checked: '2026-11-15' } };
+    // La veille hebdomadaire lit une seule fois : elle ne peut pas juger, la source reste à part.
+    assert.equal((await checkSources(sources, baseline))[0].state, 'unstable');
+    // --update lit deux fois : les lectures concordent, la source reçoit une empreinte.
+    const updated = await checkSources(sources, baseline, { twice: true });
+    assert.equal(updated[0].state, 'new');
+    assert.equal(nextBaseline(updated, baseline, '2026-11-22').calm.status, 'ok');
+  });
+
+  test('--only refuse un identifiant absent du registre, sans réécrire les empreintes', async () => {
+    const dir = await tmpDir('watch');
+    const registry = path.join(dir, 'sources.json');
+    const stored = path.join(dir, 'fingerprints.json');
+    await fs.writeFile(registry, JSON.stringify({ sources: [{ id: 'stable', title: 'Stable', url: `${origin}/stable` }] }));
+    const run = (args) => new Promise((resolve, reject) => {
+      const child = spawn(process.execPath, [path.join(ROOT, 'scripts', 'watch-sources.mjs'), '--registry', registry, '--baseline', stored, ...args]);
+      let stderr = '';
+      child.stderr.on('data', (d) => { stderr += d; });
+      child.on('error', reject);
+      child.on('close', (code) => resolve({ code, stderr }));
+    });
+    const unknown = await run(['--only', 'stable,nope', '--update']);
+    assert.equal(unknown.code, 2);
+    assert.match(unknown.stderr, /nope/);
+    await assert.rejects(fs.stat(stored));
+    assert.equal((await run(['--only', 'stable', '--update'])).code, 0);
+    assert.equal((await readJson(stored)).fingerprints.stable.status, 'ok');
+    assert.equal((await run([])).code, 0);
+    await fs.rm(dir, { recursive: true, force: true });
   });
 
   test('chaque source du registre a une empreinte enregistrée', async () => {
@@ -405,5 +503,50 @@ describe('serveur MCP', () => {
     await fs.rm(path.dirname(data.full_report.json), { recursive: true, force: true });
     const missing = await call('audit_site', { target: path.join(ROOT, 'no-such-folder') });
     assert.equal(missing.isError, true);
+  });
+
+  test('audit_site refuse une cible dangereuse avant de lancer quoi que ce soit', async () => {
+    for (const target of ['http://169.254.169.254/latest/meta-data/', 'http://[fe80::1]/', 'file:///etc/passwd', 'ftp://example.org/', '--project']) {
+      const refused = await call('audit_site', { target });
+      assert.equal(refused.isError, true, target);
+      assert.match(refused.text, /refused|looks like an option/, target);
+    }
+    const tooLong = await call('audit_site', { target: 'https://example.org', timeout_minutes: 60 });
+    assert.equal(tooLong.isError, true);
+  });
+
+  test('les adresses de lien local sont reconnues, y compris derrière un nom de domaine', async () => {
+    assert.deepEqual(['169.254.169.254', '[fe80::1]', '::ffff:169.254.1.1', '127.0.0.1', '10.0.0.1', '::1', 'fd00::1'].map(isLinkLocal),
+      [true, true, true, false, false, false, false]);
+    const lookup = async (host) => (host === 'metadata.piege.example' ? [{ address: '169.254.169.254', family: 4 }] : [{ address: '93.184.216.34', family: 4 }]);
+    await assert.rejects(assertUrlAllowed('http://metadata.piege.example/', lookup), /link-local/);
+    await assertUrlAllowed('https://example.org/page', lookup);
+    await assertUrlAllowed('http://localhost:3000/', lookup);
+    await assertUrlAllowed('http://introuvable.example/', async () => { throw new Error('ENOTFOUND'); });
+  });
+
+  test('avec EU_WEB_COMPLIANCE_MCP_ROOT, un chemin hors du dossier permis est refusé', async () => {
+    const root = await tmpDir('root');
+    await fs.mkdir(path.join(root, 'site'));
+    await assertInsideRoot('target', path.join(root, 'site'), root);
+    await assertInsideRoot('target', root, root);
+    await assertInsideRoot('project', path.join(root, 'pas-encore-créé'), root);
+    await assert.rejects(assertInsideRoot('target', path.join(root, '..'), root), /outside the folder/);
+    await assert.rejects(assertInsideRoot('profile', path.join(root, 'site', '..', '..', 'secret.json'), root), /outside the folder/);
+    await assertInsideRoot('target', path.join(root, '..'), ''); // variable absente : aucun bornage
+
+    const bounded = new Client({ name: 'ewc-tests-root', version: '0.0.0' });
+    await bounded.connect(new StdioClientTransport({ command: process.execPath, args: [path.join(ROOT, 'mcp', 'server.mjs')], cwd: ROOT, stderr: 'pipe',
+      env: { ...process.env, EU_WEB_COMPLIANCE_MCP_ROOT: root } }));
+    try {
+      const outside = await bounded.callTool({ name: 'audit_site', arguments: { target: path.join(ROOT, 'tests', 'fixtures', 'security', 'weak') } });
+      assert.equal(outside.isError, true);
+      assert.match(outside.content[0].text, /outside the folder allowed by EU_WEB_COMPLIANCE_MCP_ROOT/);
+      const profile = await bounded.callTool({ name: 'qualify_project', arguments: { profile_path: path.join(ROOT, 'templates', 'profile.example.json') } });
+      assert.equal(profile.isError, true);
+    } finally {
+      await bounded.close();
+      await fs.rm(root, { recursive: true, force: true });
+    }
   });
 });

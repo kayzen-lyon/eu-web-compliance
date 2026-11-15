@@ -96,7 +96,7 @@ runs:
         if [ -n "$EWC_ONLY" ]; then args+=(--only "$EWC_ONLY"); fi
         if [ -n "$EWC_PROFILE" ]; then args+=(--profile "$EWC_PROFILE"); fi
         if [ -n "$EWC_TIMEOUT" ]; then args+=(--timeout "$EWC_TIMEOUT"); fi
-        if [ "$EWC_FAIL" = "false" ]; then args+=(--no-fail); fi
+        if [ "${EWC_FAIL,,}" = "false" ]; then args+=(--no-fail); fi
         node "$GITHUB_ACTION_PATH/bin/eu-web-compliance.mjs" audit "${args[@]}"
     - name: Write the report in the job summary
       id: report

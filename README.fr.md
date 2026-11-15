@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : version 1.1.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.1.1.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -149,7 +149,7 @@ Le rapport s'affiche dans le résumé de l'exécution et il est joint, en Markdo
 }
 ```
 
-Quatre outils : `qualify_project` (profil → matrice des obligations), `audit_site` (URL ou dossier → rapport), `get_template` (modèle de document) et `get_rule` (règles par étiquette). Le serveur est local (stdio) : il tourne sur votre poste et charge les pages avec le même blocage des requêtes vers les sites tiers que les vérificateurs.
+Quatre outils : `qualify_project` (profil → matrice des obligations), `audit_site` (URL ou dossier → rapport), `get_template` (modèle de document) et `get_rule` (règles par étiquette). Le serveur est local (stdio) : il tourne sur votre poste et charge les pages avec le même blocage des requêtes vers les sites tiers que les vérificateurs. Les arguments des outils sont écrits par un modèle de langage, qui peut avoir lu une page piégée ; le serveur les contrôle donc : une URL à vérifier est en `http` ou `https` et jamais une adresse de lien local (`169.254.0.0/16`, `fe80::/10`, là où répondent les services de métadonnées des hébergeurs), et un vérificateur tourne 30 minutes au plus. Pour enfermer le serveur dans un dossier, définissez la variable d'environnement `EU_WEB_COMPLIANCE_MCP_ROOT` dans la déclaration ci-dessus : tout chemin de dossier, de projet ou de profil situé hors de ce dossier est refusé. Sans cette variable, le serveur peut lire tout dossier que votre compte peut lire, comme l'outil en ligne de commande.
 
 **WordPress, PrestaShop, Shopify.** Les fiches de [references/cms/](references/cms/) disent à l'agent où agir dans chaque CMS (hooks, thème enfant, API de consentement, bouton de commande). Elles n'ajoutent aucune règle et signalent ce qui n'a pas été vérifié.
 

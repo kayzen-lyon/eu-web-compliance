@@ -70,7 +70,9 @@ export function parseAnswer(question, raw) {
     return { error: 'yes-no' };
   }
   if (question.kind === 'number') {
-    const value = Number(text.replace(/[\s_  ]/g, '').replace(',', '.'));
+    const digits = text.replace(/[\s_  ]/g, '').replace(',', '.');
+    // Chiffres seulement : « 0x10 » ou « 1e3 » sont des fautes de frappe, pas des montants.
+    const value = /^-?\d+(\.\d+)?$/.test(digits) ? Number(digits) : NaN;
     if (!Number.isFinite(value) || value < (question.minimum === undefined ? -Infinity : question.minimum)) return { error: 'number' };
     return { value };
   }

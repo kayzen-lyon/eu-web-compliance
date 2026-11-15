@@ -56,6 +56,26 @@ export function firstPartyPredicate(pageUrl) {
   };
 }
 
+// Statut HTTP d'une adresse, en ne suivant une redirection que si elle reste sur le même site :
+// une redirection vers un hôte tiers n'est jamais suivie (aucune requête ne part vers lui) et son
+// statut 3xx est rendu tel quel. `get(url)` rend { status, location } sans suivre de redirection.
+export async function statusWithinSite(get, url, maxRedirects = 5) {
+  const isFirstParty = firstPartyPredicate(url);
+  let current = url;
+  for (let hop = 0; ; hop += 1) {
+    const { status, location } = await get(current);
+    if (status < 300 || status >= 400 || !location || hop >= maxRedirects) return status;
+    let next;
+    try {
+      next = new URL(location, current);
+    } catch {
+      return status;
+    }
+    if (!/^https?:$/.test(next.protocol) || !isFirstParty(next.href)) return status;
+    current = next.href;
+  }
+}
+
 // Type de requête lisible dans les rapports.
 export function requestKind(request, page) {
   const type = request.resourceType();

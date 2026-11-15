@@ -18,6 +18,10 @@ export class SkillError extends Error {}
 
 const posix = (p) => p.split(path.sep).join('/');
 
+// Lignes d'un fichier texte, que ses fins de ligne soient LF ou CRLF (copie par archive ZIP,
+// dépôt cloné sans .gitattributes).
+export const linesOf = (text) => String(text).split(/\r?\n/);
+
 async function walk(dir, keep) {
   const found = [];
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
@@ -38,7 +42,7 @@ const TEMPLATES = path.join(SKILL_ROOT, 'templates');
 
 async function templateTitle(file) {
   if (!file.endsWith('.md')) return null;
-  const heading = (await fs.readFile(file, 'utf8')).split('\n').find((line) => line.startsWith('# '));
+  const heading = linesOf(await fs.readFile(file, 'utf8')).find((line) => line.startsWith('# '));
   return heading ? heading.slice(2).trim() : null;
 }
 
@@ -103,7 +107,7 @@ async function officialRgaaText(ref) {
   const theme = ref.split('.')[0].padStart(2, '0');
   const file = (await fs.readdir(dir).catch(() => [])).find((f) => f.startsWith(`criteria-${theme}-`));
   if (!file) return null;
-  const lines = (await fs.readFile(path.join(dir, file), 'utf8')).split('\n');
+  const lines = linesOf(await fs.readFile(path.join(dir, file), 'utf8'));
   const start = lines.findIndex((l) => l.trim() === `## Criterion ${ref}`);
   if (start < 0) return null;
   let end = lines.findIndex((l, i) => i > start && l.startsWith('## '));
@@ -124,7 +128,7 @@ export async function findRules(query) {
   const rules = [];
   for (const file of files) {
     let section = '';
-    const lines = (await fs.readFile(file, 'utf8')).split('\n');
+    const lines = linesOf(await fs.readFile(file, 'utf8'));
     lines.forEach((line, index) => {
       if (line.startsWith('#')) section = line.replace(/^#+\s*/, '').trim();
       const rule = line.match(RULE_LINE);
@@ -178,6 +182,8 @@ export async function qualifyProject(profile, { outputDir = null } = {}) {
 // Arguments de check-all à partir d'options nommées ; les valeurs sont validées par check-all.
 export function checkAllArgs({ target, project, profile, out, only, lang, timeout, expectedDir, noFail } = {}) {
   if (!target) throw new SkillError('target missing: a site folder, an HTML file or a URL');
+  // Une cible qui commence par un tiret serait lue par check-all comme une option.
+  if (String(target).startsWith('-')) throw new SkillError(`target "${target}" looks like an option: pass a site folder, an HTML file or a URL`);
   const args = [String(target)];
   const add = (option, value) => { if (value !== undefined && value !== null && value !== '') args.push(option, String(value)); };
   add('--project', project);
@@ -191,15 +197,26 @@ export function checkAllArgs({ target, project, profile, out, only, lang, timeou
   return args;
 }
 
+export const isUrl = (value) => /^[a-z][a-z0-9+.-]*:\/\//i.test(String(value || ''));
+
+// Chemins d'un audit rendus absolus par rapport au dossier de l'appelant. check-all est lancé
+// depuis le dossier du projet : un chemin relatif laissé tel quel y serait résolu une seconde fois.
+export function auditPaths({ target, project, profile, out } = {}, cwd = process.cwd()) {
+  const absolute = (value) => (value ? path.resolve(cwd, String(value)) : value);
+  const keep = !target || isUrl(target) || String(target).startsWith('-');
+  return { target: keep ? target : absolute(target), project: absolute(project), profile: absolute(profile), out: absolute(out) };
+}
+
 // Lance check-all et relit son rapport. Renvoie { exit_code, log, out_dir, files, report }.
 // Sans `out`, les rapports vont dans un dossier temporaire, laissé en place pour être relu.
 export async function auditSite(options) {
-  const out = path.resolve(options.out || await fs.mkdtemp(path.join(os.tmpdir(), 'ewc-audit-')));
+  const paths = auditPaths(options);
+  const out = paths.out || await fs.mkdtemp(path.join(os.tmpdir(), 'ewc-audit-'));
   const before = new Set(await fs.readdir(out).catch(() => []));
   const minutes = Number(options.timeout) > 0 ? Number(options.timeout) : 30;
   // Quatre vérificateurs au plus, chacun borné par --timeout, plus une marge pour la fusion.
-  const result = await exec(process.execPath, [CHECK_ALL, ...checkAllArgs({ ...options, out })],
-    { cwd: options.project || process.cwd(), timeoutMs: (minutes * 4 + 5) * 60000 });
+  const result = await exec(process.execPath, [CHECK_ALL, ...checkAllArgs({ ...options, ...paths, out })],
+    { cwd: paths.project || process.cwd(), timeoutMs: (minutes * 4 + 5) * 60000 });
   const log = `${result.stdout}${result.stderr}`.trim();
   const json = (await fs.readdir(out).catch(() => [])).filter((f) => /^compliance-report-.*\.json$/.test(f) && !before.has(f)).sort().pop();
   if (!json) return { exit_code: result.code === null ? 2 : result.code, log, out_dir: out, files: null, report: null };
