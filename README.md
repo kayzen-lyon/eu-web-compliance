@@ -4,7 +4,7 @@
 
 A skill for AI coding agents: make the code of a website meet the European obligations that apply to it, from the first line written.
 
-> **Project status: version 1.0.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
+> **Project status: version 1.1.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
 
 ## What the skill covers
 
@@ -103,6 +103,57 @@ node <skill folder>/scripts/check-all.mjs http://localhost:3000 --project . --pr
 
 The report is written to `compliance/reports/compliance-report-YYYY-MM-DD.md`, with a `.json` twin for continuous integration. An empty list of findings does not mean the site is compliant: read the "not tested" part of the report.
 
+## Other ways in: terminal, GitHub Action, MCP server
+
+All of them go through the same checkers (`scripts/check-all.mjs`) and the same files (`references/`, `templates/`) as the skill. None of them says that a site is compliant. The starting audit, what is delivered and what remains are in [docs/ROADMAP.md](docs/ROADMAP.md) (in French).
+
+**Command line.** From the root of the website project (Node 20 or later; Python 3.8 or later for `init` and `qualify`):
+
+```bash
+npx github:kayzen-lyon/eu-web-compliance audit dist
+```
+
+| Command | Purpose |
+|---------|---------|
+| `audit <folder or URL>` | Runs the four checkers and writes the report in `compliance/reports/` (same options as `check-all.mjs`) |
+| `init` | Asks the scoping questions in the terminal and writes `compliance/profile.json`; press Enter when you do not know, nothing is invented |
+| `qualify [profile]` | Prints the matrix of obligations |
+| `template [name]` | Lists the templates, prints one, or copies it with `--out` |
+| `rule <tag>` | Finds the rules that cite a source, for example `rule "RGAA 11.1"` |
+| `mcp` | Starts the MCP server |
+
+The package is not published on npm yet: until then, the command goes through the repository address, as above.
+
+**GitHub Action.** In a workflow, after the site is built:
+
+```yaml
+- uses: kayzen-lyon/eu-web-compliance@v1
+  with:
+    target: dist            # built folder, or preview URL
+    fail-on-violation: "true"
+```
+
+The report is shown in the job summary and uploaded, in Markdown and JSON, as an artifact. Other inputs: `only`, `lang`, `project`, `profile`, `timeout`, `artifact-name` (see [action.yml](action.yml)). `@v1` follows the latest 1.x release; pin an exact tag (`@v1.1.0`) or a commit SHA if you want the checks to stay fixed.
+
+**MCP server.** For agents that do not load skills. After `npm install` in the skill folder, declare in your MCP client:
+
+```json
+{
+  "mcpServers": {
+    "eu-web-compliance": {
+      "command": "node",
+      "args": ["<skill folder>/mcp/server.mjs"]
+    }
+  }
+}
+```
+
+Four tools: `qualify_project` (profile to matrix of obligations), `audit_site` (URL or folder to report), `get_template` (document template) and `get_rule` (rules by tag). The server is local (stdio): it runs on your machine and loads pages with the same blocking of third-party requests as the checkers.
+
+**WordPress, PrestaShop, Shopify.** The files in [references/cms/](references/cms/) tell the agent where to act in each CMS (hooks, child theme, consent API, order button). They add no rule and say what was not verified.
+
+**Regulatory watch.** Every Monday, a workflow compares the official pages of `references/sources.json` with their fingerprints and opens an issue when one changed. A changed page does not mean the law changed, and nothing is corrected without re-reading the source. Pages that refuse robots, Légifrance among them, are not watched this way.
+
 ## Repository contents
 
 | Path | Purpose |
@@ -114,6 +165,10 @@ The report is written to `compliance/reports/compliance-report-YYYY-MM-DD.md`, w
 | [templates/](templates/) | Reference components and documents: consent banner, AI notices, order step, withdrawal function, price reduction, legal notices, accessibility statement and EAA information, privacy and cookie policies, terms of use, terms of sale, data processing agreement, credit line |
 | [examples/](examples/README.md) | Test sites, each in a faulty and a fixed version, that measure the checkers |
 | [docs/evaluation/](docs/evaluation/README.md) | Briefs for the end-to-end evaluation by a fresh agent |
+| [bin/](bin/eu-web-compliance.mjs), [action.yml](action.yml), [mcp/](mcp/server.mjs) | Command line, GitHub Action and MCP server: three ways in to the same checkers |
+| [references/cms/](references/cms/) | Where to apply the rules in WordPress, PrestaShop and Shopify |
+| [scripts/watch-sources.mjs](scripts/watch-sources.mjs) | Watch: says whether an official page of the registry changed |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Audit of the repository and roadmap of the entry points (French) |
 | [docs/PRD.md](docs/PRD.md) | Product requirements, architecture, roadmap (in French) |
 | [docs/PROMPT.md](docs/PROMPT.md) | Build prompt for an agent (in French) |
 | [references/regulatory-status.md](references/regulatory-status.md) | Dates and versions in force; the only place where they are written |

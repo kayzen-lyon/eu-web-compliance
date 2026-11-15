@@ -2,6 +2,24 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
+## [1.1.0] - 2026-11-15
+
+Portes d'entrée vers les mêmes vérificateurs et les mêmes règles que le skill. Audit de départ et suites dans `docs/ROADMAP.md`. Version publiée sur GitHub avec les étiquettes `v1.1.0` et `v1` ; le paquet n'est pas encore publié sur npm.
+
+### Ajouté
+
+- Outil en ligne de commande `bin/eu-web-compliance.mjs` (champ `bin` de `package.json`) : `audit` (appelle `check-all.mjs`), `init` (questions de qualification dans le terminal, en français ou en anglais, pilotées par le schéma du profil), `qualify`, `template`, `rule` (recherche des règles par étiquette, avec le texte officiel d'un critère RGAA) et `mcp`.
+- GitHub Action `action.yml` : paramètres `target`, `only`, `lang`, `fail-on-violation` ; rapport dans le résumé de l'exécution et rapports Markdown et JSON joints ; essayée sur un site d'exemple par un job de `validate.yml`.
+- Serveur MCP `mcp/server.mjs` (SDK officiel, stdio) : outils `qualify_project`, `audit_site`, `get_template`, `get_rule`.
+- Fiches CMS `references/cms/wordpress.md`, `prestashop.md` et `shopify.md` : où appliquer les règles existantes dans chaque CMS, sans règle nouvelle ; 39 pages officielles des éditeurs inscrites dans `references/sources.json` ; ligne de renvoi dans `SKILL.md`.
+- Veille réglementaire : `scripts/watch-sources.mjs`, empreintes dans `references/sources-fingerprints.json`, workflow hebdomadaire `watch-sources.yml` qui ouvre une issue quand une page officielle a changé.
+- Module commun `scripts/lib/skill-api.mjs`, seul point de passage des portes d'entrée vers `check-all.mjs`, `applicability.py`, `templates/` et `references/`.
+- Tests `tests/entry-points.test.mjs` (30 tests).
+
+### Modifié
+
+- `package.json` : `private` retiré, `playwright` et `axe-core` passés en dépendances d'exécution, dépendances `@modelcontextprotocol/sdk` et `zod` ajoutées, liste `files` du paquet.
+
 ## [1.0.0] - 2026-11-14
 
 Première version publiée : qualification, accessibilité, protection des données, sécurité, AI Act, droit de la consommation et documents juridiques, avec quatre vérificateurs mesurés sur six sites de test. Relue par des agents IA (code, droit, accessibilité, originalité) ; pas encore relue par un professionnel.

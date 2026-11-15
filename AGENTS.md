@@ -73,6 +73,12 @@ Read [docs/PRD.md](docs/PRD.md) (requirements and architecture) and [docs/PROMPT
 | `references/accessibility/anti-patterns.md` and `anti-patterns-*.md` | `scripts/anti_patterns/data_a.py`, `data_b.py`, `data_c.py` | `python scripts/anti_patterns/build.py references/accessibility` |
 | `examples/<site>/faulty/` | `examples/<site>/fixed/` and the planting script | `python scripts/examples/plant_<site>.py examples` (`plant_showcase.py`, `plant_fr.py`, `plant_online_shop.py`, `plant_account_app.py`) |
 
+| `references/sources-fingerprints.json` | Nothing: re-read the official pages that changed, update `consulted` in `references/sources.json` | `node scripts/watch-sources.mjs --update` (also after adding a source or changing its `url` or `read_at`) |
+
+### Entry points: one path, no copy
+
+The command line (`bin/eu-web-compliance.mjs`), the GitHub Action (`action.yml`) and the MCP server (`mcp/server.mjs`) go through `scripts/lib/skill-api.mjs`, which only calls `scripts/check-all.mjs` and `scripts/applicability.py` and reads `templates/`, `references/` and `schemas/`. Never copy a rule, a template, a check or a question type into an entry point, and never add an option that lets a caller lift the blocking of third-party requests. The files in `references/cms/` add no rule: each checkbox repeats an existing rule with its original tag, or is tagged `[best practice]`, and each technical fact about a CMS comes from a vendor page recorded in `references/sources.json`.
+
 Nothing from a draft of RGAA 5 goes into the repository: follow [references/accessibility/rgaa/5/README.md](references/accessibility/rgaa/5/README.md) on the day of publication.
 
 ### Check before you hand over

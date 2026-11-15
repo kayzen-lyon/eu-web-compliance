@@ -103,6 +103,19 @@ This reading of the licence is the project's own and has not been reviewed by a 
 |------|---------|
 | axe-core (Deque Systems) | MPL-2.0 |
 | Playwright (Microsoft) | Apache-2.0 |
+| Model Context Protocol TypeScript SDK, `@modelcontextprotocol/sdk` (used by `mcp/server.mjs`) | MIT |
+| zod (input schemas of the MCP tools) | MIT |
+
+## CMS documentation cited in `references/cms/`
+
+The files `references/cms/wordpress.md`, `references/cms/prestashop.md` and `references/cms/shopify.md` describe, in this project's own words, where the skill's rules are applied in each CMS. The vendor pages read for them are recorded in `references/sources.json` (ids starting with `wordpress-`, `wp-consent-api`, `woocommerce-`, `prestashop-` and `shopify-`), consulted on 2026-11-15. Nothing is copied from them beyond names of hooks, functions, settings and file paths, and one short attributed quotation.
+
+| Origin | Licence stated by the origin | Use |
+|--------|------------------------------|-----|
+| PrestaShop developer documentation (devdocs.prestashop-project.org) | CC BY-SA 4.0 (share-alike) | Cited, never copied |
+| PrestaShop repositories `psgdpr`, `ps_legalcompliance`, `hummingbird` | Academic Free License 3.0 | Read to describe behaviour; no code copied |
+| WP Consent API (WordPress.org plugin, `WordPress/wp-consent-level-api`) | GPL-2.0 (copyleft) | Cited, never copied; the code examples are this project's own |
+| WordPress.org, WooCommerce and Shopify documentation | Not stated on the pages read | Cited, never copied |
 
 ## Points still to settle before publication
 

@@ -1,9 +1,59 @@
 {
   "name": "eu-web-compliance",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Outils de vérification du skill eu-web-compliance (navigateur piloté et axe-core).",
+  "version": "1.1.0",
+  "description": "Checks and tools of the eu-web-compliance skill: audit a website against EU accessibility, privacy, AI Act, security and consumer rules (command line, GitHub Action, MCP server). Never certifies compliance.",
   "license": "MIT",
+  "author": "Tarek BELHADJ - Kayzen (https://www.kayzen-lyon.com)",
+  "homepage": "https://github.com/kayzen-lyon/eu-web-compliance#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kayzen-lyon/eu-web-compliance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kayzen-lyon/eu-web-compliance/issues"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "eaa",
+    "wcag",
+    "rgaa",
+    "gdpr",
+    "rgpd",
+    "cookies",
+    "cnil",
+    "ai-act",
+    "security-headers",
+    "anssi",
+    "consumer-law",
+    "eu",
+    "mcp",
+    "github-action"
+  ],
+  "type": "module",
+  "bin": {
+    "eu-web-compliance": "bin/eu-web-compliance.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin/",
+    "mcp/",
+    "scripts/",
+    "references/",
+    "schemas/",
+    "templates/",
+    "SKILL.md",
+    "AGENTS.md",
+    "NOTICE.md",
+    "CHANGELOG.md",
+    "README.fr.md",
+    "action.yml",
+    "!scripts/examples/",
+    "!scripts/anti_patterns/",
+    "!**/__pycache__/"
+  ],
   "scripts": {
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:privacy": "node scripts/check-privacy.mjs",
@@ -12,10 +62,14 @@
     "test:examples": "node scripts/check-examples.mjs",
     "check:all": "node scripts/check-all.mjs",
     "test:report": "node --test tests/report.test.mjs",
-    "check:content": "node scripts/check-content.mjs"
+    "check:content": "node scripts/check-content.mjs",
+    "mcp": "node mcp/server.mjs",
+    "watch:sources": "node scripts/watch-sources.mjs"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "axe-core": "^4.14.0",
-    "playwright": "^1.65.1"
+    "playwright": "^1.65.1",
+    "zod": "^4.6.7"
   }
 }

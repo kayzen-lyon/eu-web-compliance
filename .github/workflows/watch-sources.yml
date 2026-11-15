@@ -1,0 +1,50 @@
+name: watch-sources
+
+# Veille réglementaire : compare chaque semaine les pages officielles de references/sources.json
+# à leurs empreintes (references/sources-fingerprints.json) et ouvre une issue quand une page a
+# changé. Rien n'est modifié dans le dépôt : la correction demande la relecture de la source.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: watch-sources
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Comparer les pages officielles à leurs empreintes
+        id: watch
+        run: |
+          set +e
+          node scripts/watch-sources.mjs --out "$RUNNER_TEMP/watch.md"
+          code=$?
+          set -e
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if [ -f "$RUNNER_TEMP/watch.md" ]; then cat "$RUNNER_TEMP/watch.md" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ "$code" -gt 1 ]; then exit "$code"; fi
+      - name: Ouvrir ou compléter l'issue de veille
+        if: steps.watch.outputs.code == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh label create veille-reglementaire --color 0E8A16 --description "Une source officielle a changé : à relire" 2>/dev/null || true
+          existing=$(gh issue list --state open --label veille-reglementaire --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file "$RUNNER_TEMP/watch.md"
+          else
+            gh issue create --title "Veille réglementaire : des sources officielles ont changé" --label veille-reglementaire --body-file "$RUNNER_TEMP/watch.md"
+          fi

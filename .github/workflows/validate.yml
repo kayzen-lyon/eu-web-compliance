@@ -39,3 +39,26 @@ jobs:
       - name: Fraîcheur des sources (tâche planifiée)
         if: github.event_name == 'schedule'
         run: python scripts/validate.py --strict
+
+  # L'Action publiée (action.yml) est essayée sur un site d'exemple corrigé, telle qu'un dépôt
+  # l'appellerait : installation, vérificateurs, résumé, fichier joint.
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Action sur un site d'exemple
+        id: check
+        uses: ./
+        with:
+          target: examples/showcase-site/fixed
+          project: examples/showcase-site
+          lang: fr
+          fail-on-violation: "false"
+          artifact-name: rapport-site-exemple
+      - name: Le rapport existe et ses sorties sont renseignées
+        env:
+          REPORT: ${{ steps.check.outputs.report-json }}
+          NON_CONFORMITIES: ${{ steps.check.outputs.non-conformities }}
+        run: |
+          test -f "$REPORT"
+          test -n "$NON_CONFORMITIES"

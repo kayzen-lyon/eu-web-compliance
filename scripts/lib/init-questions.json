@@ -1,0 +1,146 @@
+{
+  "note": "Short questions of `eu-web-compliance init`, one per answer field of schemas/profile.schema.json. Types, allowed values and protective readings are read in the schema, never here. tests/cli.test.mjs fails when a field of the schema has no question.",
+  "not_asked": ["ai.features", "site.stack"],
+  "questions": {
+    "operator.type": {
+      "en": "Who operates the site?",
+      "fr": "Qui exploite le site ?"
+    },
+    "operator.activity_kind": {
+      "en": "Is the site run as part of an economic activity (commercial), as an institution (institutional), or as a purely personal site (personal)?",
+      "fr": "Le site relève-t-il d'une activité économique (commercial), d'une institution (institutional) ou d'un usage purement personnel (personal) ?"
+    },
+    "operator.headcount": {
+      "en": "How many people work for the operator?",
+      "fr": "Combien de personnes travaillent pour l'exploitant ?"
+    },
+    "operator.annual_turnover_eur": {
+      "en": "Annual turnover of the operator, in euros?",
+      "fr": "Chiffre d'affaires annuel de l'exploitant, en euros ?"
+    },
+    "operator.balance_sheet_total_eur": {
+      "en": "Annual balance sheet total of the operator, in euros?",
+      "fr": "Total du bilan annuel de l'exploitant, en euros ?"
+    },
+    "operator.fr_turnover_3y_average_eur": {
+      "en": "Average turnover made in France over the last three financial years, in euros?",
+      "fr": "Chiffre d'affaires moyen réalisé en France sur les trois derniers exercices, en euros ?"
+    },
+    "operator.country_of_establishment": {
+      "en": "In which country is the operator established? (two-letter code, for example FR)",
+      "fr": "Dans quel pays l'exploitant est-il établi ? (code à deux lettres, par exemple FR)"
+    },
+    "operator.regulated_sector": {
+      "en": "Does the operator work in a sector that needs a licence or has its own supervisor (bank, insurance, health, legal profession, gambling, telecoms, transport)?",
+      "fr": "L'exploitant exerce-t-il dans un secteur soumis à agrément ou à une autorité de contrôle (banque, assurance, santé, profession juridique, jeux d'argent, télécoms, transport) ?"
+    },
+    "market.target_countries": {
+      "en": "Which countries does the site address? (two-letter codes, for example FR, BE)",
+      "fr": "À quels pays le site s'adresse-t-il ? (codes à deux lettres, par exemple FR, BE)"
+    },
+    "market.sells_online": {
+      "en": "Can people order or subscribe on the site?",
+      "fr": "Peut-on commander ou s'abonner sur le site ?"
+    },
+    "market.sells_to_consumers": {
+      "en": "Does the site offer goods, services or digital content to consumers (people acting outside their trade or profession)?",
+      "fr": "Le site propose-t-il des biens, des services ou des contenus numériques à des consommateurs (personnes agissant hors de leur activité professionnelle) ?"
+    },
+    "market.sells_what": {
+      "en": "What is sold?",
+      "fr": "Qu'est-ce qui est vendu ?"
+    },
+    "market.withdrawal_right_applies": {
+      "en": "Does at least one of these sales give the consumer a right of withdrawal?",
+      "fr": "Au moins une de ces ventes ouvre-t-elle un droit de rétractation au consommateur ?"
+    },
+    "eaa.sectors": {
+      "en": "Which of these services does the site provide to consumers? (\"e-commerce\" as soon as a consumer can conclude a contract on the site)",
+      "fr": "Lesquels de ces services le site fournit-il à des consommateurs ? (« e-commerce » dès qu'un consommateur peut conclure un contrat sur le site)"
+    },
+    "data.collects_personal_data": {
+      "en": "Does the site, or a tool it loads, process data about identifiable people (forms, accounts, orders, analytics)?",
+      "fr": "Le site, ou un outil qu'il charge, traite-t-il des données sur des personnes identifiables (formulaires, comptes, commandes, mesure d'audience) ?"
+    },
+    "data.special_categories": {
+      "en": "Does it process sensitive data (health, disability, religion, union membership, sexual orientation, biometric data...)?",
+      "fr": "Traite-t-il des données sensibles (santé, handicap, religion, appartenance syndicale, orientation sexuelle, données biométriques...) ?"
+    },
+    "data.health_data": {
+      "en": "Does it process health data?",
+      "fr": "Traite-t-il des données de santé ?"
+    },
+    "data.non_essential_trackers": {
+      "en": "Does the site, or a third-party script it loads, use cookies or other trackers that are not strictly necessary (analytics, advertising, social networks)? Count the tools added through a tag manager or the hosting dashboard.",
+      "fr": "Le site, ou un script tiers qu'il charge, utilise-t-il des cookies ou autres traceurs non strictement nécessaires (mesure d'audience, publicité, réseaux sociaux) ? Comptez les outils ajoutés par un gestionnaire de balises ou par l'hébergeur."
+    },
+    "data.third_party_tool_kinds": {
+      "en": "Which kinds of third-party tools does the site load?",
+      "fr": "Quels types d'outils tiers le site charge-t-il ?"
+    },
+    "data.third_party_tools": {
+      "en": "Names of these third-party tools? (comma-separated)",
+      "fr": "Noms de ces outils tiers ? (séparés par des virgules)"
+    },
+    "data.transfers_outside_eu": {
+      "en": "Does any of these tools send personal data outside the European Union?",
+      "fr": "L'un de ces outils envoie-t-il des données personnelles hors de l'Union européenne ?"
+    },
+    "data.processes_on_behalf_of_clients": {
+      "en": "Does the operator process personal data on behalf of business clients (as their processor)?",
+      "fr": "L'exploitant traite-t-il des données personnelles pour le compte de clients professionnels (comme sous-traitant) ?"
+    },
+    "site.user_accounts": {
+      "en": "Does the site have user accounts?",
+      "fr": "Le site a-t-il des comptes utilisateur ?"
+    },
+    "site.languages": {
+      "en": "Languages of the site? (language tags, for example fr, en)",
+      "fr": "Langues du site ? (codes de langue, par exemple fr, en)"
+    },
+    "audience.includes_minors": {
+      "en": "Is the site aimed at minors, or likely to be used by them?",
+      "fr": "Le site s'adresse-t-il à des mineurs, ou est-il susceptible d'être utilisé par eux ?"
+    },
+    "ai.conversational_assistant": {
+      "en": "Do visitors talk to an AI system on the site (chatbot, voice assistant, AI search that answers in sentences)?",
+      "fr": "Les visiteurs dialoguent-ils avec un système d'IA sur le site (chatbot, assistant vocal, recherche par IA qui répond en phrases) ?"
+    },
+    "ai.content_generation_feature": {
+      "en": "Does the site offer a feature that generates text, images, audio or video for its users?",
+      "fr": "Le site propose-t-il une fonction qui génère du texte, des images, du son ou de la vidéo pour ses utilisateurs ?"
+    },
+    "ai.generated_content_published": {
+      "en": "Does the operator publish on the site content generated or manipulated by AI?",
+      "fr": "L'exploitant publie-t-il sur le site des contenus générés ou manipulés par IA ?"
+    },
+    "ai.emotion_or_biometric": {
+      "en": "Is emotion recognition or biometric categorisation used on visitors or users?",
+      "fr": "La reconnaissance des émotions ou la catégorisation biométrique est-elle utilisée sur les visiteurs ou les utilisateurs ?"
+    },
+    "ai.decisions_about_people": {
+      "en": "Does an AI system take or prepare decisions about people (recruitment, credit, access to a service...)?",
+      "fr": "Un système d'IA prend-il ou prépare-t-il des décisions concernant des personnes (recrutement, crédit, accès à un service...) ?"
+    },
+    "ai.role": {
+      "en": "For these AI systems: did you build them or have them built under your name (provider), do you use a product supplied by someone else (deployer), or both?",
+      "fr": "Pour ces systèmes d'IA : les avez-vous développés ou fait développer sous votre nom (provider), utilisez-vous un produit fourni par un tiers (deployer), ou les deux (both) ?"
+    },
+    "content.hosts_user_content": {
+      "en": "Can users post content that others can see or that the site stores for them (comments, reviews, listings, uploads)?",
+      "fr": "Les utilisateurs peuvent-ils publier du contenu visible par d'autres ou stocké pour eux (commentaires, avis, annonces, fichiers) ?"
+    },
+    "referents.dpo": {
+      "en": "Is there a data protection officer?",
+      "fr": "Y a-t-il un délégué à la protection des données ?"
+    },
+    "referents.lawyer": {
+      "en": "Is there a lawyer following these subjects?",
+      "fr": "Y a-t-il un juriste ou un avocat qui suit ces sujets ?"
+    },
+    "referents.accessibility_lead": {
+      "en": "Is there a person in charge of accessibility?",
+      "fr": "Y a-t-il une personne référente pour l'accessibilité ?"
+    }
+  }
+}

@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : version 1.0.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.1.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -103,6 +103,58 @@ node <dossier du skill>/scripts/check-all.mjs http://localhost:3000 --project . 
 
 Le rapport est écrit dans `compliance/reports/compliance-report-AAAA-MM-JJ.md`, accompagné d'une version `.json` pour l'intégration continue. Une liste de constats vide ne signifie pas que le site est conforme : lisez la partie « non testé » du rapport.
 
+## Autres portes d'entrée : terminal, GitHub Action, serveur MCP
+
+Toutes passent par les mêmes vérificateurs (`scripts/check-all.mjs`) et les mêmes fichiers (`references/`, `templates/`) que le skill. Aucune ne dit qu'un site est conforme. L'audit de départ, ce qui est livré et ce qui reste à faire sont dans [docs/ROADMAP.md](docs/ROADMAP.md).
+
+**Outil en ligne de commande.** Depuis la racine du projet web (Node 20 ou plus récent ; Python 3.8 ou plus récent pour `init` et `qualify`) :
+
+```bash
+npx github:kayzen-lyon/eu-web-compliance audit dist --lang fr
+```
+
+| Commande | Rôle |
+|----------|------|
+| `audit <dossier ou URL>` | Lance les quatre vérificateurs et écrit le rapport dans `compliance/reports/` (mêmes options que `check-all.mjs`) |
+| `init` | Pose les questions de qualification dans le terminal et écrit `compliance/profile.json` ; Entrée quand vous ne savez pas, rien n'est inventé |
+| `qualify [profil]` | Affiche la matrice des obligations |
+| `template [nom]` | Liste les modèles, en affiche un, ou le copie avec `--out` |
+| `rule <étiquette>` | Trouve les règles qui citent une source, par exemple `rule "RGAA 11.1"` |
+| `mcp` | Démarre le serveur MCP |
+
+Le paquet n'est pas encore publié sur npm : d'ici là, la commande passe par l'adresse du dépôt, comme ci-dessus.
+
+**GitHub Action.** Dans un workflow, après la construction du site :
+
+```yaml
+- uses: kayzen-lyon/eu-web-compliance@v1
+  with:
+    target: dist            # dossier construit, ou URL de prévisualisation
+    lang: fr
+    fail-on-violation: "true"
+```
+
+Le rapport s'affiche dans le résumé de l'exécution et il est joint, en Markdown et en JSON, comme fichier téléchargeable. Autres paramètres : `only`, `project`, `profile`, `timeout`, `artifact-name` (voir [action.yml](action.yml)). `@v1` suit la dernière version 1.x ; indiquez une étiquette exacte (`@v1.1.0`) ou une empreinte de commit si vous voulez des contrôles figés.
+
+**Serveur MCP.** Pour les agents qui ne chargent pas de skill. Après `npm install` dans le dossier du skill, déclarez dans votre client MCP :
+
+```json
+{
+  "mcpServers": {
+    "eu-web-compliance": {
+      "command": "node",
+      "args": ["<dossier du skill>/mcp/server.mjs"]
+    }
+  }
+}
+```
+
+Quatre outils : `qualify_project` (profil → matrice des obligations), `audit_site` (URL ou dossier → rapport), `get_template` (modèle de document) et `get_rule` (règles par étiquette). Le serveur est local (stdio) : il tourne sur votre poste et charge les pages avec le même blocage des requêtes vers les sites tiers que les vérificateurs.
+
+**WordPress, PrestaShop, Shopify.** Les fiches de [references/cms/](references/cms/) disent à l'agent où agir dans chaque CMS (hooks, thème enfant, API de consentement, bouton de commande). Elles n'ajoutent aucune règle et signalent ce qui n'a pas été vérifié.
+
+**Veille réglementaire.** Chaque lundi, un workflow compare les pages officielles de `references/sources.json` à leurs empreintes et ouvre une issue quand l'une a changé. Une page changée ne veut pas dire que le droit a changé, et rien n'est corrigé sans relecture de la source. Les pages qui refusent les robots, dont Légifrance, ne sont pas surveillées par ce moyen.
+
 ## Contenu du dépôt
 
 | Chemin | Rôle |
@@ -114,6 +166,10 @@ Le rapport est écrit dans `compliance/reports/compliance-report-AAAA-MM-JJ.md`,
 | [templates/](templates/) | Composants et documents de référence : bandeau de consentement, mentions IA, étape de commande, rétractation, réduction de prix, mentions légales, déclaration d'accessibilité et information EAA, politiques de confidentialité et de cookies, CGU, CGV, accord de sous-traitance, ligne de crédit |
 | [examples/](examples/README.md) | Sites de test, chacun en version fautive et corrigée, qui mesurent les vérificateurs |
 | [docs/evaluation/](docs/evaluation/README.md) | Cahiers des charges de l'évaluation par un agent neuf |
+| [bin/](bin/eu-web-compliance.mjs), [action.yml](action.yml), [mcp/](mcp/server.mjs) | Outil en ligne de commande, GitHub Action et serveur MCP : trois portes d'entrée vers les mêmes vérificateurs |
+| [references/cms/](references/cms/) | Où appliquer les règles dans WordPress, PrestaShop et Shopify |
+| [scripts/watch-sources.mjs](scripts/watch-sources.mjs) | Veille : dit si une page officielle du registre a changé |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Audit du dépôt et feuille de route des portes d'entrée |
 | [docs/PRD.md](docs/PRD.md) | Exigences produit, architecture, feuille de route |
 | [docs/PROMPT.md](docs/PROMPT.md) | Prompt de construction destiné à un agent |
 | [references/regulatory-status.md](references/regulatory-status.md) | Dates et versions en vigueur, seul endroit où elles figurent |
