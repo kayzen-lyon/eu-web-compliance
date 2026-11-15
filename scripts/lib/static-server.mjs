@@ -35,9 +35,38 @@ export const CONTENT_TYPES = {
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.wav': 'audio/wav',
 };
 
-function patternToRegExp(pattern) {
-  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/:[A-Za-z_][\w-]*/g, '[^/]+');
-  return new RegExp(`^${escaped}$`);
+// Motif d'un fichier d'en-têtes : « * » vaut n'importe quelle suite de caractères, « :nom » un
+// segment sans barre oblique. La comparaison avance caractère par caractère sur l'ensemble des
+// positions possibles du motif : son coût reste proportionnel à motif × chemin, quel que soit le
+// motif (une expression régulière à plusieurs « .* » peut, elle, bloquer le serveur).
+export function patternToRegExp(pattern) {
+  const tokens = (pattern.match(/\*+|:[A-Za-z_][\w-]*|[\s\S]/g) || []).map((part) => {
+    if (part[0] === '*') return { star: true };
+    if (part.length > 1 && part[0] === ':') return { param: true };
+    return { char: part };
+  });
+  const close = (states) => {
+    for (const index of states) if (tokens[index] && tokens[index].star) states.add(index + 1);
+    return states;
+  };
+  return {
+    test(text) {
+      let states = close(new Set([0]));
+      for (const character of String(text)) {
+        const next = new Set();
+        for (const index of states) {
+          const token = tokens[index];
+          if (!token) continue;
+          if (token.star) next.add(index);
+          else if (token.param) { if (character !== '/') { next.add(index); next.add(index + 1); } }
+          else if (token.char === character) next.add(index + 1);
+        }
+        if (!next.size) return false;
+        states = close(next);
+      }
+      return states.has(tokens.length);
+    },
+  };
 }
 
 // Analyse le texte d'un fichier d'en-têtes. Lève une erreur claire sur une ligne mal formée.

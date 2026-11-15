@@ -11,6 +11,7 @@
 // sinon Chromium de Playwright, sinon Edge, sinon Chrome.
 
 import { chromium } from 'playwright';
+import { getDomain } from 'tldts';
 
 export const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
@@ -31,12 +32,14 @@ export async function launchBrowser() {
 
 const IPV4 = /^\d{1,3}(\.\d{1,3}){3}$/;
 
-// « Site » d'un nom d'hôte : les deux derniers libellés (approximation sans liste des suffixes
-// publics : `example.co.uk` et `other.co.uk` seraient vus comme le même site).
+// « Site » d'un nom d'hôte : son domaine enregistrable, d'après la liste des suffixes publics
+// embarquée par tldts, suffixes privés compris. `www.example.co.uk` et `cdn.example.co.uk` sont le
+// même site ; `a.vercel.app` et `b.vercel.app`, ou deux comptes de `github.io`, sont deux sites
+// différents : leurs requêtes sont donc tierces l'une pour l'autre.
 export function siteOf(hostname) {
   const host = String(hostname || '').toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '');
   if (!host || IPV4.test(host) || host.includes(':') || !host.includes('.')) return host;
-  return host.split('.').slice(-2).join('.');
+  return getDomain(host, { allowPrivateDomains: true }) || host.split('.').slice(-2).join('.');
 }
 
 export function hostOf(url) {

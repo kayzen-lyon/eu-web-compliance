@@ -6,26 +6,44 @@ import { spawn } from 'node:child_process';
 // au-delà, le processus est arrêté plutôt que de bloquer check-all indéfiniment.
 export const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000;
 
-// Lance une commande et rend { code, stdout, stderr, spawnError?, timedOut? }. Ne rejette jamais.
-export function exec(command, args, { cwd = process.cwd(), timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
+// Taille maximale des sorties gardées en mémoire : un vérificateur rend son rapport sur la sortie
+// standard, quelques Mio pour un grand site ; au-delà, le processus est arrêté.
+export const MAX_OUTPUT_BYTES = 64 * 1024 * 1024;
+
+// Lance une commande et rend { code, stdout, stderr, spawnError?, timedOut?, truncated? }. Ne rejette jamais.
+export function exec(command, args, { cwd = process.cwd(), timeoutMs = DEFAULT_TIMEOUT_MS, maxOutputBytes = MAX_OUTPUT_BYTES } = {}) {
   return new Promise((resolve) => {
     const child = spawn(command, args, { cwd, windowsHide: true });
     let stdout = '';
     let stderr = '';
     let timedOut = false;
+    let size = 0;
+    let truncated = false;
+    const keep = (chunk) => {
+      size += chunk.length;
+      if (size <= maxOutputBytes) return true;
+      if (!truncated) {
+        truncated = true;
+        child.kill();
+      }
+      return false;
+    };
     const timer = setTimeout(() => {
       timedOut = true;
       child.kill();
     }, timeoutMs);
-    child.stdout.on('data', (d) => { stdout += d; });
-    child.stderr.on('data', (d) => { stderr += d; });
+    child.stdout.on('data', (d) => { if (keep(d)) stdout += d; });
+    child.stderr.on('data', (d) => { if (keep(d)) stderr += d; });
     child.on('error', (error) => {
       clearTimeout(timer);
       resolve({ code: null, stdout, stderr: String(error.message), spawnError: error.code });
     });
     child.on('close', (code) => {
       clearTimeout(timer);
-      resolve({ code, stdout, stderr: timedOut ? `${stderr}\nstopped after ${Math.round(timeoutMs / 1000)} s` : stderr, timedOut });
+      let note = stderr;
+      if (timedOut) note = `${stderr}\nstopped after ${Math.round(timeoutMs / 1000)} s`;
+      else if (truncated) note = `${stderr}\nstopped: more than ${Math.round(maxOutputBytes / 1048576)} MiB of output`;
+      resolve({ code, stdout, stderr: note, timedOut, truncated });
     });
   });
 }

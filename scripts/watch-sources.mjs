@@ -37,6 +37,8 @@ const USER_AGENT = 'eu-web-compliance-source-watch/1 (weekly check of official p
 const TIMEOUT_MS = 30000;
 const CONCURRENCY = 6;
 const GONE = new Set([404, 410]);
+// Les textes officiels suivis pèsent quelques Mio au plus (PDF compris) ; au-delà, la page n'est pas lue.
+export const MAX_BYTES = 25 * 1024 * 1024;
 
 // Texte lisible d'une page HTML : sans scripts, styles, commentaires ni balises, espaces réduits.
 // Les jetons de session et les identifiants techniques vivent dans les attributs et les scripts,
@@ -58,12 +60,27 @@ export function fingerprint(body, contentType) {
   return createHash('sha256').update(normalise(body, contentType)).digest('hex');
 }
 
+// Corps d'une réponse, ou null s'il dépasse MAX_BYTES : la lecture s'arrête dès le dépassement.
+async function readBody(response) {
+  if (Number(response.headers.get('content-length')) > MAX_BYTES) return null;
+  if (!response.body) return Buffer.from(await response.arrayBuffer());
+  const chunks = [];
+  let size = 0;
+  for await (const chunk of response.body) {
+    size += chunk.length;
+    if (size > MAX_BYTES) return null;
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
+}
+
 async function read(url, fetcher) {
   try {
     const response = await fetcher(url, { redirect: 'follow', signal: AbortSignal.timeout(TIMEOUT_MS),
       headers: { 'user-agent': USER_AGENT, accept: 'text/html,application/xhtml+xml,application/pdf,*/*;q=0.8' } });
     if (!response.ok) return { status: 'unreachable', detail: `HTTP ${response.status}`, http: response.status };
-    const body = Buffer.from(await response.arrayBuffer());
+    const body = await readBody(response);
+    if (!body) return { status: 'unreachable', detail: `larger than ${MAX_BYTES / 1048576} MiB` };
     return { status: 'ok', sha256: fingerprint(body, response.headers.get('content-type') || '') };
   } catch (error) {
     return { status: 'unreachable', detail: String((error.cause && error.cause.code) || error.name || error.message) };
@@ -143,6 +160,9 @@ export function toMarkdown(results, today) {
       'These pages are not watched: they stay under the manual rule (`python scripts/validate.py --strict` flags sources consulted more than 90 days ago).', '');
   }
   if (of('unstable').length) lines.push('## Not comparable (the page differs between two readings)', '', ...list(of('unstable')), '');
+  // Signature des pages à relire : le workflow s'en sert pour ne pas répéter le même commentaire.
+  const ids = (state) => of(state).map((r) => r.id).sort().join(',');
+  if (needsAttention(results)) lines.push(`<!-- watch-signature: changed=${ids('changed')}; gone=${ids('gone')}; new=${ids('new')} -->`);
   return `${lines.join('\n').trim()}\n`;
 }
 

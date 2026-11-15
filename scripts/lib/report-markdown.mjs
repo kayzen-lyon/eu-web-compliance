@@ -7,7 +7,7 @@
 // plainText (une ligne, pas d'accent grave, longueur bornée) et le rapport rappelle qu'ils sont
 // des données, pas des instructions, pour les personnes comme pour les agents qui le lisent.
 
-import { plainText } from './cli.mjs';
+import { mdText, plainText } from './cli.mjs';
 
 const TEXT = {
   en: {
@@ -79,7 +79,7 @@ const DOMAIN_CHECKERS = { accessibility: ['a11y'], privacy: ['privacy'], ai: ['c
 
 export const FOOTER = 'Report produced by eu-web-compliance, an open-source skill by Tarek BELHADJ — Kayzen (https://www.kayzen-lyon.com), author of Nexus (https://nexus.kayzen-lyon.com).';
 
-const cell = (v, max = 600) => plainText(v, max).replace(/\|/g, '\\|');
+const cell = (v, max = 600) => mdText(v, max).replace(/\|/g, '\\|');
 const code = (v, max = 300) => (v ? `\`${plainText(v, max)}\`` : '');
 
 function fixText(f, t) {
@@ -142,7 +142,7 @@ function matrixLines(r, t) {
 function findingLine(f, t) {
   const bits = [`**${f.severity}** ${code(f.rule)}`];
   if (f.element) bits.push(`${t.element} ${code(f.element)}`);
-  let line = `- ${bits.join(' · ')}: ${plainText(f.message)}`;
+  let line = `- ${bits.join(' · ')}: ${mdText(f.message)}`;
   if (f.sources.length) line += ` ${t.source}: ${f.sources.join('; ')}.`;
   if (f.impact) line += ` ${t.impact}: ${f.impact}`;
   const fix = fixText(f, t);

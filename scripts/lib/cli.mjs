@@ -130,8 +130,14 @@ export function plainText(value, max = 600) {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
 }
 
+// Texte non fiable placé dans du Markdown hors d'un bloc de code : les crochets et les chevrons sont
+// échappés, pour qu'un texte cité ne devienne ni un lien, ni une image, ni une balise HTML.
+export function mdText(value, max = 600) {
+  return plainText(value, max).replace(/[[\]<>]/g, '\\$&');
+}
+
 export function mdCell(value, max = 600) {
-  return plainText(value, max).replace(/\|/g, '\\|');
+  return mdText(value, max).replace(/\|/g, '\\|');
 }
 
 // Crée d'emblée les dossiers de --out et --md : une erreur de chemin apparaît avant le contrôle,

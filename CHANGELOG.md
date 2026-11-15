@@ -2,6 +2,23 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
+## [1.1.2] - 2026-11-15
+
+Les sept constats mineurs que la relecture de la 1.1.0 avait laissés ouverts. Chacun porte un test.
+
+### Corrigé
+
+- Requêtes tierces : le « site » d'un nom d'hôte est désormais son domaine enregistrable, d'après la liste des suffixes publics (bibliothèque `tldts`, licence MIT, inscrite dans `NOTICE.md`). Deux sites voisins sur `vercel.app`, `github.io` ou `co.uk` ne sont plus vus comme un seul : leurs requêtes sont bloquées et signalées comme tierces.
+- Rapport Markdown : les crochets et les chevrons du texte cité depuis un site vérifié sont échappés ; un site ne peut plus faire apparaître un lien, une image ou une balise dans le rapport ni dans le résumé de l'Action.
+- Sous-processus : la sortie d'un vérificateur est plafonnée à 64 Mio ; au-delà, il est arrêté. Le serveur MCP rend au plus 50 corrections groupées et 50 actions, la liste complète restant dans le fichier du rapport.
+- `check-all` : le message d'un profil illisible ne cite plus les premiers caractères du fichier.
+- Serveur statique des vérificateurs : les motifs d'un fichier `_headers` sont comparés sans expression régulière, en temps proportionnel à leur longueur ; un motif très répété ne peut plus bloquer une vérification.
+- Veille des sources : une page de plus de 25 Mio n'est pas lue ; l'issue de veille ne reçoit plus le même commentaire chaque semaine tant que la liste des pages à relire n'a pas changé.
+
+### Sécurité
+
+- Les actions GitHub utilisées par `action.yml` et par les workflows sont référencées par empreinte de commit ; `.github/dependabot.yml` propose leurs mises à jour une fois par mois, dans une pull request à relire.
+
 ## [1.1.1] - 2026-11-15
 
 Corrections issues de deux relectures indépendantes du code de la 1.1.0 (qualité et sécurité) et d'un essai de l'Action appelée par son étiquette `v1`, sur un dossier de pages et sur une adresse en ligne. Chaque constat corrigé a été vérifié dans le code avant correction et porte un test.

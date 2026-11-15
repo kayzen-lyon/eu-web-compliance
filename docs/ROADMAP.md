@@ -95,12 +95,7 @@ Chaque point publie quelque chose sous le nom de Kayzen. Le propriétaire a dema
 - **Les fiches CMS ont été rédigées par un agent** à partir de pages lues à travers un outil qui résume les pages. Les noms de hooks et de fonctions ont été recoupés, mais une relecture par une personne qui pratique chaque CMS reste à faire. Les fiches datent du 15 novembre 2026 et décrivent des produits qui changent.
 - **La veille ne voit pas Légifrance.** L'API officielle de Légifrance permettrait de suivre ces 14 textes ; elle demande un compte et une clé, donc une décision du propriétaire.
 - **L'Action a été essayée par son étiquette `v1`** (15/11/2026), depuis une branche temporaire du dépôt public, sur un dossier de pages et sur une adresse en ligne : installation, quatre vérificateurs, résumé, rapport joint, sorties et code de sortie sont conformes. Elle n'a pas été essayée depuis un dépôt tiers ni sur une prévisualisation protégée par mot de passe. Un dossier de pages servi sans ses en-têtes de production donne des non-conformités de sécurité : c'est attendu, et l'audit de l'adresse en ligne est alors le bon contrôle.
-- **Constats de la relecture du 15/11/2026 laissés ouverts** (les autres sont corrigés en 1.1.1) :
-  - `siteOf` (`scripts/lib/browser.mjs`) garde les deux derniers libellés d'un nom d'hôte : deux sites voisins sur `vercel.app`, `github.io` ou `co.uk` sont vus comme un seul, donc leurs requêtes ne sont ni bloquées ni signalées comme tierces. Correction : une liste des suffixes publics.
-  - `plainText` (`scripts/lib/cli.mjs`) retire les sauts de ligne et les accents graves, pas la syntaxe des liens Markdown : un site vérifié peut faire apparaître un lien dans le résumé de l'Action.
-  - `exec` (`scripts/lib/process.mjs`) accumule les sorties des sous-processus sans plafond, et la réponse de `audit_site` ne plafonne que la liste des constats.
-  - Sans `EU_WEB_COMPLIANCE_MCP_ROOT`, le serveur MCP lit tout dossier lisible par l'utilisateur, et le message d'erreur d'un profil illisible cite les premiers caractères du fichier.
-  - Un fichier `_headers` au motif très répété ralentit le serveur statique des vérificateurs ; la veille lit les pages sans plafond de taille ; les actions `actions/*` sont référencées par étiquette et non par empreinte ; l'issue de veille reçoit le même commentaire chaque semaine tant qu'elle reste ouverte.
+- **Constats de la relecture du 15/11/2026** : tous corrigés, en 1.1.1 puis en 1.1.2 (voir `CHANGELOG.md`). Il reste un choix assumé : sans la variable `EU_WEB_COMPLIANCE_MCP_ROOT`, le serveur MCP lit tout dossier lisible par l'utilisateur, comme l'outil en ligne de commande ; la variable est décrite dans les README.
 
 ### 4.3 Suites proposées, par ordre de valeur
 

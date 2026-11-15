@@ -36,7 +36,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
 import {
-  UsageError, parseArgs, resolvePages, readJson, summarise, mdCell, plainText, prepareOutputs, writeOutputs, run,
+  UsageError, parseArgs, resolvePages, readJson, summarise, mdCell, mdText, plainText, prepareOutputs, writeOutputs, run,
   DATA_NOTICE, notAnalysedMessage,
 } from './lib/cli.mjs';
 import { loadCatalogue, catalogueFinding, runTextDetectors, collectTexts } from './lib/a11y-catalogue.mjs';
@@ -310,7 +310,7 @@ function toMarkdown(report) {
     lines.push('');
   }
   for (const page of report.pages) {
-    lines.push(`## ${plainText(page.page, 300)}`, '');
+    lines.push(`## ${mdText(page.page, 300)}`, '');
     if (!page.analysed) {
       lines.push(mdCell(page.findings[0].message), '');
       continue;
