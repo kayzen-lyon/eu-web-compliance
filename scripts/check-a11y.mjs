@@ -34,7 +34,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, openPage } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, readJson, summarise, mdCell, mdText, plainText, prepareOutputs, writeOutputs, run,
   DATA_NOTICE, notAnalysedMessage,
@@ -217,7 +217,7 @@ async function checkPage(browser, axeSource, url, texts, options) {
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', (error) => errors.push(String(error)));
-    const problem = loadProblem(await page.goto(url, { waitUntil: 'load' }));
+    const { problem } = await openPage(page, url);
     if (problem) {
       return { findings: [notAnalysed(problem)], matches: null, tab_stops: 0, tabbable: 0, script_errors: errors, analysed: false, ...network() };
     }

@@ -8,6 +8,8 @@ Les sept constats mineurs que la relecture de la 1.1.0 avait laissés ouverts. C
 
 ### Corrigé
 
+- Requêtes tierces : une adresse du site vérifié qui redirige vers un hôte tiers était suivie par le navigateur, sans passer par le blocage ; le tiers recevait la requête, qui n'était pas relevée. Les vérificateurs demandent maintenant chaque réponse du site sans suivre de redirection : si la chaîne sort du site, la requête est relevée comme tierce (champ `redirected_from`) et interrompue. Défaut trouvé par un essai sur une prévisualisation protégée, reproduit en local avant correction.
+- Une page qui redirige vers un autre site (mur de connexion d'une prévisualisation protégée, site déplacé) n'est plus analysée à la place du site demandé : les quatre vérificateurs rendent « page non analysée », avec le nom de l'autre site. Avant, la page de connexion de l'hébergeur était auditée et ses défauts attribués au site.
 - Requêtes tierces : le « site » d'un nom d'hôte est désormais son domaine enregistrable, d'après la liste des suffixes publics (bibliothèque `tldts`, licence MIT, inscrite dans `NOTICE.md`). Deux sites voisins sur `vercel.app`, `github.io` ou `co.uk` ne sont plus vus comme un seul : leurs requêtes sont bloquées et signalées comme tierces.
 - Rapport Markdown : les crochets et les chevrons du texte cité depuis un site vérifié sont échappés ; un site ne peut plus faire apparaître un lien, une image ou une balise dans le rapport ni dans le résumé de l'Action.
 - Sous-processus : la sortie d'un vérificateur est plafonnée à 64 Mio ; au-delà, il est arrêté. Le serveur MCP rend au plus 50 corrections groupées et 50 actions, la liste complète restant dans le fichier du rapport.

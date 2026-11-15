@@ -129,7 +129,7 @@ The package is not published on npm yet: until then, the command goes through th
 ```yaml
 - uses: kayzen-lyon/eu-web-compliance@v1
   with:
-    target: dist            # built folder, or preview URL
+    target: dist            # built folder, or a URL reachable without login
     fail-on-violation: "true"
 ```
 

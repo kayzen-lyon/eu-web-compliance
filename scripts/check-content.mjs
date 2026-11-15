@@ -82,7 +82,7 @@
 // Codes de sortie : 0 aucune non-conformité, 1 non-conformité trouvée, 2 erreur d'usage.
 
 import path from 'node:path';
-import { launchBrowser, freshContext, routeThirdParty, loadProblem, statusWithinSite } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, openPage as gotoPage, statusWithinSite } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
   prepareOutputs, DATA_NOTICE, notAnalysedMessage,
@@ -131,7 +131,7 @@ async function openPage(browser, url, wait) {
   await routeThirdParty(context, { pageUrl: url, getPage: () => page, onThirdParty: () => {} });
   page = await context.newPage();
   page.on('pageerror', (error) => errors.push(String(error)));
-  const problem = loadProblem(await page.goto(url, { waitUntil: 'load' }));
+  const { problem } = await gotoPage(page, url);
   if (!problem) await settle(page, wait);
   return { context, page, errors, problem };
 }

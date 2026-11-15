@@ -129,7 +129,7 @@ Le paquet n'est pas encore publié sur npm : d'ici là, la commande passe par l'
 ```yaml
 - uses: kayzen-lyon/eu-web-compliance@v1
   with:
-    target: dist            # dossier construit, ou URL de prévisualisation
+    target: dist            # dossier construit, ou URL accessible sans connexion
     lang: fr
     fail-on-violation: "true"
 ```

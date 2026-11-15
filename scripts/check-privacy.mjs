@@ -27,7 +27,7 @@
 // Codes de sortie : 0 aucune non-conformité, 1 non-conformité trouvée, 2 erreur d'usage.
 
 import path from 'node:path';
-import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, openPage } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
   prepareOutputs, DATA_NOTICE, notAnalysedMessage,
@@ -216,7 +216,7 @@ async function openScenario(browser, url, opts) {
   await context.addInitScript(instrumentWrites);
   page = await context.newPage();
   page.on('pageerror', (error) => errors.push(String(error)));
-  const problem = loadProblem(await page.goto(url, { waitUntil: 'load' }));
+  const { problem } = await openPage(page, url);
   if (!problem) await settle(page, opts.wait);
   return { context, page, requests, errors, isFirstParty, problem };
 }

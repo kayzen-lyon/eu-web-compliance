@@ -13,7 +13,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { ROOT } from './helpers.mjs';
 import { SkillError, auditPaths, checkAllArgs, findRules, getTemplate, linesOf, listTemplates, qualifyProject } from '../scripts/lib/skill-api.mjs';
-import { firstPartyPredicate, siteOf, statusWithinSite } from '../scripts/lib/browser.mjs';
+import { firstPartyPredicate, freshContext, launchBrowser, openPage, routeThirdParty, siteOf, statusWithinSite } from '../scripts/lib/browser.mjs';
 import { mdCell, mdText } from '../scripts/lib/cli.mjs';
 import { exec } from '../scripts/lib/process.mjs';
 import { patternToRegExp } from '../scripts/lib/static-server.mjs';
@@ -388,6 +388,81 @@ describe('GitHub Action', () => {
     assert.ok(Buffer.byteLength(cut) < 4200);
     assert.match(cut, /Report cut here/);
     assert.equal(clip('court\n', 4000), 'court\n');
+  });
+});
+
+describe('blocage des requêtes tierces : redirections', () => {
+  let first;
+  let third;
+  let origin;
+  let browser;
+  const received = [];
+  const listen = (server) => new Promise((resolve) => { server.listen(0, '127.0.0.1', resolve); });
+
+  before(async () => {
+    // Le « tiers » écoute sur la même machine, mais on l'appelle par un autre nom d'hôte (localhost).
+    third = http.createServer((req, res) => { received.push(req.url); res.writeHead(200, { 'content-type': 'text/html' }); res.end('<title>Connexion</title>'); });
+    await listen(third);
+    const outside = `http://localhost:${third.address().port}`;
+    first = http.createServer((req, res) => {
+      const redirect = { '/pixel': `${outside}/collect`, '/etape': '/pixel', '/protege': `${outside}/login`, '/interne': '/' }[req.url];
+      if (redirect) { res.writeHead(302, { location: redirect }); res.end(); return; }
+      res.writeHead(200, { 'content-type': 'text/html' });
+      res.end('<html lang="fr"><title>Page</title><img src="/pixel" alt=""><img src="/etape" alt=""><p>page</p></html>');
+    });
+    await listen(first);
+    origin = `http://127.0.0.1:${first.address().port}`;
+    const launched = await launchBrowser();
+    browser = launched.browser || launched;
+  });
+  after(async () => {
+    await browser.close();
+    await new Promise((resolve) => { first.close(resolve); });
+    await new Promise((resolve) => { third.close(resolve); });
+  });
+
+  const visit = async (pathname, options = {}) => {
+    const context = await freshContext(browser);
+    const seen = [];
+    await routeThirdParty(context, { pageUrl: origin + pathname, onThirdParty: (entry) => seen.push(entry), ...options });
+    const page = await context.newPage();
+    const opened = await openPage(page, origin + pathname);
+    const title = opened.problem ? null : await page.title();
+    await context.close();
+    return { ...opened, seen, title };
+  };
+
+  test('une ressource du site qui redirige vers un tiers est relevée et la requête ne part pas', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem, seen, title } = await visit('/');
+    assert.equal(problem, null);
+    assert.equal(title, 'Page');
+    assert.deepEqual(received, [], 'le tiers a reçu une requête');
+    assert.equal(seen.length, 2);
+    for (const entry of seen) {
+      assert.equal(entry.host, 'localhost');
+      assert.match(entry.url, /\/collect$/);
+      assert.match(entry.redirected_from, /\/(pixel|etape)$/);
+    }
+  });
+
+  test('une page qui redirige vers un autre site n\'est pas analysée, et le dit', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem, seen } = await visit('/protege');
+    assert.match(problem, /redirects to another site \(localhost\)/);
+    assert.deepEqual(received, []);
+    assert.equal(seen[0].kind, 'document');
+    // Une redirection qui reste sur le site est suivie normalement.
+    const inside = await visit('/interne');
+    assert.equal(inside.problem, null);
+    assert.equal(inside.title, 'Page');
+  });
+
+  test('avec le réseau permis, la page d\'un autre site n\'est toujours pas analysée', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem } = await visit('/protege', { allowNetwork: true });
+    assert.match(problem, /redirects to another site/);
+    assert.deepEqual(received, ['/login']);
   });
 });
 

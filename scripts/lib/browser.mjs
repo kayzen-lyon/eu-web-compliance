@@ -89,6 +89,42 @@ export function requestKind(request, page) {
   return type;
 }
 
+// Hôte tiers vers lequel la page principale d'un contexte a été redirigée, s'il y en a un.
+const LEFT_SITE = new WeakMap();
+// En-têtes bruts des pages servies à travers l'interception, par contexte puis par adresse.
+const RAW_HEADERS = new WeakMap();
+
+// En-têtes d'une réponse de page, sous la forme [{ name, value }], Set-Cookie compris.
+export async function responseHeaders(page, response) {
+  const kept = RAW_HEADERS.get(page.context());
+  return (kept && kept.get(response.url())) || response.headersArray();
+}
+const MAX_REDIRECTS = 10;
+
+// Adresse tierce à laquelle mène la chaîne de redirections d'une réponse du site, ou null si la
+// chaîne reste sur le site. Les étapes suivantes sont demandées une à une, sans jamais contacter
+// un hôte tiers. Une chaîne plus longue que MAX_REDIRECTS est traitée comme une sortie du site.
+async function redirectLeavingSite(route, first, isFirstParty) {
+  let response = first;
+  let current = route.request().url();
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop += 1) {
+    const status = response.status();
+    const { location } = response.headers();
+    if (status < 300 || status >= 400 || !location) return null;
+    let next;
+    try {
+      next = new URL(location, current).href;
+    } catch {
+      return null;
+    }
+    if (!/^https?:/i.test(next)) return null;
+    if (!isFirstParty(next)) return next;
+    current = next;
+    response = await route.fetch({ url: next, maxRedirects: 0 });
+  }
+  return current;
+}
+
 // Intercepte toutes les requêtes d'un contexte. `onThirdParty(entry)` reçoit
 // { url, host, kind, method } pour chaque requête tierce, qui est ensuite interrompue
 // sauf si allowNetwork est vrai. Les WebSockets tiers sont relevés et fermés. Une requête
@@ -108,8 +144,37 @@ export async function routeThirdParty(context, { pageUrl, allowNetwork = false, 
       await route.abort('blockedbyclient').catch(() => {});
       return;
     }
-    if (!web || isFirstParty(url)) {
+    if (!web) {
       await route.continue().catch(() => {});
+      return;
+    }
+    if (isFirstParty(url)) {
+      // Le navigateur suit une redirection sans repasser par cette interception : une adresse du
+      // site qui redirige vers un hôte tiers ferait partir la requête. La réponse est donc
+      // demandée ici sans suivre de redirection ; si la chaîne de redirections sort du site, la
+      // requête est relevée comme tierce et interrompue, sinon la réponse est remise au navigateur.
+      try {
+        const response = await route.fetch({ maxRedirects: 0 });
+        const outside = await redirectLeavingSite(route, response, isFirstParty);
+        if (outside) {
+          const kind = requestKind(request, getPage ? getPage() : null);
+          onThirdParty({ url: outside, host: hostOf(outside), kind, method, redirected_from: url });
+          if (kind === 'document') LEFT_SITE.set(context, hostOf(outside));
+          if (!allowNetwork) {
+            await route.abort('blockedbyclient').catch(() => {});
+            return;
+          }
+        }
+        // Le navigateur ne montre pas les en-têtes Set-Cookie d'une réponse remise par
+        // l'interception : ceux des pages sont gardés ici pour responseHeaders().
+        if (request.resourceType() === 'document') {
+          if (!RAW_HEADERS.has(context)) RAW_HEADERS.set(context, new Map());
+          RAW_HEADERS.get(context).set(url, response.headersArray());
+        }
+        await route.fulfill({ response });
+      } catch {
+        await route.abort('failed').catch(() => {});
+      }
       return;
     }
     if (allowNetwork) await route.continue().catch(() => {});
@@ -133,10 +198,31 @@ export async function routeThirdParty(context, { pageUrl, allowNetwork = false, 
 // Raison pour laquelle une page chargée ne peut pas être analysée (pas de réponse, statut
 // HTTP d'erreur), ou null. Une page d'erreur (403 d'un pare-feu, 404, 500) ne doit jamais
 // donner un résultat « sans constat ».
-export function loadProblem(response) {
+export function loadProblem(response, requestedUrl = null) {
   if (!response) return 'no response';
   const status = response.status();
-  return status >= 400 ? `HTTP ${status}` : null;
+  if (status >= 400) return `HTTP ${status}`;
+  // Page servie par un autre site que celui demandé : ce serait analyser le site d'un tiers.
+  if (requestedUrl && !firstPartyPredicate(requestedUrl)(response.url())) return leftSiteProblem(hostOf(response.url()));
+  return null;
+}
+
+function leftSiteProblem(host) {
+  return `the address redirects to another site${host ? ` (${host})` : ''}: a login wall, a protected preview or a site that moved. The page of the other site is not analysed`;
+}
+
+// Ouvre une page et rend { response, problem }. Une adresse qui redirige vers un autre site
+// (mur de connexion d'une prévisualisation protégée, site déplacé) donne un problème, jamais
+// l'analyse de la page de l'autre site.
+export async function openPage(page, url, options = { waitUntil: 'load' }) {
+  try {
+    const response = await page.goto(url, options);
+    return { response, problem: loadProblem(response, url) };
+  } catch (error) {
+    const host = LEFT_SITE.get(page.context());
+    if (host !== undefined && /ERR_BLOCKED_BY_CLIENT|ERR_ABORTED/.test(String(error.message))) return { response: null, problem: leftSiteProblem(host) };
+    throw error;
+  }
 }
 
 // Nouveau contexte sans état : pas de cookie, pas de stockage, service workers bloqués
