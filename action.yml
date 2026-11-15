@@ -1,0 +1,114 @@
+name: EU web compliance check
+description: >-
+  Checks a built website or a preview URL against the EU rules of the eu-web-compliance skill
+  (accessibility, trackers before consent, security headers, legal and AI content). Writes the
+  report in the job summary and uploads it as an artifact. Never certifies compliance.
+author: Tarek BELHADJ - Kayzen
+branding:
+  icon: check-circle
+  color: blue
+
+inputs:
+  target:
+    description: Folder of built HTML pages (dist/, out/, _site/...) or URL of a running site or preview deployment.
+    required: true
+  only:
+    description: "Checkers to run, comma-separated, among a11y, privacy, security, content. Empty: all four."
+    required: false
+    default: ""
+  lang:
+    description: "Language of the report: en or fr."
+    required: false
+    default: en
+  fail-on-violation:
+    description: "true: the step fails when a non-conformity is found. false: the report is written and the step passes (a checker that cannot run still fails)."
+    required: false
+    default: "true"
+  project:
+    description: Root of the project, where compliance/profile.json is looked for.
+    required: false
+    default: "."
+  profile:
+    description: "Path of the project profile, when it is not <project>/compliance/profile.json."
+    required: false
+    default: ""
+  timeout:
+    description: Maximum duration of each checker, in minutes. Empty uses the default of the checkers.
+    required: false
+    default: ""
+  artifact-name:
+    description: Name of the uploaded artifact that holds the Markdown and JSON reports. Empty disables the upload.
+    required: false
+    default: eu-web-compliance-report
+  node-version:
+    description: Node.js version used to run the checkers.
+    required: false
+    default: "22"
+  python-version:
+    description: Python version used to compute the applicability matrix.
+    required: false
+    default: "3.12"
+
+outputs:
+  non-conformities:
+    description: Number of non-conformities found by the checkers.
+    value: ${{ steps.report.outputs.non-conformities }}
+  to-review:
+    description: Number of points a person must review.
+    value: ${{ steps.report.outputs.to-review }}
+  report-json:
+    description: Path of the JSON report on the runner.
+    value: ${{ steps.report.outputs.report-json }}
+  report-markdown:
+    description: Path of the Markdown report on the runner.
+    value: ${{ steps.report.outputs.report-markdown }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install the checkers
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        npm ci --no-audit --no-fund
+        npx playwright install --with-deps chromium
+    # Les paramètres passent par l'environnement, jamais par le texte du script : une valeur
+    # fournie par l'appelant ne peut pas devenir une commande.
+    - name: Run the checks
+      shell: bash
+      env:
+        EWC_TARGET: ${{ inputs.target }}
+        EWC_ONLY: ${{ inputs.only }}
+        EWC_LANG: ${{ inputs.lang }}
+        EWC_FAIL: ${{ inputs.fail-on-violation }}
+        EWC_PROJECT: ${{ inputs.project }}
+        EWC_PROFILE: ${{ inputs.profile }}
+        EWC_TIMEOUT: ${{ inputs.timeout }}
+        EWC_OUT: ${{ runner.temp }}/eu-web-compliance
+      run: |
+        args=("$EWC_TARGET" --project "$EWC_PROJECT" --out "$EWC_OUT" --lang "$EWC_LANG")
+        if [ -n "$EWC_ONLY" ]; then args+=(--only "$EWC_ONLY"); fi
+        if [ -n "$EWC_PROFILE" ]; then args+=(--profile "$EWC_PROFILE"); fi
+        if [ -n "$EWC_TIMEOUT" ]; then args+=(--timeout "$EWC_TIMEOUT"); fi
+        if [ "$EWC_FAIL" = "false" ]; then args+=(--no-fail); fi
+        node "$GITHUB_ACTION_PATH/bin/eu-web-compliance.mjs" audit "${args[@]}"
+    - name: Write the report in the job summary
+      id: report
+      if: always()
+      shell: bash
+      env:
+        EWC_OUT: ${{ runner.temp }}/eu-web-compliance
+      run: node "$GITHUB_ACTION_PATH/scripts/action-report.mjs" "$EWC_OUT"
+    - name: Upload the report
+      if: always() && inputs.artifact-name != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ runner.temp }}/eu-web-compliance
+        if-no-files-found: warn
