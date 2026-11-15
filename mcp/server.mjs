@@ -29,6 +29,9 @@ import { DATA_NOTICE } from '../scripts/lib/cli.mjs';
 
 const NOT_A_CERTIFICATE = 'Produced with the help of an AI tool (eu-web-compliance). Not an audit, not legal advice, and never a statement that a site is compliant: a verdict applies to one rule, and what was not tested must be reported as not tested.';
 const SEVERITY_ORDER = { blocking: 0, major: 1, minor: 2 };
+// Longueur maximale des listes rendues au client, hors constats (bornés par max_findings) : la
+// liste complète est dans le fichier du rapport.
+const MAX_LIST = 50;
 
 const json = (value) => ({ content: [{ type: 'text', text: JSON.stringify(value, null, 2) }] });
 const failure = (error) => ({ isError: true, content: [{ type: 'text', text: String((error && error.message) || error) }] });
@@ -65,10 +68,11 @@ async function audit({ target, only, lang, project, profile, timeout_minutes: ti
     findings_total: findings.length,
     findings_returned: Math.min(findings.length, max),
     findings: findings.slice(0, max),
-    grouped_fixes: report.grouped_fixes,
+    grouped_fixes_total: report.grouped_fixes.length,
+    grouped_fixes: report.grouped_fixes.slice(0, MAX_LIST),
     not_tested_total: report.not_tested.length,
     manual_checks_total: report.manual_checks.length,
-    next_actions: report.next_actions,
+    next_actions: report.next_actions.slice(0, MAX_LIST),
     full_report: result.files,
     how_to_read: 'The full report (every finding, the points not tested and the checks left to a person) is in full_report. Tell the user what was not verified.',
   };

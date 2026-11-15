@@ -13,7 +13,10 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { ROOT } from './helpers.mjs';
 import { SkillError, auditPaths, checkAllArgs, findRules, getTemplate, linesOf, listTemplates, qualifyProject } from '../scripts/lib/skill-api.mjs';
-import { statusWithinSite } from '../scripts/lib/browser.mjs';
+import { firstPartyPredicate, freshContext, launchBrowser, openPage, routeThirdParty, siteOf, statusWithinSite } from '../scripts/lib/browser.mjs';
+import { mdCell, mdText } from '../scripts/lib/cli.mjs';
+import { exec } from '../scripts/lib/process.mjs';
+import { patternToRegExp } from '../scripts/lib/static-server.mjs';
 import { assertInsideRoot, assertUrlAllowed, isLinkLocal } from '../mcp/guard.mjs';
 import { buildProfile, loadQuestions, parseAnswer, shouldAsk } from '../scripts/lib/profile-init.mjs';
 import { clip, main as actionReport } from '../scripts/action-report.mjs';
@@ -122,6 +125,59 @@ describe('socle commun : règles et modèles', () => {
     asked.length = 0;
     assert.equal(await statusWithinSite(get, 'https://site.example/boucle', 3), 302);
     assert.equal(asked.length, 4);
+  });
+
+  test('deux sites voisins sous un même suffixe public sont deux sites différents', () => {
+    assert.equal(siteOf('www.example.co.uk'), 'example.co.uk');
+    assert.equal(siteOf('cdn.example.org'), 'example.org');
+    assert.equal(siteOf('mon-site.vercel.app'), 'mon-site.vercel.app');
+    assert.equal(siteOf('localhost'), 'localhost');
+    const preview = firstPartyPredicate('https://mon-site.vercel.app/page');
+    assert.equal(preview('https://mon-site.vercel.app/a.js'), true);
+    assert.equal(preview('https://autre-site.vercel.app/pixel.gif'), false);
+    assert.equal(firstPartyPredicate('https://alice.github.io/')('https://bob.github.io/x.js'), false);
+    assert.equal(firstPartyPredicate('https://www.example.co.uk/')('https://other.co.uk/x.js'), false);
+  });
+
+  test('un texte cité ne peut fabriquer ni lien, ni image, ni balise dans le rapport Markdown', () => {
+    assert.equal(mdText('Voir [ici](https://piege.example) ![x](y) <img src=z>'), 'Voir \\[ici\\](https://piege.example) !\\[x\\](y) \\<img src=z\\>');
+    assert.equal(mdCell('a | [b]'), 'a \\| \\[b\\]');
+    assert.equal(mdText('texte simple, sans rien à échapper'), 'texte simple, sans rien à échapper');
+  });
+
+  test('un sous-processus trop bavard est arrêté, sa sortie n\'est pas gardée en entier', async () => {
+    const result = await exec(process.execPath, ['-e', 'const line = "x".repeat(1000) + "\\n"; setInterval(() => process.stdout.write(line), 1);'], { maxOutputBytes: 20000, timeoutMs: 30000 });
+    assert.equal(result.truncated, true);
+    assert.ok(result.stdout.length <= 20000);
+    assert.match(result.stderr, /stopped: more than/);
+    const quiet = await exec(process.execPath, ['-e', 'console.log("ok")']);
+    assert.equal(quiet.truncated, false);
+    assert.equal(quiet.stdout.trim(), 'ok');
+  });
+
+  test('un motif de fichier d\'en-têtes se compare sans expression régulière, même répété', () => {
+    assert.equal(patternToRegExp('/*').test('/a/b.html'), true);
+    assert.equal(patternToRegExp('/assets/*').test('/assets/fonts/a.woff2'), true);
+    assert.equal(patternToRegExp('/assets/*').test('/autre/a.css'), false);
+    assert.equal(patternToRegExp('/blog/:slug').test('/blog/article'), true);
+    assert.equal(patternToRegExp('/blog/:slug').test('/blog/a/b'), false);
+    assert.equal(patternToRegExp('/blog/:slug').test('/blog/'), false);
+    assert.equal(patternToRegExp('/*.html').test('/page.html'), true);
+    assert.equal(patternToRegExp('/a.b').test('/aXb'), false);
+    const started = Date.now();
+    assert.equal(patternToRegExp(`${'/*'.repeat(30)}x`).test(`/${'a/'.repeat(1500)}`), false);
+    assert.ok(Date.now() - started < 2000, 'comparaison trop lente');
+  });
+
+  test('un profil illisible est signalé sans citer le début du fichier', async () => {
+    const dir = await tmpDir('profil');
+    const profile = path.join(dir, 'profile.json');
+    await fs.writeFile(profile, 'SECRETLINE jamais du JSON');
+    const result = await cli(['audit', path.join(ROOT, 'tests', 'fixtures', 'security', 'weak'), '--only', 'security', '--profile', profile, '--out', dir]);
+    assert.equal(result.code, 2);
+    assert.match(result.stderr, /JSON invalide/);
+    assert.ok(!`${result.stdout}${result.stderr}`.includes('SECRET'), result.stderr);
+    await fs.rm(dir, { recursive: true, force: true });
   });
 
   test('la qualification rend la matrice du script Python, à partir d\'un objet ou d\'un fichier', async () => {
@@ -295,6 +351,14 @@ describe('GitHub Action', () => {
     for (const line of scriptLines) assert.ok(!line.includes('${{ inputs.'), `entrée interpolée dans un script : ${line}`);
   });
 
+  test('les actions tierces sont référencées par empreinte de commit, jamais par étiquette', async () => {
+    for (const file of ['action.yml', '.github/workflows/validate.yml', '.github/workflows/watch-sources.yml']) {
+      const uses = (await fs.readFile(path.join(ROOT, file), 'utf8')).split('\n').filter((line) => /^\s*(- )?uses:/.test(line));
+      assert.ok(uses.length > 0, file);
+      for (const line of uses) assert.match(line, /uses: (\.\/|[\w-]+\/[\w-]+@[0-9a-f]{40} # v\d+)\s*$/, `${file} : ${line.trim()}`);
+    }
+  });
+
   test('l\'étape de rapport écrit le résumé et les sorties', async () => {
     const dir = await tmpDir('action');
     const summary = path.join(dir, 'summary.md');
@@ -324,6 +388,81 @@ describe('GitHub Action', () => {
     assert.ok(Buffer.byteLength(cut) < 4200);
     assert.match(cut, /Report cut here/);
     assert.equal(clip('court\n', 4000), 'court\n');
+  });
+});
+
+describe('blocage des requêtes tierces : redirections', () => {
+  let first;
+  let third;
+  let origin;
+  let browser;
+  const received = [];
+  const listen = (server) => new Promise((resolve) => { server.listen(0, '127.0.0.1', resolve); });
+
+  before(async () => {
+    // Le « tiers » écoute sur la même machine, mais on l'appelle par un autre nom d'hôte (localhost).
+    third = http.createServer((req, res) => { received.push(req.url); res.writeHead(200, { 'content-type': 'text/html' }); res.end('<title>Connexion</title>'); });
+    await listen(third);
+    const outside = `http://localhost:${third.address().port}`;
+    first = http.createServer((req, res) => {
+      const redirect = { '/pixel': `${outside}/collect`, '/etape': '/pixel', '/protege': `${outside}/login`, '/interne': '/' }[req.url];
+      if (redirect) { res.writeHead(302, { location: redirect }); res.end(); return; }
+      res.writeHead(200, { 'content-type': 'text/html' });
+      res.end('<html lang="fr"><title>Page</title><img src="/pixel" alt=""><img src="/etape" alt=""><p>page</p></html>');
+    });
+    await listen(first);
+    origin = `http://127.0.0.1:${first.address().port}`;
+    const launched = await launchBrowser();
+    browser = launched.browser || launched;
+  });
+  after(async () => {
+    await browser.close();
+    await new Promise((resolve) => { first.close(resolve); });
+    await new Promise((resolve) => { third.close(resolve); });
+  });
+
+  const visit = async (pathname, options = {}) => {
+    const context = await freshContext(browser);
+    const seen = [];
+    await routeThirdParty(context, { pageUrl: origin + pathname, onThirdParty: (entry) => seen.push(entry), ...options });
+    const page = await context.newPage();
+    const opened = await openPage(page, origin + pathname);
+    const title = opened.problem ? null : await page.title();
+    await context.close();
+    return { ...opened, seen, title };
+  };
+
+  test('une ressource du site qui redirige vers un tiers est relevée et la requête ne part pas', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem, seen, title } = await visit('/');
+    assert.equal(problem, null);
+    assert.equal(title, 'Page');
+    assert.deepEqual(received, [], 'le tiers a reçu une requête');
+    assert.equal(seen.length, 2);
+    for (const entry of seen) {
+      assert.equal(entry.host, 'localhost');
+      assert.match(entry.url, /\/collect$/);
+      assert.match(entry.redirected_from, /\/(pixel|etape)$/);
+    }
+  });
+
+  test('une page qui redirige vers un autre site n\'est pas analysée, et le dit', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem, seen } = await visit('/protege');
+    assert.match(problem, /redirects to another site \(localhost\)/);
+    assert.deepEqual(received, []);
+    assert.equal(seen[0].kind, 'document');
+    // Une redirection qui reste sur le site est suivie normalement.
+    const inside = await visit('/interne');
+    assert.equal(inside.problem, null);
+    assert.equal(inside.title, 'Page');
+  });
+
+  test('avec le réseau permis, la page d\'un autre site n\'est toujours pas analysée', { timeout: 120000 }, async () => {
+    received.length = 0;
+    const { problem } = await visit('/protege', { allowNetwork: true });
+    assert.match(problem, /redirects to another site/);
+    assert.deepEqual(received, ['/login']);
   });
 });
 
@@ -399,6 +538,14 @@ describe('veille des sources', () => {
     const markdown = toMarkdown(results, '2026-11-22');
     assert.match(markdown, /1 gone/);
     assert.match(markdown, /## Pages that disappeared\n\n- `removed`: Removed .*HTTP 404/);
+    // La signature liste les pages à relire : le workflow ne répète pas un commentaire identique.
+    assert.match(markdown, /<!-- watch-signature: changed=; gone=removed; new= -->/);
+    assert.ok(!toMarkdown(results.filter((r) => r.state !== 'gone'), '2026-11-22').includes('watch-signature'));
+    // Une page plus lourde que la limite n'est pas lue : elle est dite injoignable, pas comparée.
+    const heavy = async () => ({ ok: true, status: 200, body: null, headers: new Headers({ 'content-length': String(30 * 1024 * 1024) }) });
+    const big = await checkSources([{ id: 'big', title: 'Big', url: `${origin}/big` }], {}, { fetcher: heavy });
+    assert.equal(big[0].state, 'unreachable');
+    assert.match(big[0].detail, /larger than 25 MiB/);
     // L'empreinte d'une page disparue est gardée : elle sera comparée si la page revient.
     assert.deepEqual(nextBaseline(results, baseline, '2026-11-22').removed, baseline.removed);
   });

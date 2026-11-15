@@ -1,0 +1,10 @@
+# Les actions GitHub sont référencées par empreinte de commit (action.yml et workflows) :
+# Dependabot propose leurs mises à jour, une fois par mois, dans une pull request à relire.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: chore

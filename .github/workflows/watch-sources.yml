@@ -21,8 +21,8 @@ jobs:
   watch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "22"
       - name: Comparer les pages officielles à leurs empreintes
@@ -43,8 +43,14 @@ jobs:
         run: |
           gh label create veille-reglementaire --color 0E8A16 --description "Une source officielle a changé : à relire" 2>/dev/null || true
           existing=$(gh issue list --state open --label veille-reglementaire --json number --jq '.[0].number // empty')
+          signature=$(grep -o '<!-- watch-signature: .* -->' "$RUNNER_TEMP/watch.md" || true)
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body-file "$RUNNER_TEMP/watch.md"
+            # Même liste de pages que dans l'issue ou un commentaire précédent : rien à ajouter.
+            if [ -n "$signature" ] && gh issue view "$existing" --json body,comments --jq '.body, .comments[].body' | grep -qF -- "$signature"; then
+              echo "Mêmes pages que la semaine précédente : pas de nouveau commentaire."
+            else
+              gh issue comment "$existing" --body-file "$RUNNER_TEMP/watch.md"
+            fi
           else
             gh issue create --title "Veille réglementaire : des sources officielles ont changé" --label veille-reglementaire --body-file "$RUNNER_TEMP/watch.md"
           fi

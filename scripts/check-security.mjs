@@ -27,7 +27,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { launchBrowser, freshContext, routeThirdParty, hostOf, loadProblem } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, hostOf, openPage, responseHeaders } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
   prepareOutputs, DATA_NOTICE, notAnalysedMessage,
@@ -222,8 +222,7 @@ async function checkPage(browser, p, baseline) {
         scripts.push(response.text().then((text) => ({ file: new URL(response.url()).pathname, text })).catch(() => null));
       }
     });
-    const response = await page.goto(p.url, { waitUntil: 'load' });
-    const problem = loadProblem(response);
+    const { response, problem } = await openPage(page, p.url);
     if (problem) {
       return { url: p.url, final_url: response ? response.url() : p.url, status: response ? response.status() : null, https: p.url.startsWith('https://'),
         headers: {}, set_cookie: [], not_applicable: [], third_party_requests: thirdParty.map((t) => t.url), script_errors: errors, analysed: false,
@@ -232,7 +231,7 @@ async function checkPage(browser, p, baseline) {
     await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
     const finalUrl = response.url();
     const https = finalUrl.startsWith('https://');
-    const headers = await response.headersArray();
+    const headers = await responseHeaders(page, response);
     const contentType = (headers.find((h) => h.name.toLowerCase() === 'content-type') || {}).value || '';
     const data = await page.evaluate(inspectPage);
     const local = LOCAL_HOST.test(hostOf(finalUrl));

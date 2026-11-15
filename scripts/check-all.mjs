@@ -155,7 +155,8 @@ async function main() {
       try {
         profileData = JSON.parse(await fs.readFile(opts.profile, 'utf8'));
       } catch (error) {
-        throw new UsageError(`--profile : JSON invalide dans ${opts.profile} (${error.message})`);
+        // Node cite les premiers caractères du fichier dans son message : ils ne sont pas repris.
+        throw new UsageError(`--profile : JSON invalide dans ${opts.profile} (${String(error.message).split(', "')[0]})`);
       }
     } else {
       matrixInput = path.join(tmp, 'empty-profile.json');

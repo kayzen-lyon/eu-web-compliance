@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : version 1.1.1.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.1.2.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -129,7 +129,7 @@ Le paquet n'est pas encore publié sur npm : d'ici là, la commande passe par l'
 ```yaml
 - uses: kayzen-lyon/eu-web-compliance@v1
   with:
-    target: dist            # dossier construit, ou URL de prévisualisation
+    target: dist            # dossier construit, ou URL accessible sans connexion
     lang: fr
     fail-on-violation: "true"
 ```

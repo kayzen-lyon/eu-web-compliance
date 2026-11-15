@@ -105,6 +105,7 @@ This reading of the licence is the project's own and has not been reviewed by a 
 | Playwright (Microsoft) | Apache-2.0 |
 | Model Context Protocol TypeScript SDK, `@modelcontextprotocol/sdk` (used by `mcp/server.mjs`) | MIT |
 | zod (input schemas of the MCP tools) | MIT |
+| tldts (registrable domain of a host name, from the Public Suffix List it embeds; used by `scripts/lib/browser.mjs`) | MIT; the Public Suffix List itself is under MPL-2.0 |
 
 ## CMS documentation cited in `references/cms/`
 
