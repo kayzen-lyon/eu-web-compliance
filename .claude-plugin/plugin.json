@@ -1,7 +1,7 @@
 {
   "name": "eu-web-compliance",
   "displayName": "EU web compliance",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Make websites for the European market meet EU accessibility (EAA, EN 301 549, WCAG 2.2 AA, RGAA), data protection and cookies (GDPR, ePrivacy, CNIL), AI Act transparency, web security (ANSSI, OWASP) and consumer law (legal notice, online sales, withdrawal button, prices, DSA). Pre-release; not reviewed by a lawyer or an accessibility auditor; never certifies compliance.",
   "author": {
     "name": "Tarek BELHADJ - Kayzen",

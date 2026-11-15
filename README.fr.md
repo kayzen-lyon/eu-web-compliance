@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : version 1.0.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.1.0.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -127,14 +127,14 @@ Le paquet n'est pas encore publié sur npm : d'ici là, la commande passe par l'
 **GitHub Action.** Dans un workflow, après la construction du site :
 
 ```yaml
-- uses: kayzen-lyon/eu-web-compliance@main
+- uses: kayzen-lyon/eu-web-compliance@v1
   with:
     target: dist            # dossier construit, ou URL de prévisualisation
     lang: fr
     fail-on-violation: "true"
 ```
 
-Le rapport s'affiche dans le résumé de l'exécution et il est joint, en Markdown et en JSON, comme fichier téléchargeable. Autres paramètres : `only`, `project`, `profile`, `timeout`, `artifact-name` (voir [action.yml](action.yml)). L'appel par `@v1` sera possible quand cette étiquette aura été créée ; pour un usage durable, préférez une empreinte de commit à `@main`.
+Le rapport s'affiche dans le résumé de l'exécution et il est joint, en Markdown et en JSON, comme fichier téléchargeable. Autres paramètres : `only`, `project`, `profile`, `timeout`, `artifact-name` (voir [action.yml](action.yml)). `@v1` suit la dernière version 1.x ; indiquez une étiquette exacte (`@v1.1.0`) ou une empreinte de commit si vous voulez des contrôles figés.
 
 **Serveur MCP.** Pour les agents qui ne chargent pas de skill. Après `npm install` dans le dossier du skill, déclarez dans votre client MCP :
 

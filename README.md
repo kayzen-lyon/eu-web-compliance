@@ -4,7 +4,7 @@
 
 A skill for AI coding agents: make the code of a website meet the European obligations that apply to it, from the first line written.
 
-> **Project status: version 1.0.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
+> **Project status: version 1.1.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
 
 ## What the skill covers
 
@@ -127,13 +127,13 @@ The package is not published on npm yet: until then, the command goes through th
 **GitHub Action.** In a workflow, after the site is built:
 
 ```yaml
-- uses: kayzen-lyon/eu-web-compliance@main
+- uses: kayzen-lyon/eu-web-compliance@v1
   with:
     target: dist            # built folder, or preview URL
     fail-on-violation: "true"
 ```
 
-The report is shown in the job summary and uploaded, in Markdown and JSON, as an artifact. Other inputs: `only`, `lang`, `project`, `profile`, `timeout`, `artifact-name` (see [action.yml](action.yml)). Calling it with `@v1` will work once that tag exists; for lasting use, prefer a commit SHA to `@main`.
+The report is shown in the job summary and uploaded, in Markdown and JSON, as an artifact. Other inputs: `only`, `lang`, `project`, `profile`, `timeout`, `artifact-name` (see [action.yml](action.yml)). `@v1` follows the latest 1.x release; pin an exact tag (`@v1.1.0`) or a commit SHA if you want the checks to stay fixed.
 
 **MCP server.** For agents that do not load skills. After `npm install` in the skill folder, declare in your MCP client:
 

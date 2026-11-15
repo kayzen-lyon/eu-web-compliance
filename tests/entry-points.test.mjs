@@ -170,6 +170,14 @@ describe('outil en ligne de commande', () => {
     assert.equal(result.stdout.trim(), (await readJson(path.join(ROOT, 'package.json'))).version);
   });
 
+  test('le numéro de version est le même partout où il est écrit', async () => {
+    const { version } = await readJson(path.join(ROOT, 'package.json'));
+    assert.equal((await readJson(path.join(ROOT, 'package-lock.json'))).version, version);
+    assert.equal((await readJson(path.join(ROOT, '.claude-plugin', 'plugin.json'))).version, version);
+    assert.match(await fs.readFile(path.join(ROOT, 'SKILL.md'), 'utf8'), new RegExp(`^  version: "${version.replace(/\./g, '\\.')}"$`, 'm'));
+    assert.match(await fs.readFile(path.join(ROOT, 'CHANGELOG.md'), 'utf8'), new RegExp(`^## \\[${version.replace(/\./g, '\\.')}\\]`, 'm'));
+  });
+
   test('rule : texte ou JSON', async () => {
     const text = await cli(['rule', 'WCAG', '2.4.7']);
     assert.equal(text.code, 0);

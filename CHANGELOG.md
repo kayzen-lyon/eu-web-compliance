@@ -2,9 +2,9 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
-## [Non publié]
+## [1.1.0] - 2026-11-15
 
-Portes d'entrée vers les mêmes vérificateurs et les mêmes règles que le skill. Audit de départ et suites dans `docs/ROADMAP.md`. Rien n'est publié sur npm et aucune étiquette de version n'est créée : ces décisions reviennent au propriétaire.
+Portes d'entrée vers les mêmes vérificateurs et les mêmes règles que le skill. Audit de départ et suites dans `docs/ROADMAP.md`. Version publiée sur GitHub avec les étiquettes `v1.1.0` et `v1` ; le paquet n'est pas encore publié sur npm.
 
 ### Ajouté
 
@@ -14,7 +14,7 @@ Portes d'entrée vers les mêmes vérificateurs et les mêmes règles que le ski
 - Fiches CMS `references/cms/wordpress.md`, `prestashop.md` et `shopify.md` : où appliquer les règles existantes dans chaque CMS, sans règle nouvelle ; 39 pages officielles des éditeurs inscrites dans `references/sources.json` ; ligne de renvoi dans `SKILL.md`.
 - Veille réglementaire : `scripts/watch-sources.mjs`, empreintes dans `references/sources-fingerprints.json`, workflow hebdomadaire `watch-sources.yml` qui ouvre une issue quand une page officielle a changé.
 - Module commun `scripts/lib/skill-api.mjs`, seul point de passage des portes d'entrée vers `check-all.mjs`, `applicability.py`, `templates/` et `references/`.
-- Tests `tests/entry-points.test.mjs` (29 tests).
+- Tests `tests/entry-points.test.mjs` (30 tests).
 
 ### Modifié
 

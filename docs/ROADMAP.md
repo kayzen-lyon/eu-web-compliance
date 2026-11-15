@@ -79,13 +79,13 @@ Mesure du 15 novembre 2026 : sur 126 sources, 111 ont une empreinte stable d'une
 
 ### 4.1 Décisions qui reviennent au propriétaire du dépôt
 
-Rien de ce qui suit n'a été fait, parce que chaque point publie quelque chose sous le nom de Kayzen.
+Chaque point publie quelque chose sous le nom de Kayzen. Le propriétaire a demandé la publication le 15 novembre 2026 : la version 1.1.0 et les étiquettes `v1.1.0` et `v1` existent sur GitHub. Le reste attend une action de sa part.
 
-| Décision | Effet | Remarque |
-|----------|-------|----------|
-| Publier le paquet sur npm (`npm publish`) | `npx eu-web-compliance audit …` fonctionne sans l'adresse du dépôt | Le nom `eu-web-compliance` était libre sur npm le 15 novembre 2026 |
-| Créer l'étiquette `v1` (et une version `v1.1.0`) | `uses: kayzen-lyon/eu-web-compliance@v1` fonctionne | D'ici là, l'Action s'appelle par une branche ou une empreinte de commit |
-| Inscrire l'Action sur le GitHub Marketplace | Visibilité | Demande l'étiquette ci-dessus |
+| Décision | Effet | État |
+|----------|-------|------|
+| Créer l'étiquette `v1` et la version `v1.1.0` | `uses: kayzen-lyon/eu-web-compliance@v1` fonctionne | Fait le 15 novembre 2026 |
+| Publier le paquet sur npm (`npm publish`) | `npx eu-web-compliance audit …` fonctionne sans l'adresse du dépôt | À faire : demande une connexion au compte npm du propriétaire. Le nom `eu-web-compliance` était libre le 15 novembre 2026 |
+| Inscrire l'Action sur le GitHub Marketplace | Visibilité | À faire : case à cocher dans la page de la version, après acceptation des conditions du Marketplace par le propriétaire |
 | Inscrire le serveur dans un registre MCP | Visibilité auprès des clients MCP | Demande la publication npm |
 
 ### 4.2 Limites connues de ce qui est livré
@@ -107,7 +107,7 @@ Rien de ce qui suit n'a été fait, parce que chaque point publie quelque chose 
 
 ### 4.4 Hygiène du dépôt
 
-- Un test qui échoue quand les quatre numéros de version divergent.
+- Fait : un test échoue quand les numéros de version divergent (`package.json`, `package-lock.json`, `.claude-plugin/plugin.json`, `SKILL.md`, `CHANGELOG.md`).
 - Épingler les actions GitHub par empreinte de commit.
 - Faire tourner les tests Node sous Windows et macOS dans l'intégration continue.
 

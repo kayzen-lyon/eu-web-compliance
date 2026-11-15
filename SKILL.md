@@ -14,7 +14,7 @@ description: >-
 license: MIT
 compatibility: Scripts need Python 3.8+; browser checks need Node 20+ and `npm install` run once in the skill folder.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   scope: "EU law and France verified; other Member States partial"
   author: "Tarek BELHADJ - Kayzen"
   homepage: "https://www.kayzen-lyon.com"
