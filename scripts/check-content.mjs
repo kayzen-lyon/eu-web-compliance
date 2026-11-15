@@ -82,7 +82,7 @@
 // Codes de sortie : 0 aucune non-conformité, 1 non-conformité trouvée, 2 erreur d'usage.
 
 import path from 'node:path';
-import { launchBrowser, freshContext, routeThirdParty, loadProblem } from './lib/browser.mjs';
+import { launchBrowser, freshContext, routeThirdParty, loadProblem, statusWithinSite } from './lib/browser.mjs';
 import {
   UsageError, parseArgs, resolvePages, loadExpected, scoreExpected, summarise, expectedMarkdown, mdCell, writeOutputs, run,
   prepareOutputs, DATA_NOTICE, notAnalysedMessage,
@@ -487,12 +487,16 @@ async function withdrawalFlow(browser, ctx, results) {
 }
 
 // Statut HTTP d'une adresse, demandé par le contexte du navigateur (mêmes en-têtes qu'une visite),
-// avec un délai ; 0 en cas d'erreur réseau ou de délai dépassé.
+// avec un délai ; 0 en cas d'erreur réseau ou de délai dépassé. Cette requête ne passe pas par le
+// blocage des requêtes tierces du contexte : les redirections sont donc suivies ici, une à une,
+// et seulement tant qu'elles restent sur le site vérifié.
 async function statusOf(browser, url) {
   const context = await freshContext(browser);
   try {
-    const response = await context.request.get(url, { timeout: 15000, maxRedirects: 5, failOnStatusCode: false });
-    return response.status();
+    return await statusWithinSite(async (address) => {
+      const response = await context.request.get(address, { timeout: 15000, maxRedirects: 0, failOnStatusCode: false });
+      return { status: response.status(), location: response.headers().location };
+    }, url);
   } catch {
     return 0;
   } finally {

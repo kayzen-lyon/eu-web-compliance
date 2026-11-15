@@ -18,12 +18,14 @@
 // `consulted` dans sources.json et les faits de regulatory-status.md, puis lancer --update.
 //
 // Statut d'une source : ok (empreinte stable), unstable (deux lectures de suite diffèrent : page
-// dynamique, jamais comparée), unreachable (erreur réseau ou HTTP 4xx/5xx : beaucoup de sites
-// officiels refusent les robots, ces sources restent sous la règle manuelle des 90 jours).
+// dynamique, non comparée tant que --update ne la relit pas deux fois à l'identique), unreachable
+// (erreur réseau ou HTTP 4xx/5xx : beaucoup de sites officiels refusent les robots, ces sources
+// restent sous la règle manuelle des 90 jours). Une page lue jusque-là qui répond 404 ou 410 est
+// signalée comme disparue (gone) : elle a été retirée ou déplacée.
 //
 // Requêtes : GET seulement, vers les adresses du registre, sans cookie ni donnée personnelle.
-// Codes de sortie : 0 rien n'a changé, 1 au moins une page a changé ou une source est nouvelle,
-// 2 erreur d'usage.
+// Codes de sortie : 0 rien n'a changé, 1 au moins une page a changé ou disparu, ou une source est
+// nouvelle, 2 erreur d'usage (dont un identifiant inconnu après --only).
 
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
@@ -34,6 +36,7 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const USER_AGENT = 'eu-web-compliance-source-watch/1 (weekly check of official pages)';
 const TIMEOUT_MS = 30000;
 const CONCURRENCY = 6;
+const GONE = new Set([404, 410]);
 
 // Texte lisible d'une page HTML : sans scripts, styles, commentaires ni balises, espaces réduits.
 // Les jetons de session et les identifiants techniques vivent dans les attributs et les scripts,
@@ -59,7 +62,7 @@ async function read(url, fetcher) {
   try {
     const response = await fetcher(url, { redirect: 'follow', signal: AbortSignal.timeout(TIMEOUT_MS),
       headers: { 'user-agent': USER_AGENT, accept: 'text/html,application/xhtml+xml,application/pdf,*/*;q=0.8' } });
-    if (!response.ok) return { status: 'unreachable', detail: `HTTP ${response.status}` };
+    if (!response.ok) return { status: 'unreachable', detail: `HTTP ${response.status}`, http: response.status };
     const body = Buffer.from(await response.arrayBuffer());
     return { status: 'ok', sha256: fingerprint(body, response.headers.get('content-type') || '') };
   } catch (error) {
@@ -81,20 +84,29 @@ async function pool(items, worker, size = CONCURRENCY) {
 }
 
 // Compare chaque source à son empreinte. Renvoie [{ id, url, state, detail? , sha256? }] avec
-// state : unchanged, changed, new, unstable (non comparée), unreachable.
+// state : unchanged, changed, new, gone (page suivie qui répond 404 ou 410), unstable (non
+// comparée), unreachable.
 export async function checkSources(sources, baseline, { fetcher = fetch, twice = false } = {}) {
   return pool(sources, async (source) => {
     const url = source.read_at || source.url;
     const known = baseline[source.id];
     const now = await read(url, fetcher);
     const entry = { id: source.id, title: source.title, url };
-    if (now.status !== 'ok') return { ...entry, state: 'unreachable', detail: now.detail };
+    if (now.status !== 'ok') {
+      // Un refus (403, 429) ou une panne peut ne viser que le robot ; 404 et 410 sur une page
+      // lue jusque-là disent qu'elle a été retirée ou déplacée : c'est un changement à relire.
+      const gone = GONE.has(now.http) && known && known.url === url && known.status === 'ok';
+      return { ...entry, state: gone ? 'gone' : 'unreachable', detail: now.detail };
+    }
+    let stableNow = false;
     if (twice) {
       const again = await read(url, fetcher);
       if (again.status === 'ok' && again.sha256 !== now.sha256) return { ...entry, state: 'unstable' };
+      stableNow = again.status === 'ok';
     }
     if (!known || known.url !== url) return { ...entry, state: 'new', sha256: now.sha256 };
-    if (known.status === 'unstable') return { ...entry, state: 'unstable' };
+    // Une page jugée instable redevient comparable dès que deux lectures de suite concordent.
+    if (known.status === 'unstable') return stableNow ? { ...entry, state: 'new', sha256: now.sha256 } : { ...entry, state: 'unstable' };
     if (known.status !== 'ok') return { ...entry, state: 'new', sha256: now.sha256 };
     return { ...entry, state: known.sha256 === now.sha256 ? 'unchanged' : 'changed', sha256: now.sha256 };
   });
@@ -104,7 +116,7 @@ export async function checkSources(sources, baseline, { fetcher = fetch, twice =
 export function nextBaseline(results, baseline, today) {
   const fingerprints = {};
   for (const r of results) {
-    if (r.state === 'unreachable') fingerprints[r.id] = baseline[r.id] && baseline[r.id].url === r.url ? baseline[r.id] : { url: r.url, status: 'unreachable', checked: today };
+    if (r.state === 'unreachable' || r.state === 'gone') fingerprints[r.id] = baseline[r.id] && baseline[r.id].url === r.url ? baseline[r.id] : { url: r.url, status: 'unreachable', checked: today };
     else if (r.state === 'unstable') fingerprints[r.id] = { url: r.url, status: 'unstable', checked: today };
     else fingerprints[r.id] = { url: r.url, status: 'ok', sha256: r.sha256, checked: today };
   }
@@ -115,11 +127,15 @@ export function toMarkdown(results, today) {
   const of = (state) => results.filter((r) => r.state === state);
   const list = (items, more = () => '') => items.map((r) => `- \`${r.id}\`: ${r.title} (<${r.url}>)${more(r)}`);
   const lines = [`# Regulatory watch, ${today}`, '',
-    `${results.length} source(s) of \`references/sources.json\` checked: ${of('changed').length} changed, ${of('new').length} without a fingerprint, ${of('unchanged').length} unchanged, ${of('unstable').length} not comparable, ${of('unreachable').length} unreachable.`, '',
+    `${results.length} source(s) of \`references/sources.json\` checked: ${of('changed').length} changed, ${of('gone').length} gone, ${of('new').length} without a fingerprint, ${of('unchanged').length} unchanged, ${of('unstable').length} not comparable, ${of('unreachable').length} unreachable.`, '',
     'A different fingerprint means the text of the page changed, not that the law changed. An unchanged page does not prove that the text is still in force. Nothing in the skill is updated automatically.', ''];
   if (of('changed').length) {
     lines.push('## Pages that changed', '', ...list(of('changed')), '',
       'For each one: re-read the official page, correct the facts of `references/regulatory-status.md` and the rules that cite the source if needed, update `consulted` in `references/sources.json`, then run `node scripts/watch-sources.mjs --update` and commit the fingerprints.', '');
+  }
+  if (of('gone').length) {
+    lines.push('## Pages that disappeared', '', ...list(of('gone'), (r) => `: ${r.detail}`), '',
+      'These pages were read before and now answer "not found". Find where the official text moved, correct `url` (or `read_at`) and `consulted` in `references/sources.json`, check the facts that cite the source, then run `node scripts/watch-sources.mjs --update`.', '');
   }
   if (of('new').length) lines.push('## Sources without a fingerprint', '', ...list(of('new')), '', 'Run `node scripts/watch-sources.mjs --update` after reading them.', '');
   if (of('unreachable').length) {
@@ -128,6 +144,11 @@ export function toMarkdown(results, today) {
   }
   if (of('unstable').length) lines.push('## Not comparable (the page differs between two readings)', '', ...list(of('unstable')), '');
   return `${lines.join('\n').trim()}\n`;
+}
+
+// Vrai quand une personne doit relire quelque chose : c'est ce qui fait ouvrir l'issue de veille.
+export function needsAttention(results) {
+  return results.some((r) => r.state === 'changed' || r.state === 'new' || r.state === 'gone');
 }
 
 function parse(argv) {
@@ -154,6 +175,11 @@ async function main() {
   const wanted = args.only ? args.only.split(',').map((s) => s.trim()).filter(Boolean) : null;
   const registry = JSON.parse(await fs.readFile(registryFile, 'utf8'));
   const stored = JSON.parse(await fs.readFile(baselineFile, 'utf8').catch(() => '{"fingerprints":{}}'));
+  const unknown = (wanted || []).filter((id) => !registry.sources.some((s) => s.id === id));
+  if (unknown.length) {
+    process.stderr.write(`usage : --only names source(s) absent from the registry: ${unknown.join(', ')}\n`);
+    return 2;
+  }
   const sources = registry.sources.filter((s) => !wanted || wanted.includes(s.id));
   const today = new Date().toISOString().slice(0, 10);
   const results = await checkSources(sources, stored.fingerprints, { twice: args.update });
@@ -169,7 +195,7 @@ async function main() {
     process.stdout.write(`\nfingerprints written: ${baselineFile}\n`);
     return 0;
   }
-  return results.some((r) => r.state === 'changed' || r.state === 'new') ? 1 : 0;
+  return needsAttention(results) ? 1 : 0;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

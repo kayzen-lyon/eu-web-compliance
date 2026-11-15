@@ -4,7 +4,7 @@
 
 A skill for AI coding agents: make the code of a website meet the European obligations that apply to it, from the first line written.
 
-> **Project status: version 1.1.0.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
+> **Project status: version 1.1.1.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
 
 ## What the skill covers
 
@@ -148,7 +148,7 @@ The report is shown in the job summary and uploaded, in Markdown and JSON, as an
 }
 ```
 
-Four tools: `qualify_project` (profile to matrix of obligations), `audit_site` (URL or folder to report), `get_template` (document template) and `get_rule` (rules by tag). The server is local (stdio): it runs on your machine and loads pages with the same blocking of third-party requests as the checkers.
+Four tools: `qualify_project` (profile to matrix of obligations), `audit_site` (URL or folder to report), `get_template` (document template) and `get_rule` (rules by tag). The server is local (stdio): it runs on your machine and loads pages with the same blocking of third-party requests as the checkers. Tool arguments are written by a language model, which may have read a booby-trapped page, so the server checks them: an audited URL is `http` or `https` and never a link-local address (`169.254.0.0/16`, `fe80::/10`, where cloud metadata services answer), and one checker runs for 30 minutes at most. To keep the server inside one folder, set the environment variable `EU_WEB_COMPLIANCE_MCP_ROOT` in the declaration above: any folder, project or profile path outside it is refused. Without the variable, the server can read any folder your account can read, like the command line.
 
 **WordPress, PrestaShop, Shopify.** The files in [references/cms/](references/cms/) tell the agent where to act in each CMS (hooks, child theme, consent API, order button). They add no rule and say what was not verified.
 
