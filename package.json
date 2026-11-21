@@ -1,6 +1,6 @@
 {
   "name": "eu-web-compliance",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Checks and tools of the eu-web-compliance skill: audit a website against EU accessibility, privacy, AI Act, security and consumer rules (command line, GitHub Action, MCP server). Never certifies compliance.",
   "license": "MIT",
   "author": "Tarek BELHADJ - Kayzen (https://www.kayzen-lyon.com)",
