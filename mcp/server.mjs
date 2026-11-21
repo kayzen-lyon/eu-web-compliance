@@ -8,7 +8,7 @@
 //   get_template     modèle de document ou de composant (templates/)
 //   get_rule         règles qui citent une source, par étiquette (references/)
 //
-// Lancement : `node mcp/server.mjs`, ou `npx eu-web-compliance mcp`.
+// Lancement : `node mcp/server.mjs`, ou `npx github:kayzen-lyon/eu-web-compliance mcp`.
 //
 // Sûreté : audit_site passe par check-all, dont les vérificateurs interrompent toute requête vers
 // un hôte tiers et toute requête qui pourrait envoyer des données (voir scripts/lib/browser.mjs).

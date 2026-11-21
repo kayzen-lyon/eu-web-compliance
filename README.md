@@ -4,7 +4,7 @@
 
 A skill for AI coding agents: make the code of a website meet the European obligations that apply to it, from the first line written.
 
-> **Project status: version 1.1.2.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
+> **Project status: version 1.1.3.** The skill can be installed and used. It has not been reviewed by a lawyer, a data protection professional or an accessibility auditor; treat its output as help, not as an audit or legal advice.
 
 ## What the skill covers
 
@@ -122,7 +122,7 @@ npx github:kayzen-lyon/eu-web-compliance audit dist
 | `rule <tag>` | Finds the rules that cite a source, for example `rule "RGAA 11.1"` |
 | `mcp` | Starts the MCP server |
 
-The package is not published on npm yet: until then, the command goes through the repository address, as above.
+The tool is installed from its GitHub repository, as above, and is not published on npm. Always write the full `github:kayzen-lyon/eu-web-compliance` address: a bare `npx eu-web-compliance` would fetch whatever package holds that name on npm, which is not this project. Add `#v1` to follow the latest 1.x version, or `#v1.1.3` to pin one.
 
 **GitHub Action.** In a workflow, after the site is built:
 

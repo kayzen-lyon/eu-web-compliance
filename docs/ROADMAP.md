@@ -53,7 +53,7 @@ Fichier `bin/eu-web-compliance.mjs`, déclaré dans le champ `bin` de `package.j
 
 `init` suit les règles du questionnaire : une réponse donnée est enregistrée `stated` ; un oui/non laissé sans réponse reçoit la lecture protectrice, marquée `assumed` ; un chiffre, un pays ou une forme juridique sans réponse n'est pas écrit. Les types et les valeurs permises viennent du schéma du profil ; seuls les libellés courts des questions sont dans `scripts/lib/init-questions.json`, et un test échoue si un champ du schéma n'a pas de question.
 
-Tant que le paquet n'est pas publié sur npm, l'outil se lance depuis le dépôt : `npx github:kayzen-lyon/eu-web-compliance audit dist`.
+L'outil se lance depuis le dépôt GitHub, et c'est la voie officielle : `npx github:kayzen-lyon/eu-web-compliance audit dist`.
 
 ### 3.2 GitHub Action
 
@@ -84,9 +84,9 @@ Chaque point publie quelque chose sous le nom de Kayzen. Le propriétaire a dema
 | Décision | Effet | État |
 |----------|-------|------|
 | Créer l'étiquette `v1` et la version `v1.1.0` | `uses: kayzen-lyon/eu-web-compliance@v1` fonctionne | Fait le 15 novembre 2026 |
-| Publier le paquet sur npm (`npm publish`) | `npx eu-web-compliance audit …` fonctionne sans l'adresse du dépôt | À faire : demande une connexion au compte npm du propriétaire. Le nom `eu-web-compliance` était libre le 15 novembre 2026 |
+| Publier le paquet sur npm | `npx eu-web-compliance audit …` fonctionnerait sans l'adresse du dépôt | Écarté par le propriétaire le 21 novembre 2026 : pas de compte npm. L'installation passe par GitHub. Conséquence à connaître : le nom `eu-web-compliance` reste libre sur npm (vérifié le 21/11/2026) et quelqu'un d'autre peut le prendre ; la documentation dit donc de toujours écrire l'adresse `github:` complète. Réserver le nom demanderait un compte npm |
 | Inscrire l'Action sur le GitHub Marketplace | Visibilité | À faire : case à cocher dans la page de la version, après acceptation des conditions du Marketplace par le propriétaire |
-| Inscrire le serveur dans un registre MCP | Visibilité auprès des clients MCP | Demande la publication npm |
+| Inscrire le serveur dans un registre MCP | Visibilité auprès des clients MCP | Non prévu : les registres attendent en général un paquet npm |
 
 ### 4.2 Limites connues de ce qui est livré
 
@@ -99,7 +99,7 @@ Chaque point publie quelque chose sous le nom de Kayzen. Le propriétaire a dema
 
 ### 4.3 Suites proposées, par ordre de valeur
 
-1. Publier (4.1), puis vérifier `npx` et l'Action depuis un dépôt tiers.
+1. Fait le 15/11/2026 : versions publiées sur GitHub, `npx github:…` et l'Action (`@v1`) vérifiés depuis un dépôt tiers.
 2. Porter la qualification en JavaScript (4.2).
 3. Fiches CMS supplémentaires : Drupal, Joomla, Webflow, Wix, Squarespace, avec la même méthode.
 4. Suivre Légifrance par son API.

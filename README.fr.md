@@ -4,7 +4,7 @@
 
 Skill pour agents IA de développement : faire respecter, dès l'écriture du code, les obligations européennes qui s'appliquent à un site web.
 
-> **État du projet : version 1.1.2.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
+> **État du projet : version 1.1.3.** Le skill peut être installé et utilisé. Il n'a été relu ni par un juriste, ni par un professionnel de la protection des données, ni par un auditeur d'accessibilité : ses résultats sont une aide, pas un audit ni un avis juridique.
 
 ## Ce que le skill couvre
 
@@ -122,7 +122,7 @@ npx github:kayzen-lyon/eu-web-compliance audit dist --lang fr
 | `rule <étiquette>` | Trouve les règles qui citent une source, par exemple `rule "RGAA 11.1"` |
 | `mcp` | Démarre le serveur MCP |
 
-Le paquet n'est pas encore publié sur npm : d'ici là, la commande passe par l'adresse du dépôt, comme ci-dessus.
+L'outil s'installe depuis son dépôt GitHub, comme ci-dessus, et n'est pas publié sur npm. Écrivez toujours l'adresse complète `github:kayzen-lyon/eu-web-compliance` : un simple `npx eu-web-compliance` irait chercher sur npm le paquet qui porte ce nom, qui n'est pas ce projet. Ajoutez `#v1` pour suivre la dernière version 1.x, ou `#v1.1.3` pour en figer une.
 
 **GitHub Action.** Dans un workflow, après la construction du site :
 

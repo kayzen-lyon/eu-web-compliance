@@ -14,7 +14,7 @@ description: >-
 license: MIT
 compatibility: Scripts need Python 3.8+; browser checks need Node 20+ and `npm install` run once in the skill folder.
 metadata:
-  version: "1.1.2"
+  version: "1.1.3"
   scope: "EU law and France verified; other Member States partial"
   author: "Tarek BELHADJ - Kayzen"
   homepage: "https://www.kayzen-lyon.com"
@@ -67,7 +67,7 @@ A small change in a project without a profile does not need the full questionnai
 
 - **When**: before a commit or a release that touches pages, scripts or headers; when the user asks for an audit or a check.
 - **Run**: `node <skill>/scripts/check-all.mjs <site folder or URL> --project .` (options: `--profile <file>`, `--out <dir>`). It runs the applicability matrix and the four checkers, and writes `compliance/reports/compliance-report-YYYY-MM-DD.md` and `.json`. A folder must hold the built pages (static export, `dist/`, `out/`); for a server-rendered app, start it and pass its local URL. Each checker can also run alone, with the same input: `scripts/check-a11y.mjs`, `scripts/check-privacy.mjs`, `scripts/check-security.mjs`, `scripts/check-content.mjs` (the last one reads an optional `compliance/site.json` that declares the order pages, chat widgets and AI-generated content; see its header).
-- **Other ways in, same checks**: `npx eu-web-compliance audit <site folder or URL>` (command line, see `bin/eu-web-compliance.mjs --help`), the GitHub Action `action.yml`, and the MCP server `mcp/server.mjs` all call `check-all.mjs` and read the same `references/` and `templates/`.
+- **Other ways in, same checks**: `npx github:kayzen-lyon/eu-web-compliance audit <site folder or URL>` (command line, see `bin/eu-web-compliance.mjs --help`; the tool is installed from its GitHub repository and is not on npm: never run a bare `npx eu-web-compliance`, which would fetch whatever package holds that name there), the GitHub Action `action.yml`, and the MCP server `mcp/server.mjs` all call `check-all.mjs` and read the same `references/` and `templates/`.
 - **Then**: do the manual checks of [references/accessibility/testing-by-hand.md](references/accessibility/testing-by-hand.md) that you can do, and list the others for a person. Review code the checkers cannot see (server code, authentication, access control) against [references/security/web-baseline.md](references/security/web-baseline.md).
 - **If Node or the browser is unavailable**: say the automated checks did not run, mark their criteria NT, and review the code with [references/accessibility/anti-patterns.md](references/accessibility/anti-patterns.md) and the review checklists of the files in the task table.
 - **Produce**: the report files and a short summary to the user (see "Reporting" below).
