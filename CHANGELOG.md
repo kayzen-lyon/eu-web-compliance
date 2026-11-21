@@ -2,6 +2,16 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
+## [1.1.3] - 2026-11-21
+
+L'installation passe par GitHub, et seulement par GitHub : le paquet ne sera pas publié sur npm (décision du propriétaire).
+
+### Corrigé
+
+- `SKILL.md` et un commentaire de `mcp/server.mjs` donnaient la commande `npx eu-web-compliance`, qui suppose un paquet npm. Ce nom étant libre sur npm, un tiers pourrait le prendre et faire exécuter son code. La commande indiquée est partout `npx github:kayzen-lyon/eu-web-compliance`, et la documentation dit de ne jamais lancer la forme courte.
+- README : l'adresse `github:` est présentée comme la voie officielle, avec `#v1` pour suivre la dernière version 1.x.
+- `docs/ROADMAP.md` : publication npm écartée ; essai de l'Action depuis un dépôt tiers consigné (réussi le 15/11/2026).
+
 ## [1.1.2] - 2026-11-15
 
 Les sept constats mineurs que la relecture de la 1.1.0 avait laissés ouverts. Chacun porte un test.
