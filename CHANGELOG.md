@@ -2,6 +2,17 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Les versions suivent le versionnage sémantique.
 
+## [1.1.4] - 2026-11-21
+
+### Modifié
+
+- Actions GitHub utilisées par `action.yml` et par les workflows, mises à jour sur proposition de Dependabot : `actions/checkout` 7.0.1, `actions/setup-node` 7.1.0, `actions/setup-python` 7.1.0, `actions/upload-artifact` 7.0.2. Chaque empreinte de commit a été comparée à l'étiquette officielle du dépôt de l'action. Ces versions tournent sous Node 24 : un exécuteur auto-hébergé doit être en version 2.327.1 ou plus récente.
+- `action.yml` : `package-manager-cache: false` sur `setup-node`. Depuis sa version 5, cette action met en cache les dépendances du dépôt appelant quand son `package.json` déclare un gestionnaire de paquets ; l'Action ne doit pas toucher au projet qu'elle vérifie.
+
+### Corrigé
+
+- Le test qui impose une empreinte de commit pour chaque action n'acceptait que le commentaire `# v4` ; il accepte aussi `# v7.1.0`, la forme qu'écrit Dependabot.
+
 ## [1.1.3] - 2026-11-21
 
 L'installation passe par GitHub, et seulement par GitHub : le paquet ne sera pas publié sur npm (décision du propriétaire).

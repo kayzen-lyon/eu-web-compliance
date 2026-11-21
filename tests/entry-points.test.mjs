@@ -344,6 +344,8 @@ describe('GitHub Action', () => {
     for (const input of ['target', 'only', 'lang', 'fail-on-violation']) assert.match(text, new RegExp(`^  ${input}:`, 'm'));
     assert.match(text, /bin\/eu-web-compliance\.mjs" audit/);
     assert.match(text, /--no-fail/);
+    // L'Action ne met pas en cache les dépendances du dépôt appelant.
+    assert.match(text, /package-manager-cache: false/);
     // « False » ou « FALSE » valent « false » : la valeur est comparée en minuscules.
     assert.match(text, /"\$\{EWC_FAIL,,\}" = "false"/);
     // Aucune valeur d'entrée n'est écrite dans le texte d'un script : elles passent par env.
@@ -355,7 +357,7 @@ describe('GitHub Action', () => {
     for (const file of ['action.yml', '.github/workflows/validate.yml', '.github/workflows/watch-sources.yml']) {
       const uses = (await fs.readFile(path.join(ROOT, file), 'utf8')).split('\n').filter((line) => /^\s*(- )?uses:/.test(line));
       assert.ok(uses.length > 0, file);
-      for (const line of uses) assert.match(line, /uses: (\.\/|[\w-]+\/[\w-]+@[0-9a-f]{40} # v\d+)\s*$/, `${file} : ${line.trim()}`);
+      for (const line of uses) assert.match(line, /uses: (\.\/|[\w-]+\/[\w-]+@[0-9a-f]{40} # v\d+(\.\d+){0,2})\s*$/, `${file} : ${line.trim()}`);
     }
   });
 
